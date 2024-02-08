@@ -31,6 +31,7 @@ class ProjectController extends Controller
             'contributors' => "required|min:1|min:10"
             
         ]);
+        
 
         if($validator->fails()){
             return response()->json([
