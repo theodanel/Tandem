@@ -1,9 +1,14 @@
 import React from 'react'
+import Layout from '../components/Layout'
+import Carousel from '../components/Carousel'
+import projects from '../project'
+
 
 function Home() {
     return (
-        <div>
-            <div>
+        <Layout>
+
+          <div>
 
                 <h1>Faites germer vos projets</h1>
                 <h2>bouton crée un projet + route</h2>
@@ -17,13 +22,13 @@ function Home() {
             </div>
             <div>
 
-                <h1>Liste des projets</h1>
-                <p>Projet 1</p>
+                <h1>Liste des projets</h1> */
                 <p>Projet 2</p>
 
-            </div>
+            </div> */
             <div>
                 <h1>Les coups de coeur + carousel de carte crée</h1>
+                <Carousel />
                 <div>
                     <p>Img</p>
                     <p>Titre</p>
@@ -37,18 +42,18 @@ function Home() {
             <div>
                 <div>
 
-                <h1>Recommandations</h1>
-                <p>Img</p>
-                <p>Titre</p>
-                <p>Text</p>
-                <p>Language + Nom créateur + Nombre + logo</p>
+                    <h1>Recommandations</h1>
+                    <p>Img</p>
+                    <p>Titre</p>
+                    <p>Text</p>
+                    <p>Language + Nom créateur + Nombre + logo</p>
                 </div>
                 <div>
-                <h1>Recommandations 2 </h1>
-                <p>Img</p>
-                <p>Titre</p>
-                <p>Text</p>
-                <p>Language + Nom créateur + Nombre + logo</p>
+                    <h1>Recommandations 2 </h1>
+                    <p>Img</p>
+                    <p>Titre</p>
+                    <p>Text</p>
+                    <p>Language + Nom créateur + Nombre + logo</p>
                 </div>
                 <div>
                     <p>En voir plus</p>
@@ -60,9 +65,9 @@ function Home() {
                     </div>
                 </div>
             </div>
+        </Layout>
 
 
-        </div>
     )
 }
 

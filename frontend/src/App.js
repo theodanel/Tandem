@@ -1,13 +1,14 @@
 import './stylesheets/App.scss';
-import Home from './components/Home';
-import Layout from './components/Layout';
+import Home from './pages/Home';
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
   return (
-
-      <Layout>
-      <Home />
-      </Layout>
+    <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<Home />} />
+    </Routes>
+    </BrowserRouter>
   );
 }
 
