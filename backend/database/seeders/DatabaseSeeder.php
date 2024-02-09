@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Project;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,10 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        
+        
+        User::factory(10)->create();
+    
+        $projects = Project::factory(10)->has(User::factory()->count(3))->create();
 
-        \App\Models\User::factory(10)->create();
-        \App\Models\Project::factory(10)->create();
+        // foreach ($projects as $index => $project){
+        //     $project->participants()->attach(random_int(1,10));
+        // }
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

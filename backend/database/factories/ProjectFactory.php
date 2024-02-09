@@ -18,9 +18,10 @@ class ProjectFactory extends Factory
     {
         return [
             'date' => fake()->dateTime('now'),
-            'title' => fake()->title(),
+            'title' => fake()->sentence(),
             'description' => fake()->text(),
             'open' => true,
+            'user_id' => fake()->numberBetween(1,10),
             'participants' => 1,
             'participants_max' => fake()->numberBetween(1,9),
             'popularity' => fake()->numberBetween(0,100),
