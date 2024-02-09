@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use Dotenv\Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+
 
 class ProjectController extends Controller
 {
@@ -26,7 +27,7 @@ class ProjectController extends Controller
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'title' => "required|unique:projects,title|max:25",
+            'title' => "required|unique:projects,title|max:50",
             'description' => "required|max:100",
             'contributors' => "required|min:1|min:10"
             
@@ -45,6 +46,41 @@ class ProjectController extends Controller
             $project->contributors = $request->input('contributors');
 
             $project->save();
+
+            return response()-> json([
+                'status' => 200,
+                "message" => "Le projet a été ajouté."
+            ]);
         }
+    }
+
+
+    public function update(Request $request, $id){
+        $validator = Validator::make($request->all,[
+            'newTitle' => "required|unique:projects,title|max:50",
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'errors' => $validator->messages(),
+                "messages" => "Erreur dans le formulaire."
+            ]);
+        } else {
+            $project = Project::findOrFail($id);
+            $project->title = $request->input("newTitle");
+            $project->save();
+
+            return response()->json([
+                'status' => 200,
+                "message" => "Le projet a été ajouté."
+            ]);
+        }
+    }
+
+    public function delete($id){
+        Project::destroy($id);
+        return response()->json([
+            'status' => 200,
+            "message" => "Le projet a été supprimé"
+        ]);
     }
 }
