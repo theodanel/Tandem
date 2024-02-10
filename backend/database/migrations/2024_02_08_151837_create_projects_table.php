@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->boolean('open');
-            $table->foreignId('creator')->constrained(table: 'users', column: 'id')->cascadeOnDelete();
             $table->string('image');
+            $table->foreignId('creator')->constrained(table: 'users', column: 'id')->cascadeOnDelete();
             $table->integer('collaborators');
             $table->integer('collaborators_max');
             $table->integer('popularity');

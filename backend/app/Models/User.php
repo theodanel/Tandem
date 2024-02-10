@@ -21,6 +21,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Pour ajouter un langage à l'utilisateur via son ID (multiples)
+     */
+    public function language()
+    {
+        return $this->belongsToMany(Language::class, 'users_languages');
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

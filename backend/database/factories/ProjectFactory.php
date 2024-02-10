@@ -17,15 +17,20 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         $collaborators_max = random_int(1,10) ;
+        $collaborators = random_int(1,$collaborators_max);
+        $isOpen = true;
+        if ($collaborators === $collaborators_max){
+            $isOpen = false;
+        }
         return [
             'date' => now(),
             'title' => fake()->sentence(),
             'description' => fake()->text(),
-            'open' => true,
             'image' => fake()->imageUrl(),
             'creator' => fake()->numberBetween(1,10),
-            'collaborators' => fake()->numberBetween(1,$collaborators_max),
+            'collaborators' => $collaborators,
             'collaborators_max' => $collaborators_max,
+            'open' => $isOpen,
             'popularity' => fake()->numberBetween(0,100),
         ];
     }

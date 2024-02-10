@@ -20,8 +20,16 @@ class Project extends Model
     /**
      * Pour associer des collaborateurs au projet via leur ID (multiples)
      */
-    public function collaborators()
+    public function collaborator()
     {
         return $this->belongsToMany(User::class, 'users_projects');
+    }
+
+    /**
+     * Pour ajouter un langage à un projet via son ID (multiples)
+     */
+    public function language()
+    {
+        return $this->belongsToMany(Language::class, 'projects_languages');
     }
 }
