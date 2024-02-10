@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Nette\Utils\Random;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
@@ -22,6 +23,11 @@ class ProjectFactory extends Factory
         if ($collaborators === $collaborators_max){
             $isOpen = false;
         }
+        if ($isOpen){
+            $status = random_int(1,2);
+        } else {
+            $status = random_int(2,3);
+        }
         return [
             'date' => now(),
             'title' => fake()->sentence(),
@@ -31,6 +37,7 @@ class ProjectFactory extends Factory
             'collaborators' => $collaborators,
             'collaborators_max' => $collaborators_max,
             'open' => $isOpen,
+            'status' => $status,
             'popularity' => fake()->numberBetween(0,100),
         ];
     }
