@@ -13,6 +13,14 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
+     * Pour ajouter une collaboration à un projet via son ID (multiples)
+     */
+    public function project()
+    {
+        return $this->belongsToMany(Project::class, 'users_projects');
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
