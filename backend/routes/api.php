@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/projects', [ProjectController::class, "index"]);
 Route::get('/project/{id}', [ProjectController::class, "show"]);
 Route::put('/project/{id}/update', [ProjectController::class, "update"]);
-Route::delete('/project/{id]/delete', [ProjectController::class, "delete"]);
+Route::delete('/project/{id}/delete', [ProjectController::class, "delete"]);
 Route::post('/project/{id}/store', [ProjectController::class, "store"]);
 
 // Route::get('/users', [UserController::class, "index"]);

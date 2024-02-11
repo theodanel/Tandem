@@ -29,7 +29,7 @@ class ProjectController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => "required|unique:projects,title|max:50",
             'description' => "required|max:100",
-            'contributors' => "required|min:1|min:10"
+            'participants' => "required|min:1|min:10"
             
         ]);
         
@@ -43,7 +43,7 @@ class ProjectController extends Controller
             $project = new Project();
             $project->title = $request->input('title');
             $project->description = $request->input('description');
-            $project->contributors = $request->input('contributors');
+            $project->participants = $request->input('participants');
 
             $project->save();
 
