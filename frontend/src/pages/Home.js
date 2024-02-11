@@ -1,17 +1,34 @@
 import React from 'react'
 import Layout from '../components/Layout'
-import Carousel from '../components/Carousel'
 import projects from '../project'
+import Project from '../components/Project';
+import { useNavigate } from 'react-router-dom';
+import Carousel from '../components/Carousel';
+
 
 
 function Home() {
+    const navigate = useNavigate();
+    const listProject = Object.keys(projects).map(key => {
+        return (
+            <Project
+                key={key}
+                name={projects[key].name}
+                image={projects[key].image}
+                description={projects[key].description}
+                profil={projects[key].profil}
+                language={projects[key].language}
+                creator={projects[key].creator} >
+            </Project>
+        );
+    });
     return (
         <Layout>
 
-          <div>
+            <div>
 
                 <h1>Faites germer vos projets</h1>
-                <h2>bouton crée un projet + route</h2>
+                <button onClick={() => navigate("/")}>Créer un projet</button>
 
             </div>
             <div>
@@ -22,38 +39,25 @@ function Home() {
             </div>
             <div>
 
-                <h1>Liste des projets</h1> */
-                <p>Projet 2</p>
+                <h1>Liste des projets</h1>
+                <span>{projects.image}</span>
 
-            </div> */
+            </div>
             <div>
+
                 <h1>Les coups de coeur + carousel de carte crée</h1>
-                <Carousel />
-                <div>
-                    <p>Img</p>
-                    <p>Titre</p>
-                    <p>Nom</p>
-                </div>
-                <div>
-                    <p>Description</p>
-                    <p>Text</p>
-                </div>
+                <Carousel/>
+                
+
             </div>
             <div>
                 <div>
 
-                    <h1>Recommandations</h1>
-                    <p>Img</p>
-                    <p>Titre</p>
-                    <p>Text</p>
-                    <p>Language + Nom créateur + Nombre + logo</p>
+                    {listProject}
                 </div>
                 <div>
                     <h1>Recommandations 2 </h1>
-                    <p>Img</p>
-                    <p>Titre</p>
-                    <p>Text</p>
-                    <p>Language + Nom créateur + Nombre + logo</p>
+                    {listProject}
                 </div>
                 <div>
                     <p>En voir plus</p>

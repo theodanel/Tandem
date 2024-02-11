@@ -1,4 +1,8 @@
 import { Carousel as AntdCarousel } from 'antd';
+import imgcarou from '../img/carou.jpg';
+import imgcarou2 from '../img/carou2.jpg';
+import imgcarou3 from '../img/carou3.jpg';
+
 
 const Carousel = () => {
 
@@ -13,17 +17,22 @@ const Carousel = () => {
     return (
         <AntdCarousel autoplay>
             <div>
-                <h3 style={contentStyle}>1</h3>
+                <h3 style={contentStyle}>
+                    <img src={imgcarou} />
+
+                </h3>
             </div>
             <div>
-                <h3 style={contentStyle}>2</h3>
+                <h3 style={contentStyle}>
+                    <img src={imgcarou2} />
+                </h3>
             </div>
             <div>
-                <h3 style={contentStyle}>3</h3>
+                <h3 style={contentStyle}>
+                    <img src={imgcarou3} />
+                </h3>
             </div>
-            <div>
-                <h3 style={contentStyle}>4</h3>
-            </div>
+
         </AntdCarousel>
     );
 }
