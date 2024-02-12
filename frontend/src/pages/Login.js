@@ -12,6 +12,7 @@ const Login = () => {
     const handleLogin = async (e) =>{
         e.preventDefault();
         try{
+            await axios.get('/sanctum/csrf-cookie');
             await axios.post('/login', {email, password});
             setEmail("");
             setPassword("");
