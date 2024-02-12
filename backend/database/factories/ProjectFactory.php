@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Nette\Utils\Random;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
@@ -16,14 +17,27 @@ class ProjectFactory extends Factory
      */
     public function definition(): array
     {
+        $collaborators_max = random_int(1,10) ;
+        $collaborators = random_int(1,$collaborators_max);
+        $isOpen = true;
+        if ($collaborators === $collaborators_max){
+            $isOpen = false;
+        }
+        if ($isOpen){
+            $status = random_int(1,2);
+        } else {
+            $status = random_int(2,3);
+        }
         return [
-            'date' => fake()->dateTime('now'),
+            'date' => now(),
             'title' => fake()->sentence(),
             'description' => fake()->text(),
-            'open' => true,
-            'user_id' => fake()->numberBetween(1,10),
-            'participants' => 1,
-            'participants_max' => fake()->numberBetween(1,9),
+            'image' => fake()->imageUrl(),
+            'creator' => fake()->numberBetween(1,10),
+            'collaborators' => $collaborators,
+            'collaborators_max' => $collaborators_max,
+            'open' => $isOpen,
+            'status' => $status,
             'popularity' => fake()->numberBetween(0,100),
         ];
     }

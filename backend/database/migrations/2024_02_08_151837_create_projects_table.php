@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->timestamp('date');
             $table->string('title');
             $table->text('description');
+            $table->string('image');
+            $table->foreignId('creator')->constrained(table: 'users', column: 'id')->cascadeOnDelete();
+            $table->integer('collaborators');
+            $table->integer('collaborators_max');
             $table->boolean('open');
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->integer('participants');
-            $table->integer('participants_max');
+            $table->foreignId('status')->constrained(table: 'statuses', column: 'id')->cascadeOnDelete();
             $table->integer('popularity');
+            $table->timestamps();
         });
     }
 
