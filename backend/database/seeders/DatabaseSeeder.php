@@ -20,10 +20,11 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         User::factory()->create([
             'name' => 'test',
-            'email' => 'test@test.fr'
+            'email' => 'test@test.fr',
+            'password' => 'test',
         ]);
     
-        $projects = Project::factory(10)->has(User::factory()->count(3))->create();
+        $projects = Project::factory(10)->has(User::factory())->create();
 
         // foreach ($projects as $index => $project){
         //     $project->participants()->attach(random_int(1,10));
