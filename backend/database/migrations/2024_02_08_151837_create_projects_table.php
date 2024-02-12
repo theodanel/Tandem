@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->timestamp('date');
-            $table->string('title');
-            $table->text('description');
-            $table->boolean('open');
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->integer('participants');
-            $table->integer('participants_max');
-            $table->integer('popularity');
+            $table->timestamp('date')->nullable();
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('open')->nullable();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->default(5);
+            $table->integer('collaborators')->nullable();
+            $table->integer('participants_max')->nullable();
+            $table->integer('popularity')->nullable();
         });
     }
 

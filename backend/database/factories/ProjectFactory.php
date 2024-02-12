@@ -22,7 +22,7 @@ class ProjectFactory extends Factory
             'description' => fake()->text(),
             'open' => true,
             'user_id' => fake()->numberBetween(1,10),
-            'participants' => 1,
+            'collaborators' => 1,
             'participants_max' => fake()->numberBetween(1,9),
             'popularity' => fake()->numberBetween(0,100),
         ];
