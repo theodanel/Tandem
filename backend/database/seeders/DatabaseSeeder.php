@@ -18,6 +18,10 @@ class DatabaseSeeder extends Seeder
         
         
         User::factory(10)->create();
+        User::factory()->create([
+            'name' => 'test',
+            'email' => 'test@test.fr'
+        ]);
     
         $projects = Project::factory(10)->has(User::factory()->count(3))->create();
 
