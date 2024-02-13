@@ -23,13 +23,15 @@ const Home = () => {
     )
     const listProject = projects.map(project => {
         return (
-            <Project            
-                name={project.name}
+            <Project
+                key={project.id}            
+                title={project.title}
                 image={project.image}
                 description={project.description}
                 profil={project.profil}
                 language={project.language}
-                creator={project.creator} >
+                creator={project.creator} 
+                id={project.id}>
             </Project>
 
         );
@@ -53,7 +55,7 @@ const Home = () => {
             <div>
 
                 <h1>Liste des projets</h1>
-                <span>{Project.image}</span>
+                <span >{Project.image}</span>
 
             </div>
             <div>

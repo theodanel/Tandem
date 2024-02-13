@@ -93,7 +93,7 @@ const CreateProject = () => {
 
             <div>
                 <label htmlFor="description">Description:</label>
-                <input type="text" id="description" name="description"  minLength="10" maxLength="100" size="10" 
+                <input type="text" id="description" name="description"  minLength="10" maxLength="1000" size="10" 
                     value={project.description} onChange={handleInput}/>
                     <b>{errors.description}</b>
             </div>
