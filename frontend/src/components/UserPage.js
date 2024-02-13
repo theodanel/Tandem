@@ -9,7 +9,7 @@ const UserPage = () => {
     const {id} = useParams();
     const navigate = useNavigate();
     const [projects, setProjects] = useState([]);
-    const [users, setUsers] = useState([]);
+    const [user, setUser] = useState([]);
 
     const getProjects = async () => {
         const data = await fetch("http://127.0.0.1:8000/api/projects").then(res => res.json());
@@ -37,30 +37,26 @@ const UserPage = () => {
 
     });
     useEffect(()=>{
-        getUsers()
+        getUser()
     }, [])
 
-    const getUsers = async () => {
-        const data = await fetch(`http://127.0.0.1:8000/api/users/${id}`).then(res => res.json());
+    const getUser = async () => {
+        const data = await fetch(`http://127.0.0.1:8000/api/user/${id}`).then(res => res.json());
 
-        setUsers(data.users);
-        console.log(data.users)
+        setUser(data.user);
+        console.log(data.user)
     }
-    const usersList = users.map(user=>{
-        return(
-            <User
+    
+    return (
+        <Layout>
+            <div>
+                <h1>profil/user API</h1>
+                <User
             key={user.id}
             name={user.name}
             email={user.email}
             id={user.id}>
             </User>
-        )
-    });
-    return (
-        <Layout>
-            <div>
-                <h1>profil/user API</h1>
-                {usersList}
                 <h1>projets</h1>
                 {listProject}
             </div>
