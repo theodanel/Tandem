@@ -35,9 +35,6 @@ Route::post('/users/store', [UserController::class, "store"]);
 
 //-------------
 
-// Route::get('/users', [UserController::class, "index"]);
-// Route::get('/user/{id}', [UserController::class, "show"]);
-
 
 
 
