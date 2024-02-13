@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
+
 import '../stylesheets/style.css';
+
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuthContext from '../context/AuthContext';
+
 
 function Header() {
   const {user, getUser} = useAuthContext();
