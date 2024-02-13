@@ -29,7 +29,8 @@ class ProjectController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => "required|unique:projects,title|max:50",
             'description' => "required|max:100",
-            'collaborators' => "required|numeric",
+
+            'collaborators' => "required|numeric"
             
         ]);
         
