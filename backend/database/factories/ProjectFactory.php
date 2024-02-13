@@ -29,7 +29,6 @@ class ProjectFactory extends Factory
             $status = random_int(2,3);
         }
         return [
-            'date' => now(),
             'title' => fake()->sentence(),
             'description' => fake()->text(),
             'user_id' => fake()->numberBetween(1,10),
