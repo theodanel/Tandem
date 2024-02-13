@@ -17,7 +17,6 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => fake()->dateTime('now'),
             'title' => fake()->sentence(),
             'description' => fake()->text(),
             'open' => true,

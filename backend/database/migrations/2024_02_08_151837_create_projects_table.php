@@ -13,15 +13,18 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('open')->nullable();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->default(5);
+            $table->integer('collaborators')->nullable();
+            $table->integer('collaborators_max')->nullable();
+            $table->integer('popularity')->nullable();
+            $table->string('image')->nullable();
+            $table->foreignId('creator')->constrained(table: 'users', column: 'id')->cascadeOnDelete()->nullable();
+            $table->boolean('open')->nullable();
+            $table->foreignId('status')->constrained(table: 'statuses', column: 'id')->cascadeOnDelete()->nullable();
             $table->timestamps();
-            $table->timestamp('date');
-            $table->string('title');
-            $table->text('description');
-            $table->boolean('open');
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->integer('participants');
-            $table->integer('participants_max');
-            $table->integer('popularity');
         });
     }
 
