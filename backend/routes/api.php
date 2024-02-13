@@ -29,6 +29,7 @@ Route::post('/project/store', [ProjectController::class, "store"]);
 // API User
 
 Route::get('/users', [UserController::class, "index"]);
+Route::get('/user/auth', [UserController::class, "showAuth"]);
 Route::get('/user/{id}', [UserController::class, "show"]);
 Route::put('/user/{id}/update', [UserController::class, "update"]);
 Route::delete('/user/{id}/delete', [UserController::class, "delete"]);
