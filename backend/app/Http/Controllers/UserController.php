@@ -18,6 +18,7 @@ class UserController extends Controller
 
     function show($id){
         $user = User::findOrFail($id);
+        // faire un requete user_language into crée objet user et user_language cette objet qu'on renvois a JSON
         return response()->json([
             'user'=> $user,
             "status"=> 200,
