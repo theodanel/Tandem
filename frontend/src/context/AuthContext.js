@@ -18,8 +18,8 @@ export const AuthProvider = ({children}) => {
      * Récupère l'utilisateur connecté
      */
     const getUser = async () => {
-        const {data} = axios.get('/api/user');
-        setUser(data);
+        // const {data} = axios.get(`/api/user`);
+        // setUser(data);
     }
 
     /**
