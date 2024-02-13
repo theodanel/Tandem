@@ -32,6 +32,7 @@ class ProjectFactory extends Factory
             'date' => now(),
             'title' => fake()->sentence(),
             'description' => fake()->text(),
+            'user_id' => fake()->numberBetween(1,10),
             'image' => fake()->imageUrl(),
             'creator' => fake()->numberBetween(1,10),
             'collaborators' => $collaborators,

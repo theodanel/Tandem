@@ -41,7 +41,7 @@ const Home = () => {
             <div>
 
                 <h1>Faites germer vos projets</h1>
-                <button onClick={() => navigate("/")}>Créer un projet</button>
+                <button onClick={() => navigate("/create")}>Créer un projet</button>
 
             </div>
             <div>
