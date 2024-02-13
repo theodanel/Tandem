@@ -1,10 +1,11 @@
 import React from 'react';
 import '../stylesheets/style.css';
+import logo from '../img/logo.png'
 
 function Header() {
   return (
     <header>
-        <h1>Tandem</h1>
+        <img src={logo} />
     </header>
   )
 }

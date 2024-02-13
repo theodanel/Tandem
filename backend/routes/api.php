@@ -35,6 +35,11 @@ Route::post('/users/store', [UserController::class, "store"]);
 
 //-------------
 
+Route::get('/users_languages', [UserController::class, "index"]);
+Route::get('/user_languages/{id}', [UserController::class, "show"]);
+Route::put('/user_languages/{id}/update', [UserController::class, "update"]);
+Route::delete('/user_languages/{id}/delete', [UserController::class, "delete"]);
+Route::post('/users_languages/store', [UserController::class, "store"]);
 
 
 
