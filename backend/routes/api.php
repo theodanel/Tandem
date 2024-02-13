@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// API Project
 
 Route::get('/projects', [ProjectController::class, "index"]);
 Route::get('/project/{id}', [ProjectController::class, "show"]);
@@ -24,6 +25,16 @@ Route::put('/project/{id}/update', [ProjectController::class, "update"]);
 Route::delete('/project/{id}/delete', [ProjectController::class, "delete"]);
 Route::post('/project/store', [ProjectController::class, "store"]);
 
+//----------
+// API User
+
+Route::get('/users', [UserController::class, "index"]);
+Route::get('/user/{id}', [UserController::class, "show"]);
+Route::put('/user/{id}/update', [UserController::class, "update"]);
+Route::delete('/user/{id}/delete', [UserController::class, "delete"]);
+Route::post('/users/store', [UserController::class, "store"]);
+
+//-------------
 
 // Route::get('/users', [UserController::class, "index"]);
 // Route::get('/user/{id}', [UserController::class, "show"]);
