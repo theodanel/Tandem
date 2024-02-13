@@ -45,8 +45,11 @@ class ProjectController extends Controller
             $project->title = $request->input('title');
             $project->description = $request->input('description');
             $project->collaborators = $request->input('collaborators');
-            $project->user_id = $request->input('user_id');
-
+            $project->user_id = random_int(1,10);
+            $project->creator = 5;
+            $project->status = 1;
+            $project->open = true;
+            $project->popularity = 0;
             $project->save();
 
             return response()-> json([
