@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
         $this->call([
             LanguageSeeder::class,
             StatusSeeder::class,
@@ -22,6 +23,17 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
             
         ]);
+
+        
+        
+       
+        User::factory()->create([
+            'name' => 'test',
+            'email' => 'test@test.fr',
+            'password' => 'test',
+        ]);
+    
+
 
     }
 }
