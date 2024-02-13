@@ -1,26 +1,15 @@
 import React, { useState } from 'react'
 import Layout from '../components/Layout';
-import { useNavigate } from 'react-router-dom';
-import axios from "../api/axios";
+import useAuthContext from '../context/AuthContext';
 
 const Login = () => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-
-    const navigate = useNavigate();
+    const {login, errors} = useAuthContext();
 
     const handleLogin = async (e) =>{
         e.preventDefault();
-        try{
-            await axios.get('/sanctum/csrf-cookie');
-            await axios.post('/login', {email, password});
-            setEmail("");
-            setPassword("");
-            navigate('/');
-        } catch(e) {
-            console.log(e);
-        }
-
+        login({email, password});
     }
 
     return (
