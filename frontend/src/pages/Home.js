@@ -1,26 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../components/Layout'
-import projects from '../project'
 import Project from '../components/Project';
 import { useNavigate } from 'react-router-dom';
 import Carousel from '../components/Carousel';
 
 
 
-function Home() {
+const Home = () => {
     const navigate = useNavigate();
-    const listProject = Object.keys(projects).map(key => {
+    const [projects, setProjects] = useState([]);
+  
+    const getProjects = async () => {
+      const data = await fetch("http://127.0.0.1:8000/api/projects").then(res => res.json());
+      
+      setProjects(data.projects);
+      console.log (data.projects)
+    }
+  
+    useEffect(() => {
+      getProjects();
+    }, []
+    )
+    const listProject = projects.map(project => {
         return (
-            <Project
-                key={key}
-                name={projects[key].name}
-                image={projects[key].image}
-                description={projects[key].description}
-                profil={projects[key].profil}
-                language={projects[key].language}
-                creator={projects[key].creator} >
+            <Project            
+                name={project.name}
+                image={project.image}
+                description={project.description}
+                profil={project.profil}
+                language={project.language}
+                creator={project.creator} >
             </Project>
+
         );
+    
     });
     return (
         <Layout>
@@ -28,7 +41,7 @@ function Home() {
             <div>
 
                 <h1>Faites germer vos projets</h1>
-                <button onClick={() => navigate("/")}>Créer un projet</button>
+                <button onClick={() => navigate("/create")}>Créer un projet</button>
 
             </div>
             <div>
@@ -40,7 +53,7 @@ function Home() {
             <div>
 
                 <h1>Liste des projets</h1>
-                <span>{projects.image}</span>
+                <span>{Project.image}</span>
 
             </div>
             <div>
@@ -53,7 +66,7 @@ function Home() {
             <div>
                 <div>
 
-                    {listProject}
+                    {getProjects}
                 </div>
                 <div>
                     <h1>Recommandations 2 </h1>

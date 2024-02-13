@@ -15,24 +15,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        $this->call([
+            LanguageSeeder::class,
+            StatusSeeder::class,
+            UserSeeder::class,
+            ProjectSeeder::class,
+            
+        ]);
+
         
         
-        User::factory(10)->create();
+       
         User::factory()->create([
             'name' => 'test',
             'email' => 'test@test.fr',
             'password' => 'test',
         ]);
     
-        $projects = Project::factory(10)->has(User::factory())->create();
 
-        // foreach ($projects as $index => $project){
-        //     $project->participants()->attach(random_int(1,10));
-        // }
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
