@@ -28,7 +28,7 @@ class ProjectController extends Controller
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'title' => "required|unique:projects,title|max:50",
-            'description' => "required|max:100",
+            'description' => "required|max:1000",
 
             'collaborators' => "required|numeric"
             
@@ -45,8 +45,11 @@ class ProjectController extends Controller
             $project->title = $request->input('title');
             $project->description = $request->input('description');
             $project->collaborators = $request->input('collaborators');
-            $project->user_id = $request->input('user_id');
-
+            $project->user_id = random_int(1,10);
+            $project->creator = 5;
+            $project->status = 1;
+            $project->open = true;
+            $project->popularity = 0;
             $project->save();
 
             return response()-> json([
@@ -58,8 +61,10 @@ class ProjectController extends Controller
 
 
     public function update(Request $request, $id){
-        $validator = Validator::make($request->all,[
-            'newTitle' => "required|unique:projects,title|max:50",
+        $validator = Validator::make($request->all(),[
+            'newTitle' => "max:50",
+            'newDescription' => "max:1000",
+            'newCollaborators' => "numeric"
         ]);
         if($validator->fails()){
             return response()->json([
@@ -69,6 +74,8 @@ class ProjectController extends Controller
         } else {
             $project = Project::findOrFail($id);
             $project->title = $request->input("newTitle");
+            $project->description = $request->input("newDescription");
+            $project->collaborators = $request->input("newCollaborators");
             $project->save();
 
             return response()->json([
