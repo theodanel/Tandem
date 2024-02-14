@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../components/Layout';
 // import useAuthContext from '../context/AuthContext';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUserToken } from '../slices';
 
 const Login = () => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+    const token = useSelector(state=> state.data.token);
     // const {login, errors} = useAuthContext();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogin = async (e) =>{
@@ -15,9 +19,16 @@ const Login = () => {
         // login({email, password});
         await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/login', { email, password });
-        localStorage.setItem("token", JSON.stringify(res.data.token));
+        dispatch(addUserToken(res.data.token));
         navigate('/');
     }
+
+    // Redirection automatique si utilisateur déjà connecté
+    useEffect(() => {
+        if (token) {
+          navigate('/')
+        }
+      }, [])
 
     return (
         <Layout>
