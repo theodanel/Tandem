@@ -40,7 +40,7 @@ const Register = () => {
                 <button type='submit'>Valider</button>
             </form>
             <p>Déjà inscrit ?</p>
-            <button onClick={navigate('/login')}>Se connecter</button>
+            <button onClick={() => navigate('/login')}>Se connecter</button>
         </Layout>
     )
 }
