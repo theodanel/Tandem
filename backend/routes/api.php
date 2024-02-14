@@ -38,7 +38,11 @@ Route::post('/users/store', [UserController::class, "store"]);
 // Route::get('/users', [UserController::class, "index"]);
 // Route::get('/user/{id}', [UserController::class, "show"]);
 
-
+Route::get('/projects_languages', [ProjectController::class, "index"]);
+Route::get('/project_languages/{id}', [ProjectController::class, "show"]);
+Route::put('/project_languages/{id}/update', [ProjectController::class, "update"]);
+Route::delete('/project_languages/{id}/delete', [ProjectController::class, "delete"]);
+Route::post('/projects_languages/store', [ProjectController::class, "store"]);
 
 
 
