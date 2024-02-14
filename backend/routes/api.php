@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -44,6 +45,9 @@ Route::put('/project_languages/{id}/update', [ProjectController::class, "update"
 Route::delete('/project_languages/{id}/delete', [ProjectController::class, "delete"]);
 Route::post('/projects_languages/store', [ProjectController::class, "store"]);
 
+
+
+Route::get('/languages', [LanguageController::class, "index"]);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
