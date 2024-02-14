@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import CreateProject from './pages/CreateProject'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './pages/Login';
+import Register from './pages/Register';
 // import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path='/create' element={<CreateProject />} />
 
       <Route path='/login' element={<Login />} />
+      <Route path='/register' element={<Register />} />
 
     </Routes>
     {/* </AuthProvider> */}

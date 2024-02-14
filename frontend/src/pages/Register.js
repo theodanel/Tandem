@@ -1,34 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import Layout from '../components/Layout';
-// import useAuthContext from '../context/AuthContext';
-import axios from '../api/axios';
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import axios from '../api/axios';
 import { addUserToken } from '../slices';
+import Layout from '../components/Layout';
 
-const Login = () => {
+const Register = () => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const token = useSelector(state=> state.data.token);
-    // const {login, errors} = useAuthContext();
+    const [newUser, setNewUser] = useState({
+        email: "",
+        name: "",
+        password: "",
+        password_confirmation: "",
+    });
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogin = async (e) =>{
         e.preventDefault();
-        // login({email, password});
         await axios.get('/sanctum/csrf-cookie');
-        const res = await axios.post('/api/login', { email, password });
+        const res = await axios.post('/api/register', { newUser });
         dispatch(addUserToken(res.data.token));
         navigate('/');
     }
-
-    // Redirection automatique si utilisateur déjà connecté
-    useEffect(() => {
-        if (token) {
-          navigate('/')
-        }
-      }, [])
 
     return (
         <Layout>
@@ -44,10 +39,10 @@ const Login = () => {
                 </div>
                 <button type='submit'>Valider</button>
             </form>
-            <p>Pas encore de compte ?</p>
-            <button onClick={navigate('/register')}>S'inscrire</button>
+            <p>Déjà inscrit ?</p>
+            <button onClick={navigate('/login')}>Se connecter</button>
         </Layout>
     )
 }
 
-export default Login
+export default Register
