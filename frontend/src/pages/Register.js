@@ -6,8 +6,6 @@ import { addUserToken } from '../slices';
 import Layout from '../components/Layout';
 
 const Register = () => {
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
     const [newUser, setNewUser] = useState({
         email: "",
         name: "",
@@ -16,6 +14,13 @@ const Register = () => {
     });
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        setNewUser({
+            ...newUser,
+            [e.target.name] : e.target.value
+        })
+    }
 
     const handleLogin = async (e) =>{
         e.preventDefault();
@@ -30,12 +35,20 @@ const Register = () => {
             <div>Login</div>
             <form onSubmit={(e)=>handleLogin(e)}>
                 <div>
+                    <label htmlFor='name'>Choisissez un pseudo :</label>
+                    <input type='text' name='name' value={newUser.name} placeholder='Pseudo' onChange={(e)=> handleChange(e)} required/>
+                </div>
+                <div>
                     <label htmlFor='email'>Email :</label>
-                    <input type='email' name='email' value={email} placeholder='Email' onChange={(e)=> setEmail(e.target.value)} required/>
+                    <input type='email' name='email' value={newUser.email} placeholder='Email' onChange={(e)=> handleChange(e)} required/>
                 </div>
                 <div>
                     <label htmlFor='password'>Mot de passe :</label>
-                    <input type='password' name='password' value={password} placeholder='Mot de passe' onChange={(e)=> setPassword(e.target.value)} required/>
+                    <input type='password' name='password' value={newUser.password} placeholder='Mot de passe' onChange={(e)=> handleChange(e)} required/>
+                </div>
+                <div>
+                    <label htmlFor='password_confirmation'>Confirmer le mot de passe :</label>
+                    <input type='password' name='password_confirmation' value={newUser.password_confirmation} placeholder='Confirmer le mot de passe' onChange={(e)=> handleChange(e)} required/>
                 </div>
                 <button type='submit'>Valider</button>
             </form>

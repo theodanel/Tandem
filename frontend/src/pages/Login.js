@@ -50,12 +50,12 @@ const Login = () => {
             <form onSubmit={(e)=>handleLogin(e)}>
                 <div>
                     <label htmlFor='email'>Email :</label>
-                    <input type='email' name='email' value={email} placeholder='Email' onChange={(e)=> setEmail(e.target.value)} />
+                    <input type='email' name='email' value={email} placeholder='Email' onChange={(e)=> setEmail(e.target.value)} required />
                     <b>{errors.email}</b>
                 </div>
                 <div>
                     <label htmlFor='password'>Mot de passe :</label>
-                    <input type='password' name='password' value={password} placeholder='Mot de passe' onChange={(e)=> setPassword(e.target.value)} />
+                    <input type='password' name='password' value={password} placeholder='Mot de passe' onChange={(e)=> setPassword(e.target.value)} required />
                     <b>{errors.password}</b>
                 </div>
                 <button type='submit'>Valider</button>
