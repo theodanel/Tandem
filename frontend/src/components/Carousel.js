@@ -15,7 +15,7 @@ const Carousel = () => {
     };
 
     return (
-        <AntdCarousel autoplay>
+        <AntdCarousel className='caroussel' autoplay>
             <div>
                 <h3 style={contentStyle}>
                     <img src={imgcarou} />
