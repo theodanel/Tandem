@@ -76,20 +76,19 @@ const CreateProject = () => {
                 action={() => handleOnChange(index)}
                 image={language.logo}
             />
-            // <div className='language' key={index}>
-            //     <input
-            //         type="checkbox"
-            //         id={language.name}
-            //         name={language.name}
-            //         checked={checkedState[index]}
-            //         onChange={() => handleOnChange(index)}/>
-            //         <div className='img' onClick={() => handleOnChange(index)}>
-            //             <img src={language.logo} htmlFor={language.name} alt={language.name}/>
-            //         </div>
-            //     <label htmlFor={language.name}>{language.name}</label>
-            // </div>
         );
     });
+
+    const selectedLanguages = languages.filter((language, index)=>project.languages.includes(language.id)).map((language, index) => {
+        return (
+            <Language key={language.id}
+            name={language.name}
+            checked={checkedState[index]}
+            action={() => handleOnChange(index)}
+            image={language.logo}
+        />
+        )
+    })
 
     const saveProject = async (e) => {
         e.preventDefault();
@@ -155,7 +154,11 @@ const CreateProject = () => {
                         </div>
                         <button onClick={()=>handleCancel()}>Valider</button>
                     </Modal>
-        
+
+                    <div className='languagesList-2'>
+                        {selectedLanguages}
+                    </div>
+
                 </div>
 
                 {/* <div>

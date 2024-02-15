@@ -7,6 +7,12 @@
     gap: 2rem;
 }
 
+.languagesList-2{
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 1rem;
+}
+
 .language{
     flex: 1;
     caret-color: transparent;
