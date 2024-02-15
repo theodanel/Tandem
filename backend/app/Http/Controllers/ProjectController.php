@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Language;
 use App\Models\Project;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -29,8 +30,7 @@ class ProjectController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => "required|unique:projects,title|max:50",
             'description' => "required|max:1000",
-
-            'collaborators' => "required|numeric"
+            'collaborators_max' => "required|numeric"
             
         ]);
         
@@ -38,23 +38,29 @@ class ProjectController extends Controller
         if($validator->fails()){
             return response()->json([
                 'errors' => $validator->messages(),
-                "message" => "Erreur dans le formulaire"
+                "message" => "Erreur dans le formulaire",
+                'status' => "error",
             ]);
         } else{
             $project = new Project();
             $project->title = $request->input('title');
             $project->description = $request->input('description');
-            $project->collaborators = $request->input('collaborators');
+            $project->collaborators_max = $request->input('collaborators_max');
+            $project->collaborators = 1;
             $project->user_id = random_int(1,10);
             $project->creator = 5;
             $project->status = 1;
             $project->open = true;
             $project->popularity = 0;
+
+            
             $project->save();
+
+            $project->language()->sync($request->languages);
 
             return response()-> json([
                 'status' => 200,
-                "message" => "Le projet a été ajouté."
+                "message" => "Le projet a été ajouté.",
             ]);
         }
     }
