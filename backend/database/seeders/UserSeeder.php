@@ -19,5 +19,19 @@ class UserSeeder extends Seeder
             $user->language()->attach(random_int(4,6));
             $user->language()->attach(random_int(7,9));
         });
+
+        User::factory()->create([
+            'name' => 'test',
+            'email' => 'test@test.fr',
+            'password' => 'test',
+        ]);
+
+        User::factory()->create([
+            'name' => "Bib's",
+            'email' => 'bibs@bibs.fr',
+            'password' => 'bibs',
+        ]);
+
+
     }
 }
