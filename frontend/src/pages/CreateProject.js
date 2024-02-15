@@ -64,12 +64,12 @@ const CreateProject = () => {
             <div key={language.id}>
                 <input
                     type="checkbox"
-                    id={language.id}
+                    id={language.name}
                     name={language.name}
                     checked={checkedState[index]}
                     onChange={() => handleOnChange(index)}
                 />
-                <label for={language.name}>{language.name}</label>
+                <label htmlFor={language.name}>{language.name}</label>
             </div>
 
         );

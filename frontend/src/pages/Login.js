@@ -20,7 +20,7 @@ const Login = () => {
     const handleLogin = async (e) =>{
         e.preventDefault();
         // login({email, password});
-        await axios.get('/sanctum/csrf-cookie');
+        // await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/login', { email, password });
         if(res.data.status === "success"){
             swal({
@@ -50,7 +50,7 @@ const Login = () => {
             <form onSubmit={(e)=>handleLogin(e)}>
                 <div>
                     <label htmlFor='email'>Email :</label>
-                    <input type='email' name='email' value={email} placeholder='Email' onChange={(e)=> setEmail(e.target.value)} required />
+                    <input type='email' name='email' value={email} placeholder='Email' onChange={(e)=> setEmail(e.target.value)} autoFocus required />
                     <b>{errors.email}</b>
                 </div>
                 <div>
