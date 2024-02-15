@@ -1,47 +1,48 @@
 import "../stylesheets/style.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "../context/AuthContext";
+//import axios from '../api/axios';
 
 function Header() {
-  const { user, getUser } = useAuthContext();
 
 
-  useEffect(() => {
-    if (!user) {
-      getUser();
-    }
-  }, []);
+  // const {user, getUser} = useAuthContext();
+
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
+  //const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")) || null);
+
+  // useEffect(()=> {
+  //   if(!user && token){
+  //     getUser();
+  //   }
+  // }, []);
+
+
+  // const getUser = async () => {
+  //   const {data} = await axios.get(`/api/user`, {headers:{"Authorization":`Bearer ${token}`}});
+  //   setUser(data);
+  // }
+
   const navigate = useNavigate();
 
   return (
-    <nav id="nav" className="active">
+    <header id="nav" className="active">
           <h1 className="tandem" onClick={() => navigate("/")}>
             Tandem
           </h1>
       <ul>
-        <li>
-        <li>
-          {user ? (
-            <p onClick={() => navigate("/login")}>{user.name}</p>
-          ) : (
-            <p onClick={() => navigate("/login")}>Connexion</p>
-          )}
-        </li>
-        </li>
-        <li>
-          <p onClick={() => navigate("/create")}>Créer un projet</p>
-        </li>
-
-        <li>
-          <p>Recherche</p>
-        </li>
-        <li>
-          <p>Notifications</p>
-        </li>
+        {user ? (
+          <li onClick={() => navigate("/logout")}>{user.name}</li>
+        ) : (
+          <li onClick={() => navigate("/login")}>Connexion</li>
+        )}
+        <li onClick={() => navigate("/create")}>Créer un projet</li>
+        <li>Recherche</li>
+        <li>Notifications</li>
       </ul>
       <div id="icons" ></div>
-    </nav>
+    </header>
   );
 }
 

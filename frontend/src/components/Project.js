@@ -1,10 +1,12 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
-const Project = ({ name, image, profil , language , creator , description }) => {
+const Project = ({ title, image, profil , language , creator , description, id }) => {
+  const navigate = useNavigate();
   return (
     <div>
-        <span>{name}</span>
-        <img src={image} alt="" />
+        <span>{title}</span>
+        <img onClick={() => navigate(`/project/${id}`)} src={image} alt="" />
         <span>{description}</span>
         <span>{profil}</span>
         <span>{language}</span>

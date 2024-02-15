@@ -23,15 +23,6 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
             
         ]);
-        
- 
-        User::factory()->create([
-            'name' => 'test',
-            'email' => 'test@test.fr',
-            'password' => 'test',
-        ]);
-
-
 
     }
 }
