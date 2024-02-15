@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Language;
 use App\Models\Project;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -50,7 +51,15 @@ class ProjectController extends Controller
             $project->status = 1;
             $project->open = true;
             $project->popularity = 0;
+
+            
             $project->save();
+
+
+     
+            foreach($request->languages as $language) {
+            $project->languages()->sync($language);
+           }
 
             return response()-> json([
                 'status' => 200,
