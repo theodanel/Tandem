@@ -63,24 +63,24 @@ const CreateProject = () => {
 
     const languagesList = languages.map((language, index) => {
         return (
-            // <Language key={language.id}
-            //     name={language.name}
-            //     checked={checkedState[index]}
-            //     action={() => handleOnChange(index)}
-            //     image={language.logo}
-            // />
-            <div className='language' key={index}>
-                <input
-                    type="checkbox"
-                    id={language.name}
-                    name={language.name}
-                    checked={checkedState[index]}
-                    onChange={() => handleOnChange(index)}/>
-                    <div className='img' onClick={() => handleOnChange(index)}>
-                        <img src={language.logo} htmlFor={language.name} alt={language.name}/>
-                    </div>
-                <label htmlFor={language.name}>{language.name}</label>
-            </div>
+            <Language key={language.id}
+                name={language.name}
+                checked={checkedState[index]}
+                action={() => handleOnChange(index)}
+                image={language.logo}
+            />
+            // <div className='language' key={index}>
+            //     <input
+            //         type="checkbox"
+            //         id={language.name}
+            //         name={language.name}
+            //         checked={checkedState[index]}
+            //         onChange={() => handleOnChange(index)}/>
+            //         <div className='img' onClick={() => handleOnChange(index)}>
+            //             <img src={language.logo} htmlFor={language.name} alt={language.name}/>
+            //         </div>
+            //     <label htmlFor={language.name}>{language.name}</label>
+            // </div>
         );
     });
 
