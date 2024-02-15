@@ -85,10 +85,9 @@ class AuthController extends Controller
                 'password' => bcrypt($credentials['password'])
             ]);
 
-  
             $request->session()->regenerate();
             // connecte l'utilisateur
-            $user = auth()->user();
+            auth()->login($user);
 
             // le if sert juste à éviter un bug d'affichage de VSCode pour le $user->createToken()
             if ($user instanceof \App\Models\User) {
