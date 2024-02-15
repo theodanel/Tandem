@@ -55,42 +55,44 @@ const Home = () => {
                         <h3>Nombre de projets terminés</h3>
                         <p>69</p>
                     </div>
-                    <div>
-                        <h1>Faites germer vos projets</h1>
-                        <button onClick={() => navigate("/create")}>Créer un projet</button>
-                    </div>
-                    <div>
-                        <p>Barre de recherche</p>
-                        <p>Filtre x3 </p>
-                    </div>
-                    <div>
-                        <h1>Liste des projets</h1>
-                        <span >{Project.image}</span>
-                    </div>
-                    <div>
-                        <h1>Les coups de coeur + carousel de carte crée</h1>
-                        <Carousel/>
-                    </div>
-                    <div>
-                        <div>
-                            {getProjects}
-                        </div>
-                        <div>
-                            <h1>Recommandations 2 </h1>
-                            {listProject}
-                        </div>
-                        <div>
-                            <p>En voir plus</p>
-                        </div>
-                        <div>
-                            <h1>Les créateurs les plus actifs</h1>
-                        <div>
-                            <p>Liste des profil</p>
-                        </div>
-                    </div>
                 </div>
             </div>
-         </div>
+        </div>
+        
+        <div>
+            <h1>Faites germer vos projets</h1>
+            <button onClick={() => navigate("/create")}>Créer un projet</button>
+        </div>
+        <div>
+            <p>Barre de recherche</p>
+            <p>Filtre x3 </p>
+        </div>
+        <div>
+            <h1>Liste des projets</h1>
+            <span >{Project.image}</span>
+        </div>
+        <div>
+            <h1>Les coups de coeur + carousel de carte crée</h1>
+            <Carousel/>
+        </div>
+        <div>
+            <div>
+                {getProjects}
+            </div>
+            <div>
+                <h1>Recommandations 2 </h1>
+                {listProject}
+            </div>
+            <div>
+                <p>En voir plus</p>
+            </div>
+            <div>
+                <h1>Les créateurs les plus actifs</h1>
+            <div>
+                <p>Liste des profil</p>
+            </div>
+            </div>
+        </div>
     </Layout>
   );
 };

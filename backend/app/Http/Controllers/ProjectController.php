@@ -60,7 +60,7 @@ class ProjectController extends Controller
 
             return response()-> json([
                 'status' => 200,
-                "message" => "Le projet a été ajouté.",
+                "message" => "Le projet a été ajouté."
             ]);
         }
     }

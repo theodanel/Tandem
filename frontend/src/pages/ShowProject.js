@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { Layout } from 'antd';
 import React, {useEffect, useState} from 'react'
 import {Modal} from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
+import Layout from '../components/Layout';
 
 const ShowProject = () => {
     const {id} = useParams();

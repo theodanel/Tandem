@@ -2,7 +2,7 @@
 @use "variables" as v;
 
 // Code Sass pour le Header
-.header {
+header {
     color: white;
     display: flex;
     justify-content: space-between;
@@ -80,7 +80,7 @@ p:hover {
 }
 
 
-nav {
+header {
     background-color: #f47142;
     display: flex;
     justify-content: space-between;
@@ -88,7 +88,7 @@ nav {
     padding: 10px;
     font-size: calc(0.5rem + 1.5vw);
 }
-nav ul {
+header ul {
     display: flex;
     justify-content: space-between;
     width: 60%;
@@ -108,7 +108,7 @@ nav ul {
     .active #icons:before{
         content: "\2715";
     }
-    nav ul {
+    header ul {
         position: fixed;
         left: -100%;
         top: 5%;
@@ -118,13 +118,13 @@ nav ul {
         text-align: center;
         transition: 0.25s;
     }
-    nav li {
+    header li {
         padding: 3px 0;
     }
-    nav li:hover {
+    header li:hover {
         background: #ff914a;
     }
-    nav.active ul {
+    header.active ul {
         left: 0;
      }
 }

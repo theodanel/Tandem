@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, message } from 'antd';
+import { message } from 'antd';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom'
+import Layout from '../components/Layout';
 
 const CreateProject = () => {
     const navigate = useNavigate();
@@ -81,7 +82,7 @@ const CreateProject = () => {
 
         const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, project, { headers: { "Content-Type": "application/json" } });
 
-        if (res.data.status === "success") {
+        if (res.data.status === 200) {
             swal({
                 title: "Bravo !",
                 text: res.data.message,
@@ -99,7 +100,7 @@ const CreateProject = () => {
             navigate('/', project);
         } else {
             message.error("Champ(s) invalide(s)")
-            setErrors(res.data.errors);
+            setErrors(res.data.errors || []);
         }
 
     }
