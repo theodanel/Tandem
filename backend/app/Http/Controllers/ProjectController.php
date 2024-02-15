@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+    /**
+     * Affichage de tous les projets
+     */
     function index() {
         $projects = Project::all();
         return response()->json([
@@ -18,6 +21,9 @@ class ProjectController extends Controller
         ]);
     }
 
+    /**
+     * Affiche un seul projet
+     */
     function show($id) {
         $project = Project::findOrFail($id);
         return response()->json([
@@ -26,6 +32,9 @@ class ProjectController extends Controller
         ]);
     }
 
+    /**
+     * Enregistre un nouveau projet
+     */
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'title' => "required|unique:projects,title|max:50",
@@ -48,10 +57,10 @@ class ProjectController extends Controller
             $project->collaborators_max = $request->input('collaborators_max');
             $project->collaborators = 1;
             $project->user_id = random_int(1,10);
-            $project->creator = 5;
             $project->status = 1;
             $project->open = true;
             $project->popularity = 0;
+            $project->image = "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
             
             $project->save();
@@ -66,6 +75,9 @@ class ProjectController extends Controller
     }
 
 
+    /**
+     * Met à jour les infos d'un projet existant
+     */
     public function update(Request $request, $id){
         $validator = Validator::make($request->all(),[
             'newTitle' => "max:50",
@@ -91,6 +103,9 @@ class ProjectController extends Controller
         }
     }
 
+    /**
+     * Supprime un projet
+     */
     public function delete($id){
         Project::destroy($id);
         return response()->json([
