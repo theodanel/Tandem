@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { message } from 'antd';
+import { Modal, message } from 'antd';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom'
@@ -21,10 +21,17 @@ const CreateProject = () => {
     });
 
     const [languages, setLanguages] = useState([]);
-
     const [checkedState, setCheckedState] = useState([]);
-
     const [errors, setErrors] = useState([]);
+
+    // Gestion de la modale Ant Design
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+      setIsModalOpen(true);
+    };
+    const handleCancel = () => {
+      setIsModalOpen(false);
+    };
 
 
     useEffect(() => {
@@ -139,11 +146,15 @@ const CreateProject = () => {
                 <div>
                     <label htmlFor="languages">Langages envisagés:</label>
                     <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend>
+                    <button onClick={()=>showModal()}>Selectionner</button>
                     <b>{errors.languages}</b>
                     
-                    <div className='languagesList'>
-                        {languagesList}
-                    </div>
+                    <Modal title="Choisir des langages" open={isModalOpen} onCancel={handleCancel} footer={null} centered>
+                        <div className='languagesList'>
+                            {languagesList}
+                        </div>
+                        <button onClick={()=>handleCancel()}>Valider</button>
+                    </Modal>
         
                 </div>
 

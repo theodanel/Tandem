@@ -2,12 +2,13 @@
 @use "variables" as v;
 
 .languagesList{
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 2rem;
 }
 
 .language{
-    width: 5%; 
+    flex: 1;
     caret-color: transparent;
     display: flex;
     flex-direction: column;
