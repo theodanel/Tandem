@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, message } from 'antd';
+import { message } from 'antd';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom'
+import Layout from '../components/Layout';
 
 const CreateProject = () => {
     const navigate = useNavigate();
