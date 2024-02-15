@@ -35,9 +35,6 @@ const Login = () => {
             message.error(res.data.message);
             setErrors(res.data.errors || []);
         } 
-        // else {
-        //     alert(res.data.message)
-        // }
     }
 
     // Redirection automatique si utilisateur déjà connecté
