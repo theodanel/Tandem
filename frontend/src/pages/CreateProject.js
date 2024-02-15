@@ -4,6 +4,9 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout';
+import Language from '../components/Language.js';
+
+import "../stylesheets/Language.scss"
 
 const CreateProject = () => {
     const navigate = useNavigate();
@@ -54,28 +57,32 @@ const CreateProject = () => {
         if (updatedCheckedState[position]) {
             setProject({...project, languages:[...project.languages, selectedLanguageId]});
         } else {
-            setProject(project.languages.filter(id => id !== selectedLanguageId));
+            setProject({...project, languages:[...project.languages.filter(id => id !== selectedLanguageId)]});
         }
-
     }
-    const listLanguage = languages.map((language, index) => {
-        return (
 
-            <div key={language.id}>
+    const languagesList = languages.map((language, index) => {
+        return (
+            // <Language key={language.id}
+            //     name={language.name}
+            //     checked={checkedState[index]}
+            //     action={() => handleOnChange(index)}
+            //     image={language.logo}
+            // />
+            <div className='language' key={index}>
                 <input
                     type="checkbox"
                     id={language.name}
                     name={language.name}
                     checked={checkedState[index]}
-                    onChange={() => handleOnChange(index)}
-                />
+                    onChange={() => handleOnChange(index)}/>
+                    <div className='img' onClick={() => handleOnChange(index)}>
+                        <img src={language.logo} htmlFor={language.name} alt={language.name}/>
+                    </div>
                 <label htmlFor={language.name}>{language.name}</label>
             </div>
-
         );
-
     });
-
 
     const saveProject = async (e) => {
         e.preventDefault();
@@ -102,15 +109,9 @@ const CreateProject = () => {
             message.error("Champ(s) invalide(s)")
             setErrors(res.data.errors || []);
         }
-
-    }
-
-
-
-
+    };
 
     return (
-
         <Layout>
             <div>Création de projet</div>
 
@@ -139,9 +140,11 @@ const CreateProject = () => {
                     <label htmlFor="languages">Langages envisagés:</label>
                     <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend>
                     <b>{errors.languages}</b>
-
-                    {listLanguage}
-
+                    
+                    <div className='languagesList'>
+                        {languagesList}
+                    </div>
+        
                 </div>
 
                 {/* <div>
