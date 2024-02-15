@@ -65,24 +65,45 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
+        $credentials = $request->newUser;
+        $validator =  Validator::make($credentials,[
+            'name' => 'required|unique:users,name',
             'email' => 'email|required|unique:users,email',
             'password' => 'required|confirmed'
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
-        ]);
+        if($validator->fails()){
+            return response()->json([
+                'errors' => $validator->messages(),
+                "message" => "Erreur du formulaire",
+                'status' => "error"
+            ]);
+        } else {
+            $user = User::create([
+                'name' => $credentials['name'],
+                'email' => $credentials['email'],
+                'password' => bcrypt($credentials['password'])
+            ]);
 
-        $token = $user->createToken('Tandem')->plainTextToken;
+  
+            $request->session()->regenerate();
+            // connecte l'utilisateur
+            $user = auth()->user();
 
-        return response()->json([
-            'token' => $token,
-            'user' => $user
-        ], 201)->cookie('jwt', $token);
+            // le if sert juste à éviter un bug d'affichage de VSCode pour le $user->createToken()
+            if ($user instanceof \App\Models\User) {
+                // créé un token de connexion pour l'utilisateur connecté
+                $token = $user->createToken('Tandem')->plainTextToken;
+
+                return response()->json([
+                    'token' => $token,
+                    'user' => $user,
+                    'status' => "success",
+                    'message' => "Bienvenue, $user->name !"
+                ], 201)->cookie('jwt', $token);
+            }
+            
+        }
     }
 
     public function logout(Request $request)

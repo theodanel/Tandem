@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 import axios from '../api/axios';
 import { addUser } from '../slices';
 import Layout from '../components/Layout';
+import swal from 'sweetalert';
+import { message } from 'antd';
 
 const Register = () => {
     const [newUser, setNewUser] = useState({
@@ -12,6 +14,7 @@ const Register = () => {
         password: "",
         password_confirmation: "",
     });
+    const [errors, setErrors] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -26,8 +29,19 @@ const Register = () => {
         e.preventDefault();
         await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/register', { newUser });
-        dispatch(addUser(res.data.user));
-        navigate('/');
+        if(res.data.status === "success"){
+            swal({
+                title: "Bravo !",
+                text: res.data.message,
+                icon: "success",
+                button: "OK"
+            })
+            dispatch(addUser(res.data));
+            navigate('/');
+        } else {
+            message.error(res.data.message);
+            setErrors(res.data.errors || []);
+        }
     }
 
     return (
@@ -37,14 +51,17 @@ const Register = () => {
                 <div>
                     <label htmlFor='name'>Choisissez un pseudo :</label>
                     <input type='text' name='name' value={newUser.name} placeholder='Pseudo' onChange={(e)=> handleChange(e)} required/>
+                    <b>{errors.name}</b>
                 </div>
                 <div>
                     <label htmlFor='email'>Email :</label>
                     <input type='email' name='email' value={newUser.email} placeholder='Email' onChange={(e)=> handleChange(e)} required/>
+                    <b>{errors.email}</b>
                 </div>
                 <div>
                     <label htmlFor='password'>Mot de passe :</label>
                     <input type='password' name='password' value={newUser.password} placeholder='Mot de passe' onChange={(e)=> handleChange(e)} required/>
+                    <b>{errors.password}</b>
                 </div>
                 <div>
                     <label htmlFor='password_confirmation'>Confirmer le mot de passe :</label>
