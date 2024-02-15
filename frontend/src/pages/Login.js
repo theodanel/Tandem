@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserToken } from '../slices';
+import { addUser } from '../slices';
 import { message } from 'antd';
 import swal from 'sweetalert';
 
@@ -29,7 +29,7 @@ const Login = () => {
                 icon: "success",
                 button: "OK"
             })
-            dispatch(addUserToken(res.data.token));
+            dispatch(addUser(res.data));
             navigate('/');
         } else {
             message.error(res.data.message);

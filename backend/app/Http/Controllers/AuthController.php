@@ -78,6 +78,9 @@ class AuthController extends Controller
 
         $token = $user->createToken('Tandem')->plainTextToken;
 
-        return response()->json(['token' => $token], 201)->cookie('jwt', $token);
+        return response()->json([
+            'token' => $token,
+            'user' => $user
+        ], 201)->cookie('jwt', $token);
     }
 }

@@ -15,20 +15,20 @@ function Header() {
   //     getUser();
   //   }
   // }, []);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")) || null);
 
-  useEffect(()=> {
-    if(!user && token){
-      getUser();
-    }
-  }, []);
+  // useEffect(()=> {
+  //   if(!user && token){
+  //     getUser();
+  //   }
+  // }, []);
 
 
-  const getUser = async () => {
-    const {data} = await axios.get(`/api/user`, {headers:{"Authorization":`Bearer ${token}`}});
-    setUser(data);
-  }
+  // const getUser = async () => {
+  //   const {data} = await axios.get(`/api/user`, {headers:{"Authorization":`Bearer ${token}`}});
+  //   setUser(data);
+  // }
 
   const navigate = useNavigate();
   
@@ -36,7 +36,7 @@ function Header() {
     <header>
         <h1 onClick={()=>navigate('/')}>Tandem</h1>
         {user? 
-        <p onClick={()=>navigate('/login')}>{user.name}</p>
+        <p onClick={()=>navigate('/logout')}>{user.name}</p>
         :
         <p onClick={()=>navigate('/login')}>Connexion</p>
         } 

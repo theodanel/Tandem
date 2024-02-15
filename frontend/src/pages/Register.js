@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import axios from '../api/axios';
-import { addUserToken } from '../slices';
+import { addUser } from '../slices';
 import Layout from '../components/Layout';
 
 const Register = () => {
@@ -26,7 +26,7 @@ const Register = () => {
         e.preventDefault();
         await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/register', { newUser });
-        dispatch(addUserToken(res.data.token));
+        dispatch(addUser(res.data.user));
         navigate('/');
     }
 
