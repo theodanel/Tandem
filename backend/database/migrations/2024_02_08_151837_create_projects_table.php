@@ -22,8 +22,6 @@ return new class extends Migration
             $table->integer('popularity')->nullable();
             $table->string('image')->nullable();
 
-            $table->foreignId('creator')->constrained(table: 'users', column: 'id')->cascadeOnDelete()->nullable()->default(4);
-
             $table->foreignId('status')->constrained(table: 'statuses', column: 'id')->cascadeOnDelete()->nullable();
             $table->timestamps();
         });

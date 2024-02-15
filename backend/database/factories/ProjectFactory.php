@@ -33,7 +33,6 @@ class ProjectFactory extends Factory
             'description' => fake()->text(),
             'user_id' => fake()->numberBetween(1,10),
             'image' => fake()->imageUrl(),
-            'creator' => fake()->numberBetween(1,10),
             'collaborators' => $collaborators,
             'collaborators_max' => $collaborators_max,
             'open' => $isOpen,

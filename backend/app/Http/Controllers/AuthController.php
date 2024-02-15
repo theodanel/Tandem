@@ -35,7 +35,7 @@ class AuthController extends Controller
                 'status' => "error"
             ]);
         } else if (auth()->attempt($credentials)) { // test la connection avec les données de la requêtes
-            $request->session()->regenerate();
+            // $request->session()->regenerate();
             // connecte l'utilisateur
             $user = auth()->user();
 
@@ -85,7 +85,7 @@ class AuthController extends Controller
                 'password' => bcrypt($credentials['password'])
             ]);
 
-            $request->session()->regenerate();
+            // $request->session()->regenerate();
             // connecte l'utilisateur
             auth()->login($user);
 

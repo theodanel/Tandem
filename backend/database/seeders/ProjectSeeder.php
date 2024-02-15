@@ -24,7 +24,7 @@ class ProjectSeeder extends Seeder
             $collaborators = $project->collaborators;
 
             // récupération de l'id du créateur du projet
-            $creator = $project->creator;
+            $creator = $project->user_id;
 
             // association du créateur au projet 
             $project->collaborator()->attach($creator);

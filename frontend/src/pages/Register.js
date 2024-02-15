@@ -27,7 +27,7 @@ const Register = () => {
 
     const handleLogin = async (e) =>{
         e.preventDefault();
-        await axios.get('/sanctum/csrf-cookie');
+        // await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/register', { newUser });
         if(res.data.status === "success"){
             swal({
@@ -50,7 +50,7 @@ const Register = () => {
             <form onSubmit={(e)=>handleLogin(e)}>
                 <div>
                     <label htmlFor='name'>Choisissez un pseudo :</label>
-                    <input type='text' name='name' value={newUser.name} placeholder='Pseudo' onChange={(e)=> handleChange(e)} required/>
+                    <input type='text' name='name' value={newUser.name} placeholder='Pseudo' onChange={(e)=> handleChange(e)} autoFocus required/>
                     <b>{errors.name}</b>
                 </div>
                 <div>

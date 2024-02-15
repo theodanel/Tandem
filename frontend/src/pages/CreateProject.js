@@ -64,12 +64,12 @@ const CreateProject = () => {
             <div key={language.id}>
                 <input
                     type="checkbox"
-                    id={language.id}
+                    id={language.name}
                     name={language.name}
                     checked={checkedState[index]}
                     onChange={() => handleOnChange(index)}
                 />
-                <label for={language.name}>{language.name}</label>
+                <label htmlFor={language.name}>{language.name}</label>
             </div>
 
         );
@@ -117,13 +117,13 @@ const CreateProject = () => {
             <form onSubmit={(e) => saveProject(e)} >
                 <div>
                     <label htmlFor='title'>Nom du projet:</label>
-                    <input type='text' id='title' name='title' value={project.title} onChange={handleInput} />
+                    <input type='text' id='title' name='title' value={project.title} onChange={handleInput} autoFocus required/>
                     <b>{errors.title}</b>
                 </div>
 
                 <div>
                     <label htmlFor="collaborators_max">Nombre de participants (1-20):</label>
-                    <input type="number" id="collaborators_max" name="collaborators_max" min="1" max="20" value={project.collaborators_max} onChange={(e) => handleInput(e)} />
+                    <input type="number" id="collaborators_max" name="collaborators_max" min="1" max="20" value={project.collaborators_max} onChange={(e) => handleInput(e)} required />
                     <b>{errors.collaborators_max}</b>
                 </div>
 
@@ -131,13 +131,13 @@ const CreateProject = () => {
                 <div>
                     <label htmlFor="description">Description:</label>
                     <input type="text" id="description" name="description" minLength="10" maxLength="1000" size="10"
-                        value={project.description} onChange={handleInput} />
+                        value={project.description} onChange={handleInput} required />
                     <b>{errors.description}</b>
                 </div>
 
                 <div>
                     <label htmlFor="languages">Langages envisagés:</label>
-                    <legend name="languages" id="languages" value={project.languages} onChange={handleInput}></legend>
+                    <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend>
                     <b>{errors.languages}</b>
 
                     {listLanguage}
