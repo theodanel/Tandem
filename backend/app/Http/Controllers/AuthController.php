@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -82,5 +83,16 @@ class AuthController extends Controller
             'token' => $token,
             'user' => $user
         ], 201)->cookie('jwt', $token);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->session()->invalidate();
+
+
+        return response()->json([
+            'message' => "Deconnexion réussie",
+            'status' => 'success'
+        ])->cookie('jwt', '');
     }
 }
