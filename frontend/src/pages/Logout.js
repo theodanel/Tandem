@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router';
 import { removeUser } from '../slices';
 import swal from 'sweetalert';
+import Layout from '../components/Layout';
+import Home from './Home';
 
 const Logout = () => {
     const dispatch = useDispatch();
@@ -34,8 +36,16 @@ const Logout = () => {
     }
 
     useEffect(()=>{
-        logout();
+        if(!token || !user){
+            navigate('/');
+        } else {
+            logout();
+        }
     }, [])
+
+    return(
+            <Home/>
+    )
 }
 
 export default Logout
