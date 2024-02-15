@@ -10,7 +10,7 @@ const CreateProject = () => {
 
     const [project, setProject] = useState({
         title: '',
-        collaborators: 0,
+        collaborators_max: 0,
         description: '',
         languages: [],
         user_id: 5,
@@ -19,11 +19,7 @@ const CreateProject = () => {
 
     const [languages, setLanguages] = useState([]);
 
-    const [selectedLanguages, setSelectedLanguages] = useState([]);
-
-    const [checkedState, setCheckedState] = useState(
-
-    );
+    const [checkedState, setCheckedState] = useState([]);
 
     const [errors, setErrors] = useState([]);
 
@@ -56,9 +52,9 @@ const CreateProject = () => {
 
         const selectedLanguageId = languages[position].id;
         if (updatedCheckedState[position]) {
-            setSelectedLanguages([...selectedLanguages, selectedLanguageId]);
+            setProject({...project, languages:[...project.languages, selectedLanguageId]});
         } else {
-            setSelectedLanguages(selectedLanguages.filter(id => id !== selectedLanguageId));
+            setProject(project.languages.filter(id => id !== selectedLanguageId));
         }
 
     }
@@ -84,14 +80,9 @@ const CreateProject = () => {
     const saveProject = async (e) => {
         e.preventDefault();
 
-        const projectData = {
-            ...project,
-            languages: selectedLanguages
-        };
+        const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, project, { headers: { "Content-Type": "application/json" } });
 
-        const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, projectData, { headers: { "Content-Type": "application/json" } });
-
-        if (res.data.status === 200) {
+        if (res.data.status === "success") {
             swal({
                 title: "Bravo !",
                 text: res.data.message,
@@ -100,16 +91,17 @@ const CreateProject = () => {
             })
             setProject({
                 title: '',
-                collaborators: '',
+                collaborators_max: '',
                 description: '',
                 languages: [],
             })
             message.success(res.data.message)
             setErrors([]);
             navigate('/', project);
+        } else {
+            message.error("Champ(s) invalide(s)")
+            setErrors(res.data.errors);
         }
-        message.error("Champ(s) invalide(s)")
-        setErrors(res.data.errors);
 
     }
 
@@ -130,9 +122,9 @@ const CreateProject = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="collaborators">Nombre de participants (1-20):</label>
-                    <input type="number" id="collaborators" name="collaborators" min="1" max="20" value={project.collaborators} onChange={(e) => handleInput(e)} />
-                    <b>{errors.collaborators}</b>
+                    <label htmlFor="collaborators_max">Nombre de participants (1-20):</label>
+                    <input type="number" id="collaborators_max" name="collaborators_max" min="1" max="20" value={project.collaborators_max} onChange={(e) => handleInput(e)} />
+                    <b>{errors.collaborators_max}</b>
                 </div>
 
 
