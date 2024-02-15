@@ -3,7 +3,6 @@ import { Checkbox, Layout, message } from 'antd';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom'
-import Language from '../components/Language';
 
 const CreateProject = () => {
     const navigate = useNavigate();

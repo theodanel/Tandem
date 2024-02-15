@@ -6,6 +6,7 @@ import imgcarou3 from '../img/carou3.jpg';
 
 const Carousel = () => {
 
+    // styles CSS pour le carrousel.
     const contentStyle = {
         margin: 0,
         height: '160px',
@@ -15,9 +16,11 @@ const Carousel = () => {
     };
 
     return (
+        // Rapelle de l'import carousel d'antDesign renomer en AntdCarousel
         <AntdCarousel autoplay>
             <div>
                 <h3 style={contentStyle}>
+                {/* Rapelle de l'import de l'image dans le dossier img */}
                     <img src={imgcarou} />
 
                 </h3>

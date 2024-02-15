@@ -11,6 +11,7 @@ const ShowProject = () => {
     const [newTitle, setNewTitle] = useState("");
     const [newDescription, setNewDescription] = useState("");
     const [newCollaborators, setNewCollaborators] = useState("");
+    const navigate = useNavigate();
     
 
 
@@ -62,7 +63,8 @@ const ShowProject = () => {
         <div>NOMBRE DE COLLABORATEURS: {project.collaborators}</div>
         <div> <h3>Descriptif du projet: {project.description}</h3></div>
         <button onClick={()=>showModal()}>Modifier</button>
-        <img src={project.image} alt="" />
+        <img src={project.image} alt="" id='imgproject'/>
+        <button onClick={() => navigate("/")}>Rejoindre le project</button>
 
                     <Modal title="Modifier" open={isModalOpen} onCancel={handleCancel} footer={null} centered >
                         <form onSubmit={(e)=>update(e)}>
