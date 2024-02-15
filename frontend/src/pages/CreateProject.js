@@ -82,7 +82,7 @@ const CreateProject = () => {
 
         const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, project, { headers: { "Content-Type": "application/json" } });
 
-        if (res.data.status === "success") {
+        if (res.data.status === 200) {
             swal({
                 title: "Bravo !",
                 text: res.data.message,
@@ -100,7 +100,7 @@ const CreateProject = () => {
             navigate('/', project);
         } else {
             message.error("Champ(s) invalide(s)")
-            setErrors(res.data.errors);
+            setErrors(res.data.errors || []);
         }
 
     }
