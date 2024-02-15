@@ -16,8 +16,9 @@ const Carousel = () => {
     };
 
     return (
-        // Rapelle de l'import carousel d'antDesign renomer en AntdCarousel
-        <AntdCarousel autoplay>
+
+       // Rapelle de l'import carousel d'antDesign renomer en AntdCarousel
+        <AntdCarousel className='caroussel' autoplay>
             <div>
                 <h3 style={contentStyle}>
                 {/* Rapelle de l'import de l'image dans le dossier img */}
