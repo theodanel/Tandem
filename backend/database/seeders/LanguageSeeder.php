@@ -17,38 +17,47 @@ class LanguageSeeder extends Seeder
                 [
                     'HTML',
                     'front',
+                    'html5'
                 ],
                 [
                     'CSS',
                     'front',
+                    'css3'
                 ],
                 [
                     'JavaScript',
                     'front',
+                    'javascript'
                 ],
                 [
                     'PHP',
                     'back',
+                    'php'
                 ],
                 [
                     'SASS',
                     'front',
+                    'sass'
                 ],
                 [
                     'Laravel',
                     'back',
+                    'laravel'
                 ],
                 [
                     'NodeJS',
                     'back',
+                    'nodejs'
                 ],
                 [
                     'React',
                     'front',
+                    'react'
                 ],
                 [
-                    'SQL',
+                    'MySQL',
                     'back',
+                    'mysql'
                 ],
             ];
 
@@ -57,7 +66,7 @@ class LanguageSeeder extends Seeder
             Language::create([
                 'name' => $language[0],
                 'category' => $language[1],
-                'logo' => fake()->imageUrl(),
+                'logo' => "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/$language[2]/$language[2]-original.svg",
             ]);
         }
     }

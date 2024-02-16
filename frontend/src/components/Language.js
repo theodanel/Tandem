@@ -1,13 +1,19 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 
-// Déstructure les propriétés passées au composant. Le composant attend deux propriétés, name et category, qui sont extraites ici pour être utilisées directement.
-const Language = ({name, category}) => {
+const Language = ({name, action, checked, image}) => {
+
   return (
-    <div>
-      {/*  Affiche le contenu de la propriété  */}
-        <span>{name}</span>
-        <span>{category}</span>
+    <div className='language'>
+        <input
+          type="checkbox"
+          id={name}
+          name={name}
+          checked={checked}
+          onChange={action}/>
+        <div className='img' onClick={action}>
+          <img src={image} htmlFor={name} alt={name}/>
+        </div>
+      <label htmlFor={name}>{name}</label>
     </div>
   )
 }
