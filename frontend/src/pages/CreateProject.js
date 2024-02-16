@@ -53,18 +53,17 @@ const CreateProject = () => {
             [e.target.name]: e.target.value
         })
     };
-    const handleOnChange = (position) => {
+    const handleOnChange = (languageId) => {
         const updatedCheckedState = checkedState.map((item, index) =>
-            index === position ? !item : item
+            index === languageId-1 ? !item : item
         );
 
         setCheckedState(updatedCheckedState);
 
-        const selectedLanguageId = languages[position].id;
-        if (updatedCheckedState[position]) {
-            setProject({...project, languages:[...project.languages, selectedLanguageId]});
+        if (updatedCheckedState[languageId-1]) {
+            setProject({...project, languages:[...project.languages, languageId]});
         } else {
-            setProject({...project, languages:[...project.languages.filter(id => id !== selectedLanguageId)]});
+            setProject({...project, languages:[...project.languages.filter(id => id !== languageId)]});
         }
     }
 
@@ -73,7 +72,7 @@ const CreateProject = () => {
             <Language key={language.id}
                 name={language.name}
                 checked={checkedState[index]}
-                action={() => handleOnChange(index)}
+                action={() => handleOnChange(language.id)}
                 image={language.logo}
             />
         );
@@ -83,8 +82,8 @@ const CreateProject = () => {
         return (
             <Language key={language.id}
             name={language.name}
-            checked={checkedState[index]}
-            action={() => handleOnChange(index)}
+            checked={checkedState[language.id-1]}
+            action={() => handleOnChange(language.id)}
             image={language.logo}
         />
         )
