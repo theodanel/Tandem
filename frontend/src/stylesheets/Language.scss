@@ -5,12 +5,14 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 2rem;
+    width: fit-content;
 }
 
 .languagesList-2{
     display: grid;
-    grid-template-columns: repeat(15, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
+    width: fit-content;
 }
 
 .language{
@@ -59,4 +61,20 @@
     &:has(input:checked) label, &:hover label{
         font-weight: bold;
     }
+}
+
+@media (min-width: v.$xs-breakpoint) {
+    .languagesList-2{
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+}
+@media (min-width: v.$sm-breakpoint) {
+    .languagesList-2{
+        grid-template-columns: repeat(8, 1fr);
+    }
+    .languagesList{
+        grid-template-columns: repeat(8, 1fr);
+    }
+
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, message } from 'antd';
 import axios from 'axios';
 import swal from 'sweetalert';
@@ -135,58 +135,75 @@ const CreateProject = () => {
         }
     };
 
+    let participants = []
+    for(let i=2; i<=10; i++){
+        participants.push(
+            <option key={i} value={i}>{i}</option>
+        )
+    }
+
     return (
-        <Layout>
-            <div>Création de projet</div>
-
+        <Fragment>
             <form onSubmit={(e) => saveProject(e)} >
-                <div>
-                    <label htmlFor='title'>Nom du projet:</label>
-                    <input type='text' id='title' name='title' value={project.title} onChange={handleInput} autoFocus required/>
-                    <b>{errors.title}</b>
+
+            <h1>Création de projet</h1>
+                <div className='form-group'>
+                    <div className='flex-col'>
+                        <label htmlFor='title'>Nom du projet:</label>
+                        <input type='text' id='title' name='title' value={project.title} onChange={handleInput} autoFocus required/>
+                        <b>{errors.title}</b>
+                    </div>
+
+                    <div >
+                        <label htmlFor="collaborators_max">Nombre de participants :</label>
+                        <select id="collaborators_max" name="collaborators_max" value={project.collaborators_max} onChange={(e) => handleInput(e)} required >
+                            <option value={null}>Choisir</option>
+                            {participants}
+                        </select>
+                        {/* <input type="number" id="collaborators_max" name="collaborators_max" min="1" max="20" value={project.collaborators_max} onChange={(e) => handleInput(e)} required /> */}
+                        <b>{errors.collaborators_max}</b>
+                    </div>
                 </div>
 
-                <div>
-                    <label htmlFor="collaborators_max">Nombre de participants (1-20):</label>
-                    <input type="number" id="collaborators_max" name="collaborators_max" min="1" max="20" value={project.collaborators_max} onChange={(e) => handleInput(e)} required />
-                    <b>{errors.collaborators_max}</b>
-                </div>
-
-                <div>
+                <div className='flex-col'>
                     <label htmlFor="description">Description:</label>
-                    <input type="text" id="description" name="description" minLength="10" maxLength="1000" size="10"
+                    <textarea type="text" id="description" name="description" minLength="10" maxLength="1000" size="10"
                         value={project.description} onChange={handleInput} required />
                     <b>{errors.description}</b>
                 </div>
 
-                <div>
-                    <label htmlFor="languages">Langages envisagés:</label>
-                    <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend>
-                    <button onClick={()=>showModal()}>Selectionner</button>
-                    <b>{errors.languages}</b>
-                    
-                    <Modal title="Choisir des langages" open={isModalOpen} onCancel={handleCancel} footer={null} centered>
-                        <div className='languagesList'>
-                            {languagesList}
-                        </div>
-                        <button onClick={()=>handleCancel()}>Valider</button>
-                    </Modal>
+                <div className='form-group'>
+                    <div>
+                        <label for="image">Image d'illustration:</label>
+                        <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.title} onChange={handleInput}/>
+                    </div>
+                    <div>
+                        <label htmlFor="languages">Langages envisagés:</label>
+                        {/* <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend> */}
+                        <button onClick={()=>showModal()}>Selectionner</button>
+                        <b>{errors.languages}</b>
+                        
+                        <Modal title="Choisir des langages" open={isModalOpen} width="fit-content" onCancel={handleCancel} footer={null} centered>
+                            <div className='languagesList'>
+                                {languagesList}
+                            </div>
+                            <button onClick={()=>handleCancel()}>Valider</button>
+                        </Modal>
 
-                    <div className='languagesList-2'>
-                        {selectedLanguages}
+                      
+
                     </div>
 
+                 
                 </div>
-
-                {/* <div>
-                <label for="image">Image d'illustration:</label>
-                <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.title} onChange={handleInput}/>
-            </div> */}
+                <div className='languagesList-2'>
+                    {selectedLanguages}
+                </div>
 
                 <button type='submit'> Créer le projet</button>
             </form>
 
-        </Layout>
+        </Fragment>
     )
 
 }
