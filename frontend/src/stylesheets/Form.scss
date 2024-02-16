@@ -11,7 +11,7 @@
 }
 
 form{
-    background-color: rgba(255, 255, 255, 0.477);
+    background-color: rgba(255, 255, 255, 0.3);
     width: fit-content;
     margin: auto;
     padding: 3rem;
@@ -28,7 +28,7 @@ form{
     input, textarea{
         padding: 0.5rem;
     }
-    
+
 }
 
 textarea{
@@ -37,6 +37,10 @@ textarea{
     height: 7rem;
     min-height: 3rem;
     max-height: 15rem;
+}
+
+select, button{
+    flex: 1;
 }
 
 

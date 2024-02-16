@@ -149,8 +149,8 @@ const CreateProject = () => {
             <h1>Création de projet</h1>
                 <div className='form-group'>
                     <div className='flex-col'>
-                        <label htmlFor='title'>Nom du projet:</label>
-                        <input type='text' id='title' name='title' value={project.title} onChange={handleInput} autoFocus required/>
+                        <label htmlFor='title'>Nom du projet :</label>
+                        <input type='text' id='title' name='title' placeholder='Mon super projet' value={project.title} onChange={handleInput} autoFocus required/>
                         <b>{errors.title}</b>
                     </div>
 
@@ -166,15 +166,15 @@ const CreateProject = () => {
                 </div>
 
                 <div className='flex-col'>
-                    <label htmlFor="description">Description:</label>
-                    <textarea type="text" id="description" name="description" minLength="10" maxLength="1000" size="10"
+                    <label htmlFor="description">Description du projet :</label>
+                    <textarea type="text" id="description" name="description" minLength="10" maxLength="1000" placeholder='Une jolie description' size="10"
                         value={project.description} onChange={handleInput} required />
                     <b>{errors.description}</b>
                 </div>
 
                 <div className='form-group'>
                     <div>
-                        <label for="image">Image d'illustration:</label>
+                        <label for="image">Image d'illustration :</label>
                         <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.title} onChange={handleInput}/>
                     </div>
                     <div>
