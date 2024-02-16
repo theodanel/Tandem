@@ -11,6 +11,7 @@ import "../stylesheets/Language.scss"
 const CreateProject = () => {
     const navigate = useNavigate();
 
+    // State du projet qui récupère les données du formulaire
     const [project, setProject] = useState({
         title: '',
         collaborators_max: 0,
@@ -20,8 +21,13 @@ const CreateProject = () => {
         // image: '',
     });
 
+    // Liste de tous les langages dans la BDD, rempli via appel API
     const [languages, setLanguages] = useState([]);
+
+    // Tableau de l'etat checked de toutes les checkbox, rempli après appel API des langages
     const [checkedState, setCheckedState] = useState([]);
+
+    // Tableau des erreurs renvoyées par l'API après validation du formulaire
     const [errors, setErrors] = useState([]);
 
     // Gestion de la modale Ant Design
@@ -34,39 +40,49 @@ const CreateProject = () => {
     };
 
 
+    // Appel API pour la liste des langages
+    const getLanguages = async () => {
+        const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
+        // Remplissage du tableau langages
+        setLanguages(data.languages);
+        // Remplissage du tableau checked en suivant le nombre de langages
+        setCheckedState(new Array(data.languages.length).fill(false))
+    }
+
     useEffect(() => {
-        const getLanguages = async () => {
-            const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
-
-            setLanguages(data.languages);
-            setCheckedState(new Array(data.languages.length).fill(false))
-            console.log(data.languages)
-        }
         getLanguages();
-    }, []
-    )
+    }, []);
 
-
+    // Mise à jour du state project à chaque modification d'un champ du formulaire
     const handleInput = (e) => {
         setProject({
             ...project,
             [e.target.name]: e.target.value
         })
     };
+
+    // Ajout / suppression d'un langage selon son état checked
     const handleOnChange = (languageId) => {
+        // Mise à jour de la valeur du checked du langage sélectionné (true devient false et vice versa)
         const updatedCheckedState = checkedState.map((item, index) =>
+            // parcourt le tableau et ne change que le langage selectionné
             index === languageId-1 ? !item : item
         );
 
+        // Mise à jour du tableau checked avec cette nouvelle donnée
         setCheckedState(updatedCheckedState);
 
-        if (updatedCheckedState[languageId-1]) {
+        // 2 actions possible selon l'état checked :
+        if (updatedCheckedState[languageId-1]) { // si checked : true
+            // Ajout de l'id du langage dans le tableau project.languages
             setProject({...project, languages:[...project.languages, languageId]});
-        } else {
+        } else { // si checked : false
+            // Filtre le tableau project.languages pour retirer l'id du langage
             setProject({...project, languages:[...project.languages.filter(id => id !== languageId)]});
         }
-    }
+    };
 
+    // Création de la liste des langages
     const languagesList = languages.map((language, index) => {
         return (
             <Language key={language.id}
@@ -78,6 +94,7 @@ const CreateProject = () => {
         );
     });
 
+    // Création de la liste des langages selectionnés
     const selectedLanguages = languages.filter((language, index)=>project.languages.includes(language.id)).map((language, index) => {
         return (
             <Language key={language.id}
@@ -89,9 +106,11 @@ const CreateProject = () => {
         )
     })
 
+    // Enregistrement du projet
     const saveProject = async (e) => {
         e.preventDefault();
 
+        // Appel à l'API
         const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, project, { headers: { "Content-Type": "application/json" } });
 
         if (res.data.status === 200) {
@@ -133,7 +152,6 @@ const CreateProject = () => {
                     <b>{errors.collaborators_max}</b>
                 </div>
 
-
                 <div>
                     <label htmlFor="description">Description:</label>
                     <input type="text" id="description" name="description" minLength="10" maxLength="1000" size="10"
@@ -164,7 +182,6 @@ const CreateProject = () => {
                 <label for="image">Image d'illustration:</label>
                 <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.title} onChange={handleInput}/>
             </div> */}
-
 
                 <button type='submit'> Créer le projet</button>
             </form>
