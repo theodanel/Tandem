@@ -22,6 +22,10 @@
     img{
         height: 5rem;
         opacity: 0.5;
+        
+    }
+    label {
+        transition: all 100ms;
     }
     label, .img{
         cursor: pointer;
@@ -39,6 +43,9 @@
             transform: scale(0.9);
         }
     }
+    &:hover img{
+        opacity: 1;
+    }
     &:has(label:active) .img{
         transform: scale(0.9);
     }
@@ -46,10 +53,10 @@
         background-color: v.$orange-light;
         img{
             opacity: 1;
-            filter: drop-shadow(1px 3px 1px #222222);
+            filter: drop-shadow(0px 0px 2px #0000004f);
         }
     }
-    &:has(input:checked) label{
+    &:has(input:checked) label, &:hover label{
         font-weight: bold;
     }
 }
