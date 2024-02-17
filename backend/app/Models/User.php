@@ -29,6 +29,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Pour ajouter un projet favori à un utilisateur via son ID (multiples)
+     */
+    public function favorite()
+    {
+        return $this->belongsToMany(Project::class, 'favorites');
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
