@@ -77,9 +77,6 @@ const Home = () => {
         </div>
         <div>
             <div>
-                {getProjects}
-            </div>
-            <div>
                 <h1>Recommandations 2 </h1>
                 {listProject}
             </div>

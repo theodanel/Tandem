@@ -27,9 +27,40 @@ class UserSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'name' => "Bib's",
-            'email' => 'bibs@bibs.fr',
-            'password' => 'bibs',
+            'name' => "Julie",
+        ]);
+        User::factory()->create([
+            'name' => "Cyril",
+        ]);
+        User::factory()->create([
+            'name' => "Aurélie",
+        ]);
+        User::factory()->create([
+            'name' => "Angèle",
+        ]);
+        User::factory()->create([
+            'name' => "Axel",
+        ]);
+        User::factory()->create([
+            'name' => "Gurkan",
+        ]);
+        User::factory()->create([
+            'name' => "Aurélien",
+        ]);
+        User::factory()->create([
+            'name' => "Nassim",
+        ]);
+        User::factory()->create([
+            'name' => "Rémi",
+        ]);
+        User::factory()->create([
+            'name' => "Florent",
+        ]);
+        User::factory()->create([
+            'name' => "Mehdi",
+        ]);
+        User::factory()->create([
+            'name' => "Nesrine",
         ]);
 
 
