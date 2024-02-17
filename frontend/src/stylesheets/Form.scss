@@ -8,16 +8,17 @@
     background-position: center;
     flex: 1;
     display: flex;
+    align-items: center;
 }
 
 form{
     background-color: rgba(255, 255, 255, 0.3);
-    width: fit-content;
     margin: auto;
     padding: 3rem;
     border-radius: 2rem;
     width: 80%;
-    margin: 5rem auto;
+    height: fit-content;
+    margin: 7rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,6 +32,11 @@ form{
 
 }
 
+.alert{
+    font-size: 1.5rem;
+    padding: 0.5rem ;
+}
+
 textarea{
     min-width: 100%;
     max-width: 100%;
@@ -38,11 +44,6 @@ textarea{
     min-height: 3rem;
     max-height: 15rem;
 }
-
-select, button{
-    flex: 1;
-}
-
 
 .form-group{
     display: flex;
@@ -61,12 +62,14 @@ form, .form-group{
 
 @media (min-width: v.$sm-breakpoint) {
     form {
-        width: fit-content;
+        min-width: fit-content;
+        width: 40%;
     }
     .form-group{
         justify-content: space-between;
         align-items: center;
         flex-direction: row;
+        gap: 5rem;
         div{
             flex: 1;
         }

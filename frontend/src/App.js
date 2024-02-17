@@ -19,9 +19,9 @@ function App() {
       <Route path='/create' element={<Form content='newProject' />} />
 
 
-      <Route path='/login' element={<Login />} />
+      <Route path='/login' element={<Form content='login' />} />
       <Route path='/logout' element={<Logout />} />
-      <Route path='/register' element={<Register />} />
+      <Route path='/register' element={<Form content='register' />} />
 
       <Route path='/project/:id' element={<ShowProject />} />
 

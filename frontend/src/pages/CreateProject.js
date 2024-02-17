@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { Modal, message } from 'antd';
+import { Modal, Tag, message } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import swal from 'sweetalert';
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout';
 import Language from '../components/Language.js';
 
@@ -158,16 +159,8 @@ const CreateProject = () => {
     return (
         <Fragment>
             <form onSubmit={(e) => saveProject(e)}>
-                <Modal title="Connexion requise" open={isModal2Open} width="fit-content" onCancel={handleCancel2} footer={null} centered>
-                    <h3>Pour créer un projet, veuillez vous connecter</h3>
-                    <div>
-                        <button>Connexion</button>
-                        <button>Inscription</button>
-                    </div>
-                </Modal>
-
-            <h1>Création de projet</h1>
-            {!user? <h2>Pour créer un projet, veuillez vous connecter</h2> :""}
+                <h1>Création de projet</h1>
+                {!user?  <Link to={'/login'}><Tag color="warning" icon={<ExclamationCircleOutlined />} className='alert'>Pour créer un projet, veuillez vous connecter</Tag></Link> :""}
                 <div className='form-group'>
                     <div className='flex-col'>
                         <label htmlFor='title'>Nom du projet :</label>
@@ -225,7 +218,13 @@ const CreateProject = () => {
                 :
                     <button onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
                 }
-            
+                <Modal title="Connexion requise" open={isModal2Open} width="fit-content" onCancel={handleCancel2} footer={null} centered>
+                    <h3>Pour créer un projet, veuillez vous connecter</h3>
+                    <div>
+                        <button onClick={()=>navigate('/login')}>Connexion</button>
+                        <button  onClick={()=>navigate('/register')}>Inscription</button>
+                    </div>
+                </Modal>
 
             </form>
 

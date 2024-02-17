@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import axios from '../api/axios';
@@ -45,33 +45,39 @@ const Register = () => {
     }
 
     return (
-        <Layout>
-            <div>Login</div>
+        <Fragment>
             <form onSubmit={(e)=>handleLogin(e)}>
-                <div>
-                    <label htmlFor='name'>Choisissez un pseudo :</label>
-                    <input type='text' name='name' value={newUser.name} placeholder='Pseudo' onChange={(e)=> handleChange(e)} autoFocus required/>
-                    <b>{errors.name}</b>
+                <h1>Inscription</h1>
+                <div className='form-group'>
+                    <div className='flex-col'>
+                        <label htmlFor='name'>Choisissez un pseudo :</label>
+                        <input type='text' name='name' value={newUser.name} placeholder='Pseudo' onChange={(e)=> handleChange(e)} autoFocus required/>
+                        <b>{errors.name}</b>
+                    </div>
+                    <div className='flex-col'>
+                        <label htmlFor='email'>Email :</label>
+                        <input type='email' name='email' value={newUser.email} placeholder='tandem@email.fr' onChange={(e)=> handleChange(e)} required/>
+                        <b>{errors.email}</b>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor='email'>Email :</label>
-                    <input type='email' name='email' value={newUser.email} placeholder='Email' onChange={(e)=> handleChange(e)} required/>
-                    <b>{errors.email}</b>
-                </div>
-                <div>
-                    <label htmlFor='password'>Mot de passe :</label>
-                    <input type='password' name='password' value={newUser.password} placeholder='Mot de passe' onChange={(e)=> handleChange(e)} required/>
-                    <b>{errors.password}</b>
-                </div>
-                <div>
-                    <label htmlFor='password_confirmation'>Confirmer le mot de passe :</label>
-                    <input type='password' name='password_confirmation' value={newUser.password_confirmation} placeholder='Confirmer le mot de passe' onChange={(e)=> handleChange(e)} required/>
+                <div className='form-group'>
+                    <div className='flex-col'>
+                        <label htmlFor='password'>Mot de passe :</label>
+                        <input type='password' name='password' value={newUser.password} placeholder='Mot de passe' onChange={(e)=> handleChange(e)} required/>
+                        <b>{errors.password}</b>
+                    </div>
+                    <div className='flex-col'>
+                        <label htmlFor='password_confirmation'>Confirmer le mot de passe :</label>
+                        <input type='password' name='password_confirmation' value={newUser.password_confirmation} placeholder='Confirmer le mot de passe' onChange={(e)=> handleChange(e)} required/>
+                    </div>
                 </div>
                 <button type='submit'>Valider</button>
+                <div>
+                    <p>Déjà inscrit ?</p>
+                    <button onClick={() => navigate('/login')}>Se connecter</button>
+                </div>
             </form>
-            <p>Déjà inscrit ?</p>
-            <button onClick={() => navigate('/login')}>Se connecter</button>
-        </Layout>
+        </Fragment>
     )
 }
 
