@@ -42,7 +42,7 @@ class AuthController extends Controller
             // le if sert juste à éviter un bug d'affichage de VSCode pour le $user->createToken()
             if ($user instanceof \App\Models\User) {
                 // créé un token de connexion pour l'utilisateur connecté
-                $token = $user->createToken('Tandem')->plainTextToken;
+                $token = $user->createToken('Tandem', [$user->id])->plainTextToken;
 
                 // retourne le token et l'utilisateur + créé un cookie avec le token (jwt = json web token)
                 return response()->json([
@@ -92,7 +92,7 @@ class AuthController extends Controller
             // le if sert juste à éviter un bug d'affichage de VSCode pour le $user->createToken()
             if ($user instanceof \App\Models\User) {
                 // créé un token de connexion pour l'utilisateur connecté
-                $token = $user->createToken('Tandem')->plainTextToken;
+                $token = $user->createToken('Tandem', [$user->id])->plainTextToken;
 
                 return response()->json([
                     'token' => $token,
@@ -107,12 +107,11 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->session()->invalidate();
+            $request->session()->invalidate();
 
-
-        return response()->json([
-            'message' => "Deconnexion réussie",
-            'status' => 'success'
-        ])->cookie('jwt', '');
+            return response()->json([
+                'message' => "Deconnexion réussie",
+                'status' => 'success'
+            ])->cookie('jwt', '');
     }
 }

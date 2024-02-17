@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {Modal} from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
+import { useSelector } from 'react-redux';
 
 const ShowProject = () => {
     const {id} = useParams();
@@ -13,7 +14,7 @@ const ShowProject = () => {
     const [newCollaborators, setNewCollaborators] = useState("");
     const navigate = useNavigate();
     
-
+    const token = useSelector(state => state.data.token);
 
     const getProject = async()=> {
         const response = await axios.get(`http://127.0.0.1:8000/api/project/${id}`).then(res=>res.data.project);
@@ -42,7 +43,7 @@ const ShowProject = () => {
 
     const update = async (e)=>{
         e.preventDefault();
-        const res = await axios.put(`http://127.0.0.1:8000/api/project/${id}/update`, {newTitle, newDescription, newCollaborators});
+        const res = await axios.put(`http://127.0.0.1:8000/api/project/${id}/update`, {newTitle, newDescription, newCollaborators},{headers:{"Authorization":`Bearer ${token}`}});
 
         if(res.data.status === 200){
             setNewTitle("");
