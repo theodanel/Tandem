@@ -107,7 +107,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->session()->invalidate();
+        // $request->session()->invalidate();
 
 
         return response()->json([
