@@ -7,9 +7,12 @@ import Layout from '../components/Layout';
 import Language from '../components/Language.js';
 
 import "../stylesheets/Language.scss"
+import { useSelector } from 'react-redux';
 
 const CreateProject = () => {
     const navigate = useNavigate();
+
+    const user = useSelector(state => state.data.user);
 
     // State du projet qui récupère les données du formulaire
     const [project, setProject] = useState({
@@ -17,8 +20,8 @@ const CreateProject = () => {
         collaborators_max: 0,
         description: '',
         languages: [],
-        user_id: 5,
-        // image: '',
+        user_id: user? user.id : null,
+        image: '',
     });
 
     // Liste de tous les langages dans la BDD, rempli via appel API
@@ -30,13 +33,22 @@ const CreateProject = () => {
     // Tableau des erreurs renvoyées par l'API après validation du formulaire
     const [errors, setErrors] = useState([]);
 
-    // Gestion de la modale Ant Design
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModal = () => {
-      setIsModalOpen(true);
+    // Gestion de la modale langages
+    const [isModal1Open, setIsModal1Open] = useState(false);
+    const showModal1 = () => {
+        setIsModal1Open(true);
     };
-    const handleCancel = () => {
-      setIsModalOpen(false);
+    const handleCancel1 = () => {
+        setIsModal1Open(false);
+    };
+
+    // Gestion de la modale connexion
+    const [isModal2Open, setIsModal2Open] = useState(false);
+    const showModal2 = () => {
+      setIsModal2Open(true);
+    };
+    const handleCancel2 = () => {
+      setIsModal2Open(false);
     };
 
 
@@ -112,7 +124,7 @@ const CreateProject = () => {
 
         // Appel à l'API
         const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, project, { headers: { "Content-Type": "application/json" } });
-
+        
         if (res.data.status === 200) {
             swal({
                 title: "Bravo !",
@@ -133,6 +145,7 @@ const CreateProject = () => {
             message.error("Champ(s) invalide(s)")
             setErrors(res.data.errors || []);
         }
+  
     };
 
     let participants = []
@@ -144,20 +157,28 @@ const CreateProject = () => {
 
     return (
         <Fragment>
-            <form onSubmit={(e) => saveProject(e)} >
+            <form onSubmit={(e) => saveProject(e)}>
+                <Modal title="Connexion requise" open={isModal2Open} width="fit-content" onCancel={handleCancel2} footer={null} centered>
+                    <h3>Pour créer un projet, veuillez vous connecter</h3>
+                    <div>
+                        <button>Connexion</button>
+                        <button>Inscription</button>
+                    </div>
+                </Modal>
 
             <h1>Création de projet</h1>
+            {!user? <h2>Pour créer un projet, veuillez vous connecter</h2> :""}
                 <div className='form-group'>
                     <div className='flex-col'>
                         <label htmlFor='title'>Nom du projet :</label>
-                        <input type='text' id='title' name='title' placeholder='Mon super projet' value={project.title} onChange={handleInput} autoFocus required/>
+                        <input type='text' id='title' name='title' placeholder='Mon super projet' value={project.title} onChange={(e)=>handleInput(e)} autoFocus required/>
                         <b>{errors.title}</b>
                     </div>
 
                     <div >
                         <label htmlFor="collaborators_max">Nombre de participants :</label>
                         <select id="collaborators_max" name="collaborators_max" value={project.collaborators_max} onChange={(e) => handleInput(e)} required >
-                            <option value={null}>Choisir</option>
+                            <option value="">Choisir</option>
                             {participants}
                         </select>
                         {/* <input type="number" id="collaborators_max" name="collaborators_max" min="1" max="20" value={project.collaborators_max} onChange={(e) => handleInput(e)} required /> */}
@@ -168,26 +189,26 @@ const CreateProject = () => {
                 <div className='flex-col'>
                     <label htmlFor="description">Description du projet :</label>
                     <textarea type="text" id="description" name="description" minLength="10" maxLength="1000" placeholder='Une jolie description' size="10"
-                        value={project.description} onChange={handleInput} required />
+                        value={project.description} onChange={(e) => handleInput(e)} required />
                     <b>{errors.description}</b>
                 </div>
 
                 <div className='form-group'>
                     <div>
                         <label for="image">Image d'illustration :</label>
-                        <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.title} onChange={handleInput}/>
+                        <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.image} onChange={(e) => handleInput(e)}/>
                     </div>
                     <div>
                         <label htmlFor="languages">Langages envisagés:</label>
                         {/* <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend> */}
-                        <button onClick={()=>showModal()}>Selectionner</button>
+                        <button onClick={()=>showModal1()}>Selectionner</button>
                         <b>{errors.languages}</b>
                         
-                        <Modal title="Choisir des langages" open={isModalOpen} width="fit-content" onCancel={handleCancel} footer={null} centered>
+                        <Modal title="Choisir des langages" open={isModal1Open} width="fit-content" onCancel={handleCancel1} footer={null} centered>
                             <div className='languagesList'>
                                 {languagesList}
                             </div>
-                            <button onClick={()=>handleCancel()}>Valider</button>
+                            <button onClick={()=>handleCancel1()}>Valider</button>
                         </Modal>
 
                       
@@ -199,8 +220,13 @@ const CreateProject = () => {
                 <div className='languagesList-2'>
                     {selectedLanguages}
                 </div>
+                {user ?
+                    <button type='submit'> Créer le projet</button>
+                :
+                    <button onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
+                }
+            
 
-                <button type='submit'> Créer le projet</button>
             </form>
 
         </Fragment>
