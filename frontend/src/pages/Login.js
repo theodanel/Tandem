@@ -9,6 +9,9 @@ import { message } from 'antd';
 import swal from 'sweetalert';
 
 const Login = () => {
+    useEffect(()=> {
+        document.title = `Connexion`;
+    }, []);
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [errors, setErrors] = useState([]);

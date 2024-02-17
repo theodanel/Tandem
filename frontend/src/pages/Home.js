@@ -6,6 +6,10 @@ import Carousel from "../components/Carousel";
 import germe from '../img/germe.png'
 
 const Home = () => {
+    useEffect(()=> {
+        document.title = `Tandem`;
+    }, []);
+
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
 
