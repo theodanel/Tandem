@@ -37,6 +37,34 @@ class User extends Authenticatable
     }
 
     /**
+     * Pour ajouter un commentaire à un utilisateur via son ID (multiples)
+     */
+    public function comment()
+    {
+        return $this->belongsToMany(Comment::class);
+    }
+
+    /**
+     * Pour ajouter une notification envoyée à un utilisateur via son ID (multiples)
+     */
+    public function notification_sent()
+    {
+        return $this->belongsToMany(Notification::class, 'notifications', 'sender_id');
+    }
+
+    /**
+     * Pour ajouter une notification reçue à un utilisateur via son ID (multiples)
+     */
+    public function notification_received()
+    {
+        return $this->belongsToMany(Notification::class, 'notifications', 'receiver_id');
+    }
+
+
+
+
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
