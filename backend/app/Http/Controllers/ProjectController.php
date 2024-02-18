@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Language;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -101,6 +102,22 @@ class ProjectController extends Controller
                 "message" => "Le projet a été ajouté."
             ]);
         }
+    }
+
+    /**
+     * Ajoute le projet aux favoris
+     */
+    public function addToFavorites($id){
+        $user_id = auth()->user()->id;
+        User::find($user_id)->favorite()->attach($id);
+    }
+
+    /**
+     * Retire le projet des favoris
+     */
+    public function removeFromFavorites($id){
+        $user_id = auth()->user()->id;
+        User::find($user_id)->favorite()->detach($id);
     }
 
     /**
