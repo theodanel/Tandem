@@ -1,0 +1,71 @@
+.projectDetail {
+    display: flex;
+    width: 100%;
+    margin-top: 5rem;
+    height: 50rem;
+}
+
+.imagePosition {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+}
+
+.descriptionPosition {
+    width: 50%;
+
+      
+}
+
+.titleDecoration {
+
+        hr {
+            background-color: rgb(115, 240, 115);
+            height: 0.3rem;
+            width: 100%;
+        }
+}
+
+.imageSize {
+    width: 80%;
+    height: 100%;
+}
+
+.projectTitle {
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+#projectTitle {
+    width: 80%;
+}
+
+.titleDecoration{
+    width: 60%;
+}
+
+#creator{
+    width: 30%;
+}
+
+.projectDescription {
+    color: black;
+    text-transform: lowercase;
+    margin-bottom: 4rem;
+}
+
+#languages {
+    display: flex;
+    margin-bottom: 3rem;
+}
+
+.languagesDecoration {
+    background-color: orange;
+    color: orange;
+    height: 0.4rem;
+    margin-bottom: 3rem;
+}
