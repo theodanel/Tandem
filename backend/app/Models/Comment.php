@@ -24,4 +24,12 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Pour associer un commentaire à un autre commentaire via son ID (unique)
+     */
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class);
+    }
 }
