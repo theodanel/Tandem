@@ -39,7 +39,7 @@ class User extends Authenticatable
     /**
      * Pour ajouter un commentaire à un utilisateur via son ID (multiples)
      */
-    public function comment()
+    public function comments()
     {
         return $this->belongsToMany(Comment::class);
     }
@@ -47,7 +47,7 @@ class User extends Authenticatable
     /**
      * Pour ajouter une notification envoyée à un utilisateur via son ID (multiples)
      */
-    public function notification_sent()
+    public function notifications_sent()
     {
         return $this->belongsToMany(Notification::class, 'notifications', 'sender_id');
     }
@@ -55,7 +55,7 @@ class User extends Authenticatable
     /**
      * Pour ajouter une notification reçue à un utilisateur via son ID (multiples)
      */
-    public function notification_received()
+    public function notifications_received()
     {
         return $this->belongsToMany(Notification::class, 'notifications', 'receiver_id');
     }

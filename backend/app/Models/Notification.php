@@ -10,7 +10,7 @@ class Notification extends Model
     use HasFactory;
 
     /**
-     * Pour ajouter une notification à son expediteur via son ID (multiples)
+     * Pour associer une notification à son expediteur via son ID (unique)
      */
     public function sender()
     {
@@ -18,10 +18,18 @@ class Notification extends Model
     }
     
     /**
-     * Pour ajouter une notification à son destinataire via son ID (multiples)
+     * Pour associer une notification à son destinataire via son ID (unique)
      */
     public function receiver()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Pour associer une notification à son destinataire via son ID (unique)
+     */
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
     }
 }

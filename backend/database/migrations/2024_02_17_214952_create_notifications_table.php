@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('receiver_id')->constrained(table: 'users', column: 'id')->cascadeOnDelete();
             $table->foreignId('project_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('type');
+            $table->boolean('open')->default(false);
             $table->text('content')->nullable();
             $table->timestamps();
         });
