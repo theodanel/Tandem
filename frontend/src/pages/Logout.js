@@ -6,6 +6,7 @@ import { removeUser } from '../slices';
 import swal from 'sweetalert';
 import Layout from '../components/Layout';
 import Home from './Home';
+import { message } from 'antd';
 
 const Logout = () => {
     const dispatch = useDispatch();
@@ -16,12 +17,14 @@ const Logout = () => {
     const logout = async () => {
         const res = await axios.post('/api/logout', {user},{headers:{"Authorization":`Bearer ${token}`}})
         if(res.data.status === "success"){
-            swal({
-                title: "Au revoir !",
-                text: res.data.message,
-                icon: "success",
-                button: "OK"
-            })
+            // swal({
+            //     title: "Au revoir !",
+            //     text: res.data.message,
+            //     icon: "success",
+            //     button: "OK"
+            // })
+            message.success(`Déconnexion réussie`)
+   
             dispatch(removeUser(res.data));
             navigate('/');
         } else {
@@ -36,6 +39,7 @@ const Logout = () => {
     }
 
     useEffect(()=>{
+        console.log("test");
         if(!token || !user){
             navigate('/');
         } else {

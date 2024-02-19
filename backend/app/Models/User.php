@@ -60,9 +60,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Notification::class, 'notifications', 'receiver_id');
     }
 
-
-
-
+    /**
+     * Pour ajouter un avatar à l'utilisateur via son ID (unique)
+     */
+    public function avatar()
+    {
+        return $this->belongsTo(Avatar::class);
+    }
 
     /**
      * The attributes that are mass assignable.
