@@ -48,6 +48,12 @@ const Register = () => {
         }
     }
 
+    // Pour empecher un message d'erreur car non-envoi du formulaire
+    const handleNavigate = (e) =>{
+        e.preventDefault();
+        navigate('/login');
+    }
+
     return (
         <Fragment>
             <form onSubmit={(e)=>handleLogin(e)}>
@@ -78,7 +84,7 @@ const Register = () => {
                 <button type='submit'>Valider</button>
                 <div>
                     <p>Déjà inscrit ?</p>
-                    <button type='button' onClick={() => navigate('/login')}>Se connecter</button>
+                    <button type='button' onClick={(e) => handleNavigate(e)}>Se connecter</button>
                 </div>
             </form>
         </Fragment>
