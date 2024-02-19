@@ -18,6 +18,7 @@ const ShowProject = () => {
     const getProject = async()=> {
         const response = await axios.get(`http://127.0.0.1:8000/api/project/${id}`).then(res=>res.data.project);
         setProject(response);
+        document.title = `${response.title}`
     };
 
     useEffect(()=>{

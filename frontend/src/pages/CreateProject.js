@@ -9,6 +9,10 @@ import Language from '../components/Language.js';
 import "../stylesheets/Language.scss"
 
 const CreateProject = () => {
+    useEffect(()=> {
+        document.title = `Nouveau Projet`;
+    }, []);
+
     const navigate = useNavigate();
 
     // State du projet qui récupère les données du formulaire

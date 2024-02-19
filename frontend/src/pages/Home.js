@@ -6,6 +6,10 @@ import Carousel from "../components/Carousel";
 import germe from '../img/germe.png'
 
 const Home = () => {
+    useEffect(()=> {
+        document.title = `Tandem`;
+    }, []);
+
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
 
@@ -76,9 +80,6 @@ const Home = () => {
             <Carousel/>
         </div>
         <div>
-            <div>
-                {getProjects}
-            </div>
             <div>
                 <h1>Recommandations 2 </h1>
                 {listProject}
