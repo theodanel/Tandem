@@ -49,5 +49,13 @@ class Project extends Model
         return $this->belongsToMany(User::class, 'likes');
     }
 
+    /**
+     * Association des commentaires du projet (multiples)
+     */
+    public function comments()
+    {
+        return $this->hasMany((Comment::class));
+    }
+
 
 }
