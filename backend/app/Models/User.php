@@ -77,6 +77,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Association des projets likés par l'utilisateur (multiples)
+     */
+    public function likes()
+    {
+        return $this->belongsToMany(Project::class, 'likes');
+    }
+
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

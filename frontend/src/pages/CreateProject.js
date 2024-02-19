@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, Tag, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import axios from '../api/axios';
 import swal from 'sweetalert';
 import { Link, useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout';
@@ -60,11 +60,11 @@ const CreateProject = () => {
 
     // Appel API pour la liste des langages
     const getLanguages = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
+        const res = await axios.get("/api/languages");
         // Remplissage du tableau langages
-        setLanguages(data.languages);
+        setLanguages(res.data.languages);
         // Remplissage du tableau checked en suivant le nombre de langages
-        setCheckedState(new Array(data.languages.length).fill(false))
+        setCheckedState(new Array(res.data.languages.length).fill(false))
     }
 
     useEffect(() => {
@@ -129,7 +129,7 @@ const CreateProject = () => {
         e.preventDefault();
 
         // Appel à l'API
-        const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, project, { headers: { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} });
+        const res = await axios.post(`/api/project/store`, project, { headers: { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} });
         
         if (res.data.status === 200) {
             swal({
@@ -194,7 +194,7 @@ const CreateProject = () => {
 
                 <div className='form-group'>
                     <div>
-                        <label for="image">Image d'illustration :</label>
+                        <label htmlFor="image">Image d'illustration :</label>
                         <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.image} onChange={(e) => handleInput(e)}/>
 
                     </div>

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../api/axios';
 import React, {useEffect, useState} from 'react'
 import {Modal} from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
@@ -17,9 +17,9 @@ const ShowProject = () => {
     const token = useSelector(state => state.data.token);
 
     const getProject = async()=> {
-        const response = await axios.get(`http://127.0.0.1:8000/api/project/${id}`).then(res=>res.data.project);
-        setProject(response);
-        document.title = `${response.title}`
+        const res = await axios.get(`/api/project/${id}`)
+        setProject(res.data.project);
+        document.title = `${res.data.project.title}`
     };
 
     useEffect(()=>{
@@ -44,7 +44,7 @@ const ShowProject = () => {
 
     const update = async (e)=>{
         e.preventDefault();
-        const res = await axios.put(`http://127.0.0.1:8000/api/project/${id}/update`, {newTitle, newDescription, newCollaborators},{headers:{"Authorization":`Bearer ${token}`}});
+        const res = await axios.put(`/api/project/${id}/update`, {newTitle, newDescription, newCollaborators},{headers:{"Authorization":`Bearer ${token}`}});
 
         if(res.data.status === 200){
             setNewTitle("");

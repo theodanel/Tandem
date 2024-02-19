@@ -65,11 +65,12 @@ class UserController extends Controller
      * Supprime un utilisateur
      */
     public function delete($id){
-        User::destroy($id);
-        return response()->json([
-            'status' => 200,
-            "message" => "L'utilisateur a été supprimé."
-        ]);
-
+        if (auth()->user()->id == $id){
+            User::destroy($id);
+            return response()->json([
+                'status' => 200,
+                "message" => "L'utilisateur a été supprimé."
+            ]);
+        }
     }
 }

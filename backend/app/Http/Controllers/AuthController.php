@@ -55,7 +55,7 @@ class AuthController extends Controller
                     'token' => $token,
                     'user' => $user,
                     'message' => "Bienvenue, $user->name !",
-                    'status' => 'success'
+                    'status' => 200
                 ])->cookie('jwt', $token);
             }
         } else {
@@ -105,7 +105,7 @@ class AuthController extends Controller
                 return response()->json([
                     'token' => $token,
                     'user' => $user,
-                    'status' => "success",
+                    'status' => 200,
                     'message' => "Bienvenue, $user->name !"
                 ], 201)->cookie('jwt', $token);
             }
@@ -121,7 +121,7 @@ class AuthController extends Controller
         if($id == auth()->user()->id){
             return response()->json([
                 'message' => "Deconnexion réussie",
-                'status' => 'success'
+                'status' => 200
             ])->cookie('jwt', '');
         } else {
             return response()->json([

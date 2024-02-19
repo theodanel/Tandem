@@ -33,7 +33,7 @@ const Register = () => {
         e.preventDefault();
         // await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/register', { newUser });
-        if(res.data.status === "success"){
+        if(res.data.status === 200){
             swal({
                 title: "Bravo !",
                 text: res.data.message,
@@ -78,7 +78,7 @@ const Register = () => {
                 <button type='submit'>Valider</button>
                 <div>
                     <p>Déjà inscrit ?</p>
-                    <button onClick={() => navigate('/login')}>Se connecter</button>
+                    <button type='button' onClick={() => navigate('/login')}>Se connecter</button>
                 </div>
             </form>
         </Fragment>

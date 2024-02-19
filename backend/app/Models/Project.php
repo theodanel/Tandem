@@ -41,6 +41,13 @@ class Project extends Model
         return $this->belongsToMany(User::class, 'favorites');
     }
 
+    /**
+     * Association des utilisateurs qui ont liké le projet (multiples)
+     */
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'likes');
+    }
 
 
 }

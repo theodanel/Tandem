@@ -16,7 +16,7 @@ const Logout = () => {
 
     const logout = async () => {
         const res = await axios.post(`/api/logout/${user.id}`,{headers:{"Authorization":`Bearer ${token}`}})
-        if(res.data.status === "success"){
+        if(res.data.status === 200){
             // swal({
             //     title: "Au revoir !",
             //     text: res.data.message,

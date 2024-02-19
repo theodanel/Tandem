@@ -4,6 +4,7 @@ import Project from "../components/Project";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import germe from '../img/germe.png'
+import axios from "../api/axios.js";
 
 const Home = () => {
     useEffect(()=> {
@@ -14,11 +15,8 @@ const Home = () => {
   const [projects, setProjects] = useState([]);
 
   const getProjects = async () => {
-    const data = await fetch("http://127.0.0.1:8000/api/projects").then((res) =>
-      res.json()
-    );
-
-    setProjects(data.projects);
+    const res = await axios.get("/api/projects");
+    setProjects(res.data.projects);
   };
 
   useEffect(() => {

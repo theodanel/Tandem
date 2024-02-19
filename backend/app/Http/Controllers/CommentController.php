@@ -58,7 +58,7 @@ class CommentController extends Controller
             $comment->save();
 
             return response()->json([
-                'status' => "success"
+                'status' => 200
             ]);
         }
     }
@@ -83,7 +83,7 @@ class CommentController extends Controller
                 $comment->save();
                 
                 return response()->json([
-                    'status' => "success"
+                    'status' => 200
                 ]);
             }
         } else {
@@ -104,7 +104,7 @@ class CommentController extends Controller
             Comment::destroy($id);
 
             return response()->json([
-                'status' => 'success'
+                'status' => 200
             ]);
         } else {
             return response()->json([

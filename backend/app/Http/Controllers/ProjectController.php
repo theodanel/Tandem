@@ -154,7 +154,7 @@ class ProjectController extends Controller
                 $project->status = "completed";
             }
             return response()->json([
-                'status' => 'success'
+                'status' => 200
             ]);
         } else {
             return response()->json([
@@ -164,19 +164,23 @@ class ProjectController extends Controller
     }
 
     /**
-     * Ajoute le projet aux favoris
+     * Ajoute/Retire le projet aux favoris
      */
-    public function favoriteAdd($id){
+    public function favorite($id){
+        $project = Project::find($id);
         $user_id = auth()->user()->id;
-        User::find($user_id)->favorites()->attach($id);
+        $user = User::find($user_id);
+        $user->favorites()->toggle($project);
     }
 
     /**
-     * Retire le projet des favoris
+     * Ajoute/Supprime un like au projet
      */
-    public function favoriteRemove($id){
+    public function like($id){
+        $project = Project::find($id);
         $user_id = auth()->user()->id;
-        User::find($user_id)->favorites()->detach($id);
+        $user = User::find($user_id);
+        $user->likes()->toggle($project);
     }
 
     /**

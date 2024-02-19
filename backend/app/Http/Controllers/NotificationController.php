@@ -62,7 +62,7 @@ class NotificationController extends Controller
         $notification->save();
 
         return response()->json([
-            'status' => 'success'
+            'status' => 200
         ]);
     }
 
