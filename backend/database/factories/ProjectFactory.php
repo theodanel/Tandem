@@ -24,9 +24,9 @@ class ProjectFactory extends Factory
             $isOpen = false;
         }
         if ($isOpen){
-            $status = random_int(1,2);
+            $status = array_rand(['created','ongoing']);
         } else {
-            $status = random_int(2,3);
+            $status = array_rand(['ongoing','completed']);
         }
         return [
             'title' => fake()->sentence(),

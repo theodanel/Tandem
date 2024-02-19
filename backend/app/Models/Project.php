@@ -32,4 +32,15 @@ class Project extends Model
     {
         return $this->belongsToMany(Language::class, 'projects_languages');
     }
+
+    /**
+     * Pour ajouter un projet favori à un utilisateur via son ID (multiples)
+     */
+    public function favorite()
+    {
+        return $this->belongsToMany(User::class, 'favorites');
+    }
+
+
+
 }

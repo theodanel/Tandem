@@ -45,9 +45,10 @@ class ProjectSeeder extends Seeder
             }
 
             // attribution des langages :
-            $project->language()->attach(random_int(1,3));
-            $project->language()->attach(random_int(4,6));
-            $project->language()->attach(random_int(7,9));
+            $project->language()->attach([random_int(1,3),random_int(4,6),random_int(7,9)]);
+
+            // favoris :
+            $project->favorite()->attach([random_int(1,3),random_int(4,6),random_int(7,10)]);
         });
 
         Project::factory()->create([
