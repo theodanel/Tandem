@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, Steps } from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
@@ -32,7 +32,7 @@ const ShowProject = () => {
     }, []);
 
 
-    const languagesList = languages.map((language, index) => {
+    const languagesList = languages.map((language) => {
         return (
             <Language key={language.id}
                 name={language.name}
@@ -40,6 +40,8 @@ const ShowProject = () => {
             />
         );
     });
+
+
 
     const getProject = async () => {
         const response = await axios.get(`http://127.0.0.1:8000/api/project/${id}`).then(res => res.data.project);
@@ -80,8 +82,26 @@ const ShowProject = () => {
         } else {
             setErrors(res.data.errors);
         }
+        
     }
 
+
+    // Permet d'afficher la liste des collaborateurs faisant partis d'un projet
+    const collaboratorsList = project.collaborators?.map((collaborator, index) => {
+        return (
+            <div>
+                
+                    <div key={collaborator.id}>
+                        {collaborator.name}
+                    </div>
+        
+                
+            </div>
+        );
+    });
+
+
+    console.log(project.collaborators);
 
 
 
@@ -108,7 +128,7 @@ const ShowProject = () => {
                     <p className='projectDescription'>{project.description}</p>
 
                     <div className='updateButton'>
-                        <button onClick={() => showModal()}>Modifier</button>
+                        <button  onClick={() => showModal()}>Modifier</button>
                     </div>
 
                     <div className='languagesList'>
@@ -126,40 +146,45 @@ const ShowProject = () => {
                 </div>
 
                 <Steps direction="vertical"
-                className='projectSteps'
+                    className='projectSteps'
                     size="small"
                     current={1}
                     items={[
-                        { 
-
-                            description:<button className='stepOne'>Préparation</button>, icon:<LuNut />, 
-                        
-                        },
                         {
-                           description:<button className='stepTwo'>Projet en cours</button>, icon:<PiPlantLight />,
+
+                            description: <button className='stepOne'>Préparation</button>, icon: <LuNut />,
 
                         },
                         {
-                            description:<button className='stepThree'>Projet terminé</button>, icon:<PiTreeLight />,
+                            description: <button className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
+
+                        },
+                        {
+                            description: <button className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
 
                         },
                     ]}
                 />
-                
+
                 <div className='collabList'>
                     <div id='collaborators'>
                         <h3>Collaborateurs</h3>
                         <hr className='languagesDecoration'></hr>
-                       
+                        <ul>
+                            <li>{collaboratorsList}</li>
+                        </ul>
+
                     </div>
                 </div>
+
+
 
                 <div className='collabList'>
                     <div id='collaborators'>
                         <h3>Laisser un commentaire</h3>
                         <div className='addComment'>
-                        <input type="text" placeholder='Lorem ipsum dolor' />
-                        <button className="commentButton" onClick={() => showModal()}>Poster</button>
+                            <input type="text" placeholder='Lorem ipsum dolor' />
+                            <button className="commentButton" onClick={() => showModal()}>Poster</button>
                         </div>
                         <hr className='languagesDecoration'></hr>
                     </div>
@@ -183,6 +208,7 @@ const ShowProject = () => {
             </Modal>
         </Layout>
     )
+
 }
 
 export default ShowProject

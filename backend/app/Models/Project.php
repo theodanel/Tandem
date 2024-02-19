@@ -20,7 +20,7 @@ class Project extends Model
     /**
      * Pour associer des collaborateurs au projet via leur ID (multiples)
      */
-    public function collaborator()
+    public function collaborators()
     {
         return $this->belongsToMany(User::class, 'users_projects');
     }

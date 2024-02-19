@@ -195,6 +195,22 @@
 
 #collaborators {
     width: 90%;
+    margin-bottom: 4rem;
+
+
+    li {
+        width: 100%;
+        font-weight: bold;
+        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+
+
+            div {
+                margin-right: 2rem;
+                margin-bottom: 1rem;
+            }
+    }
 }
 
 .addComment {
