@@ -13,31 +13,39 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * Pour ajouter une collaboration à un projet via son ID (multiples)
+     * Association des projets auxquels l'utilisateur participe (multiples)
      */
-    public function project()
+    public function projects()
     {
         return $this->belongsToMany(Project::class, 'users_projects');
     }
 
     /**
-     * Pour ajouter un langage à l'utilisateur via son ID (multiples)
+     * Association des projets créés par l'utilisateur (multiples)
      */
-    public function language()
+    public function projects_created()
+    {
+        return $this->belongsToMany(Project::class, 'projects', 'user_id');
+    }
+
+    /**
+     * Association des langages de l'utilisateur (multiples)
+     */
+    public function languages()
     {
         return $this->belongsToMany(Language::class, 'users_languages');
     }
 
     /**
-     * Pour ajouter un projet favori à un utilisateur via son ID (multiples)
+     * Association des projets mis en favoris par l'utilisateur (multiples)
      */
-    public function favorite()
+    public function favorites()
     {
         return $this->belongsToMany(Project::class, 'favorites');
     }
 
     /**
-     * Pour ajouter un commentaire à un utilisateur via son ID (multiples)
+     * Association des commentaires laissés par l'utilisateur (multiples)
      */
     public function comments()
     {
@@ -45,7 +53,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Pour ajouter une notification envoyée à un utilisateur via son ID (multiples)
+     * Association des notifications envoyées par l'utilisateur (multiples)
      */
     public function notifications_sent()
     {
@@ -53,7 +61,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Pour ajouter une notification reçue à un utilisateur via son ID (multiples)
+     * Association des notifications reçues par l'utilisateur (multiples)
      */
     public function notifications_received()
     {
@@ -61,7 +69,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Pour ajouter un avatar à l'utilisateur via son ID (unique)
+     * Association de l'avatar de l'utilisateur (unique)
      */
     public function avatar()
     {

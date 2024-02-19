@@ -10,17 +10,17 @@ class Language extends Model
     use HasFactory;
 
     /**
-     * Pour ajouter un langage à un utilisateur via son ID (multiples)
+     * Association des utilisateurs qui ont ce langage (multiples)
      */
-    public function user()
+    public function users()
     {
         return $this->belongsToMany(User::class, 'users_languages');
     }
 
-       /**
-     * Pour ajouter un langage à un projet via son ID (multiples)
+    /**
+     * Association des projets qui ont ce langage (multiples)
      */
-    public function project()
+    public function projects()
     {
         return $this->belongsToMany(Project::class, 'projects_languages');
     }
