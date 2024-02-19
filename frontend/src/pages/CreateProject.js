@@ -169,7 +169,7 @@ const CreateProject = () => {
                     <button onClick={()=>showModal()}>Selectionner</button>
                     <b>{errors.languages}</b>
                     
-                    <Modal title="Choisir des langages" open={isModalOpen} onCancel={handleCancel} footer={null} centered>
+                    <Modal title="Choisir des langages" open={isModalOpen} onCancel={handleCancel} footer={null} width='fit-content' centered>
                         <div className='languagesList'>
                             {languagesList}
                         </div>
