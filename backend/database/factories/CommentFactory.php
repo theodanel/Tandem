@@ -26,7 +26,7 @@ class CommentFactory extends Factory
             $admin = false;
         }
         return [
-            'comment' => fake()->text(100),
+            'content' => fake()->text(100),
             'user_id' => $user_id,
             'project_id' => $project_id,
             'admin' => $admin
