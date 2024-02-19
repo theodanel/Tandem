@@ -6,6 +6,7 @@ use App\Models\Notification;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\TestStatus\Notice;
 
 class NotificationController extends Controller
@@ -16,19 +17,14 @@ class NotificationController extends Controller
     public function showReceived ($id){
         $user = User::find($id);
         $notifications = $user->notifications_received()->get();
-        $notificationsList = [];
+        // Attribution de l'expediteur et du projet associé à chaque notification
         foreach($notifications as $notification){
-            array_push($notificationsList, [
-                'sender' => $notification->sender()->get(),
-                'project' => $notification->project()->get(),
-                'content' => $notification->content,
-                'type' => $notification->type,
-                'date' => $notification->created_at,
-                'open' => $notification->open,
-            ]);
+            $notification->sender = $notification->sender()->first();
+            $notification->project = $notification->project()->first();
         }
+
         return response()->json([
-            'notifications' => $notificationsList,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -38,27 +34,24 @@ class NotificationController extends Controller
     public function showSent ($id){
         $user = User::find($id);
         $notifications = $user->notifications_sent()->get();
-        $notificationsList = [];
+         // Attribution du destinataire et du projet associé à chaque notification
         foreach($notifications as $notification){
-            array_push($notificationsList, [
-                'receiver' => $notification->receiver()->get(),
-                'project' => $notification->project()->get(),
-                'content' => $notification->content,
-                'type' => $notification->type,
-                'date' => $notification->created_at,
-                'open' => $notification->open,
-                'id' => $notification->id,
-            ]);
+            $notification->receiver = $notification->receiver()->first();
+            $notification->project = $notification->project()->first();
         }
+  
         return response()->json([
-            'notifications' => $notificationsList,
+            'notifications' => $notifications,
         ]);
     }
 
     /**
-     * Envoie une notification
+     * Envoi d'une notification
      */
     public function send (Request $request){
+        $validator = Validator::make($request->all(),[
+            'content' => "max:200",
+        ]);
         $notification = new Notification();
         $notification->sender_id = $request->sender_id;
         $notification->receiver_id = $request->receiver_id;

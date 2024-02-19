@@ -34,7 +34,7 @@ class CommentController extends Controller
      * @param int $project_id ID du projet commenté
      * @param int $comment_id ID du commentaire auquel celui-ci répond (facultatif)
      */
-    public function create(Request $request, $project_id, $comment_id = null){
+    public function store(Request $request, $project_id, $comment_id = null){
         $validator = Validator::make($request, "min:3|max:1000");
         if($validator->fails()){
             return response()->json([

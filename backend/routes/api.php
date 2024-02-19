@@ -1,6 +1,8 @@
 <?php
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -19,17 +21,19 @@ use PharIo\Manifest\AuthorElement;
 |
 */
 
-// API Project
+// Projets
 Route::get('/projects', [ProjectController::class, "index"]);
 Route::get('/project/{id}', [ProjectController::class, "show"]);
 
-// API User
+// Utilisateurs
 Route::get('/users', [UserController::class, "index"]);
 Route::get('/user/{id}', [UserController::class, "show"]);
-//Route::post('/users/store', [UserController::class, "store"]);
 
-//API langages
+// Langages
 Route::get('/languages', [LanguageController::class, "index"]);
+
+// Commentaires
+Route::get('/comments/{id}', [CommentController::class, 'show']);
 
 //Authentification
 Route::post('/login', [AuthController::class, "login"]);
@@ -49,5 +53,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/project/store', [ProjectController::class, "store"]);
     Route::put('/project/{id}/update', [ProjectController::class, "update"]);    
     Route::delete('/project/{id}/delete', [ProjectController::class, "delete"]);
+
+    //Gestion des commentaires
+    Route::post('/comment/store', [CommentController::class, "store"]);
+    Route::put('/comment/{id}/update', [CommentController::class, "update"]);
+    Route::delete('/comment/{id}/delete', [CommentController::class, "delete"]);
+
+    //Gestion des notifications
+    Route::get('/notifications/{id}/sent', [NotificationController::class, "showSent"]);
+    Route::get('/notifications/{id}/received', [NotificationController::class, "showReceived"]);
+    Route::post('/notification/send', [NotificationController::class, "send"]);
+    Route::delete('/notification/{id}/delete', [NotificationController::class, "delete"]);
 
 });
