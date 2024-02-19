@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -72,9 +73,12 @@ class AuthController extends Controller
     {
         $credentials = $request->newUser;
         $validator =  Validator::make($credentials,[
-            'name' => 'required|unique:users,name',
+            'name' => 'required|unique:users,name|min:3|max:50',
             'email' => 'email|required|unique:users,email',
-            'password' => 'required|confirmed'
+            'password' => ['required','confirmed', Password::min(8)->mixedCase()
+            ->numbers()
+            ->symbols()
+            ->uncompromised()]
         ]);
 
         if($validator->fails()){

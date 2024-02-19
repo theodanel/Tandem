@@ -53,6 +53,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/project/store', [ProjectController::class, "store"]);
     Route::put('/project/{id}/update', [ProjectController::class, "update"]);    
     Route::delete('/project/{id}/delete', [ProjectController::class, "delete"]);
+    Route::put('/project/{id}/step', [ProjectController::class, "nextStep"]);
+    Route::put('/project/{id}/favorite/add', [ProjectController::class, "favoriteAdd"]);
+    Route::put('/project/{id}/favorite/remove', [ProjectController::class, "favoriteRemove"]);
 
     //Gestion des commentaires
     Route::post('/comment/store', [CommentController::class, "store"]);
