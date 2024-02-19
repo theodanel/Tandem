@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Layout from '../components/Layout';
 // import useAuthContext from '../context/AuthContext';
 import axios from '../api/axios';
@@ -26,12 +26,13 @@ const Login = () => {
         // await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/login', { email, password });
         if(res.data.status === "success"){
-            swal({
-                title: "Bravo !",
-                text: res.data.message,
-                icon: "success",
-                button: "OK"
-            })
+            // swal({
+            //     title: "Heureux de vous revoir !",
+            //     text: res.data.message,
+            //     icon: "success",
+            //     button: "OK"
+            // })
+            message.success(`Bienvenue, ${res.data.user.name} !`)
             dispatch(addUser(res.data));
             navigate('/');
         } else {
@@ -48,24 +49,28 @@ const Login = () => {
       }, [])
 
     return (
-        <Layout>
-            <div>Login</div>
+        <Fragment>
             <form onSubmit={(e)=>handleLogin(e)}>
-                <div>
-                    <label htmlFor='email'>Email :</label>
-                    <input type='email' name='email' value={email} placeholder='Email' onChange={(e)=> setEmail(e.target.value)} autoFocus required />
-                    <b>{errors.email}</b>
-                </div>
-                <div>
-                    <label htmlFor='password'>Mot de passe :</label>
-                    <input type='password' name='password' value={password} placeholder='Mot de passe' onChange={(e)=> setPassword(e.target.value)} required />
-                    <b>{errors.password}</b>
+                <h1>Connexion</h1>
+                <div className='form-group'>
+                    <div className='flex-col'>
+                        <label htmlFor='email'>Email :</label>
+                        <input type='email' name='email' value={email} placeholder='tandem@email.fr' onChange={(e)=> setEmail(e.target.value)} autoFocus required />
+                        <b>{errors.email}</b>
+                    </div>
+                    <div className='flex-col'>
+                        <label htmlFor='password'>Mot de passe :</label>
+                        <input type='password' name='password' value={password} placeholder='Mot de passe' onChange={(e)=> setPassword(e.target.value)} required />
+                        <b>{errors.password}</b>
+                    </div>
                 </div>
                 <button type='submit'>Valider</button>
+                <div>
+                    <p>Pas encore de compte ?</p>
+                    <button onClick={() => navigate('/register')}>S'inscrire</button>
+                </div>
             </form>
-            <p>Pas encore de compte ?</p>
-            <button onClick={() => navigate('/register')}>S'inscrire</button>
-        </Layout>
+        </Fragment>
     )
 }
 

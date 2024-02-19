@@ -56,7 +56,7 @@ class ProjectController extends Controller
             $project->description = $request->input('description');
             $project->collaborators_max = $request->input('collaborators_max');
             $project->collaborators = 1;
-            $project->user_id = random_int(1,10);
+            $project->user_id = $request->input('user_id');
             $project->status = 1;
             $project->open = true;
             $project->popularity = 0;
@@ -79,26 +79,34 @@ class ProjectController extends Controller
      * Met à jour les infos d'un projet existant
      */
     public function update(Request $request, $id){
-        $validator = Validator::make($request->all(),[
-            'newTitle' => "max:50",
-            'newDescription' => "max:1000",
-            'newCollaborators' => "numeric"
-        ]);
-        if($validator->fails()){
-            return response()->json([
-                'errors' => $validator->messages(),
-                "messages" => "Erreur dans le formulaire."
+        $project = Project::findOrFail($id);
+        if ($request->user()->tokenCan($project->user_id)) {
+            $validator = Validator::make($request->all(),[
+                'newTitle' => "max:50",
+                'newDescription' => "max:1000",
+                'newCollaborators' => "numeric"
             ]);
-        } else {
-            $project = Project::findOrFail($id);
-            $project->title = $request->input("newTitle");
-            $project->description = $request->input("newDescription");
-            $project->collaborators = $request->input("newCollaborators");
-            $project->save();
+            if($validator->fails()){
+                return response()->json([
+                    'errors' => $validator->messages(),
+                    "message" => "Erreur dans le formulaire."
+                ]);
+            } else {
+                $project->title = $request->input("newTitle");
+                $project->description = $request->input("newDescription");
+                $project->collaborators = $request->input("newCollaborators");
+                $project->save();
 
+                return response()->json([
+                    'status' => 200,
+                    "message" => "Le projet a été ajouté."
+                ]);
+            }
+        } else {
             return response()->json([
-                'status' => 200,
-                "message" => "Le projet a été ajouté."
+                'errors' => [],
+                "message" => "Action impossible.",
+                "status" => "error"
             ]);
         }
     }
@@ -106,11 +114,14 @@ class ProjectController extends Controller
     /**
      * Supprime un projet
      */
-    public function delete($id){
-        Project::destroy($id);
-        return response()->json([
-            'status' => 200,
-            "message" => "Le projet a été supprimé"
-        ]);
+    public function delete(Request $request, $id){
+        $project = Project::findOrFail($id);
+            if ($request->user()->tokenCan($project->user_id)) {
+            Project::destroy($id);
+            return response()->json([
+                'status' => 200,
+                "message" => "Le projet a été supprimé"
+            ]);
+        }
     }
 }
