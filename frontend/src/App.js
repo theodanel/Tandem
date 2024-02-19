@@ -2,6 +2,7 @@ import './stylesheets/App.scss';
 import Home from './pages/Home';
 import CreateProject from './pages/CreateProject'
 import ShowProject from './pages/ShowProject'
+import ShowUser from './pages/ShowUser'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -24,6 +25,7 @@ function App() {
       <Route path='/register' element={<Form content='register' />} />
 
       <Route path='/project/:id' element={<ShowProject />} />
+      <Route path='/user/:id' element={<ShowUser />} />
 
       <Route path='/login' element={<Login />} />
     </Routes>
