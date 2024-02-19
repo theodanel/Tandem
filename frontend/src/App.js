@@ -1,24 +1,33 @@
-import logo from './logo.svg';
 import './stylesheets/App.scss';
+import Home from './pages/Home';
+import CreateProject from './pages/CreateProject'
+import ShowProject from './pages/ShowProject'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Logout from './pages/Logout';
+// import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+    {/* <AuthProvider> */}
+    <Routes>
+      <Route path='/' element={<Home />} />
+
+      <Route path='/create' element={<CreateProject />} />
+
+
+      <Route path='/login' element={<Login />} />
+      <Route path='/logout' element={<Logout />} />
+      <Route path='/register' element={<Register />} />
+
+      <Route path='/project/:id' element={<ShowProject />} />
+
+      <Route path='/login' element={<Login />} />
+    </Routes>
+    {/* </AuthProvider> */}
+    </BrowserRouter>
   );
 }
 
