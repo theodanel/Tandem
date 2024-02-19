@@ -3,17 +3,17 @@ import React from 'react'
 const Language = ({name, action, checked, image}) => {
 
   return (
-    <div className='language'>
+    <div className='language' onClick={action}>
         <input
           type="checkbox"
           id={name}
           name={name}
           checked={checked}
           onChange={action}/>
-        <div className='img' onClick={action}>
-          <img src={image} htmlFor={name} alt={name}/>
+        <div className='img' >
+          <img src={image} alt={name}/>
         </div>
-      <label htmlFor={name}>{name}</label>
+      <p htmlFor={name}>{name}</p>
     </div>
   )
 }

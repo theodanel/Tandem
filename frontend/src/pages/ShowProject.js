@@ -3,12 +3,16 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, Steps } from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
+
 import Language from '../components/Language.js';
 import { PiTreeLight, PiPlantLight } from "react-icons/pi";
 import { LuNut } from "react-icons/lu";
 
 
 import "../stylesheets/ProjectDetail.scss"
+
+import { useSelector } from 'react-redux';
+
 
 const ShowProject = () => {
     const { id } = useParams();
@@ -21,6 +25,7 @@ const ShowProject = () => {
 
     const navigate = useNavigate();
 
+
     const getLanguages = async () => {
         const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
 
@@ -30,6 +35,10 @@ const ShowProject = () => {
     useEffect(() => {
         getLanguages();
     }, []);
+
+
+    
+    const token = useSelector(state => state.data.token);
 
 
     const languagesList = languages.map((language) => {
@@ -46,6 +55,7 @@ const ShowProject = () => {
     const getProject = async () => {
         const response = await axios.get(`http://127.0.0.1:8000/api/project/${id}`).then(res => res.data.project);
         setProject(response);
+        document.title = `${response.title}`
     };
 
     useEffect(() => {
@@ -70,7 +80,9 @@ const ShowProject = () => {
 
     const update = async (e) => {
         e.preventDefault();
-        const res = await axios.put(`http://127.0.0.1:8000/api/project/${id}/update`, { newTitle, newDescription, newCollaborators });
+
+        const res = await axios.put(`http://127.0.0.1:8000/api/project/${id}/update`, {newTitle, newDescription, newCollaborators},{headers:{"Authorization":`Bearer ${token}`}});
+
 
         if (res.data.status === 200) {
             setNewTitle("");

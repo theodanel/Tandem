@@ -29,6 +29,46 @@ class User extends Authenticatable
     }
 
     /**
+     * Pour ajouter un projet favori à un utilisateur via son ID (multiples)
+     */
+    public function favorite()
+    {
+        return $this->belongsToMany(Project::class, 'favorites');
+    }
+
+    /**
+     * Pour ajouter un commentaire à un utilisateur via son ID (multiples)
+     */
+    public function comments()
+    {
+        return $this->belongsToMany(Comment::class);
+    }
+
+    /**
+     * Pour ajouter une notification envoyée à un utilisateur via son ID (multiples)
+     */
+    public function notifications_sent()
+    {
+        return $this->belongsToMany(Notification::class, 'notifications', 'sender_id');
+    }
+
+    /**
+     * Pour ajouter une notification reçue à un utilisateur via son ID (multiples)
+     */
+    public function notifications_received()
+    {
+        return $this->belongsToMany(Notification::class, 'notifications', 'receiver_id');
+    }
+
+    /**
+     * Pour ajouter un avatar à l'utilisateur via son ID (unique)
+     */
+    public function avatar()
+    {
+        return $this->belongsTo(Avatar::class);
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

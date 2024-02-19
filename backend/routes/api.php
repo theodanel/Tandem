@@ -23,24 +23,15 @@ use PharIo\Manifest\AuthorElement;
 
 Route::get('/projects', [ProjectController::class, "index"]);
 Route::get('/project/{id}', [ProjectController::class, "show"]);
-Route::put('/project/{id}/update', [ProjectController::class, "update"]);
-Route::delete('/project/{id}/delete', [ProjectController::class, "delete"]);
-Route::post('/project/store', [ProjectController::class, "store"]);
 
 //----------
 // API User
 
 Route::get('/users', [UserController::class, "index"]);
-// Route::get('/user/auth', [UserController::class, "showAuth"]);
 Route::get('/user/{id}', [UserController::class, "show"]);
-Route::put('/user/{id}/update', [UserController::class, "update"]);
-Route::delete('/user/{id}/delete', [UserController::class, "delete"]);
-Route::post('/users/store', [UserController::class, "store"]);
+//Route::post('/users/store', [UserController::class, "store"]);
 
 //-------------
-
-// Route::get('/users', [UserController::class, "index"]);
-// Route::get('/user/{id}', [UserController::class, "show"]);
 
 Route::get('/projects_languages', [ProjectController::class, "index"]);
 Route::get('/project_languages/{id}', [ProjectController::class, "show"]);
@@ -49,19 +40,23 @@ Route::delete('/project_languages/{id}/delete', [ProjectController::class, "dele
 Route::post('/projects_languages/store', [ProjectController::class, "store"]);
 
 
-//Route::get('/authUser', [AuthController::class, "getUser"]);
 Route::post('/login', [AuthController::class, "login"]);
 Route::post('/register', [AuthController::class, "register"]);
 
 Route::get('/languages', [LanguageController::class, "index"]);
 
+// Routes protégées par authentification
 Route::middleware('auth:sanctum')->group(function () {
+    
+    // Gestion de l'utilisateur
     Route::get('/user', [AuthController::class, 'user']);
+    Route::put('/user/{id}/update', [UserController::class, "update"]);
+    Route::delete('/user/{id}/delete', [UserController::class, "delete"]);
     Route::post('/logout', [AuthController::class, 'logout']);
-// })get('/user', function (Request $request) {
-//     return $request->user();
 
-
-
+    // Gestion des projets
+    Route::post('/project/store', [ProjectController::class, "store"]);
+    Route::put('/project/{id}/update', [ProjectController::class, "update"]);    
+    Route::delete('/project/{id}/delete', [ProjectController::class, "delete"]);
 
 });
