@@ -201,7 +201,7 @@ const CreateProject = () => {
                     <div>
                         <label htmlFor="languages">Langages envisagés:</label>
                         {/* <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend> */}
-                        <button name='languages' onClick={()=>showModal1()}>Selectionner</button>
+                        <button type='button' name='languages' onClick={()=>showModal1()}>Selectionner</button>
                         <b>{errors.languages}</b>
                         
                         <Modal title="Choisir des langages" open={isModal1Open} width="fit-content" onCancel={()=> handleCancel1()} footer={null} centered>
