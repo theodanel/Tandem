@@ -11,21 +11,26 @@ class AuthController extends Controller
 {
     /**
      * Récupère les données de l'utilisateur connecté
+     *  
+     * @return object Données de l'utilisateur connecté
      */
-    public function user(Request $request)
+    public function user()
     {
-        return $request->user();
+        return auth()->user();
     }
 
     /**
      * Connecte un utilisateur enregistré
+     * 
+     * @param object $request Identifiants de l'utilisateur 
+     * @return response Réponse au format json
      */
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
         $validator =  Validator::make($credentials, [
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email' => 'required|exists:users,email|email',
+            'password' => 'required',
         ]);
  
         if($validator->fails()){
@@ -35,7 +40,7 @@ class AuthController extends Controller
                 'status' => "error"
             ]);
         } else if (auth()->attempt($credentials)) { // test la connection avec les données de la requêtes
-            // $request->session()->regenerate();
+
             // connecte l'utilisateur
             $user = auth()->user();
 
@@ -61,7 +66,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Enregistre un nouvel utilisteur.
+     * Enregistre un nouvel utilisteur
      */
     public function register(Request $request)
     {
@@ -85,7 +90,6 @@ class AuthController extends Controller
                 'password' => bcrypt($credentials['password'])
             ]);
 
-            // $request->session()->regenerate();
             // connecte l'utilisateur
             auth()->login($user);
 
@@ -105,14 +109,21 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    /**
+     * Déconnecte un utilisateur connecté
+     */
+    public function logout($id)
     {
-        // $request->session()->invalidate();
-
-
+        if($id == auth()->user()->id){
             return response()->json([
                 'message' => "Deconnexion réussie",
                 'status' => 'success'
             ])->cookie('jwt', '');
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Deconnexion impossible',
+            ]);
+        }
     }
 }
