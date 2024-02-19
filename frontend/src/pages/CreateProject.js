@@ -18,6 +18,7 @@ const CreateProject = () => {
     const navigate = useNavigate();
 
     const user = useSelector(state => state.data.user);
+    const token = useSelector(state => state.data.token);
 
     // State du projet qui récupère les données du formulaire
     const [project, setProject] = useState({
@@ -128,7 +129,7 @@ const CreateProject = () => {
         e.preventDefault();
 
         // Appel à l'API
-        const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, project, { headers: { "Content-Type": "application/json" } });
+        const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, project, { headers: { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} });
         
         if (res.data.status === 200) {
             swal({
@@ -200,10 +201,10 @@ const CreateProject = () => {
                     <div>
                         <label htmlFor="languages">Langages envisagés:</label>
                         {/* <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend> */}
-                        <button onClick={()=>showModal1()}>Selectionner</button>
+                        <button name='languages' onClick={()=>showModal1()}>Selectionner</button>
                         <b>{errors.languages}</b>
                         
-                        <Modal title="Choisir des langages" open={isModal1Open} width="fit-content" onCancel={handleCancel1} footer={null} centered>
+                        <Modal title="Choisir des langages" open={isModal1Open} width="fit-content" onCancel={()=> handleCancel1()} footer={null} centered>
                             <div className='languagesList'>
                                 {languagesList}
                             </div>
@@ -224,7 +225,7 @@ const CreateProject = () => {
                 :
                     <button onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
                 }
-                <Modal title="Connexion requise" open={isModal2Open} width="fit-content" onCancel={handleCancel2} footer={null} centered>
+                <Modal title="Connexion requise" open={isModal2Open} width="fit-content" onCancel={()=>handleCancel2()} footer={null} centered>
                     <h3>Pour créer un projet, veuillez vous connecter</h3>
                     <div>
                         <button onClick={()=>navigate('/login')}>Connexion</button>
