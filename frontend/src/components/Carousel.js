@@ -1,3 +1,4 @@
+import "../stylesheets/Carousel.scss";
 import { Carousel as AntdCarousel } from 'antd';
 import imgcarou from '../img/carou.jpg';
 import imgcarou2 from '../img/carou2.jpg';
