@@ -181,6 +181,7 @@ class ProjectController extends Controller
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
         $user->likes()->toggle($project);
+        $project->popularity = count($project->likes()->get());
     }
 
     /**
