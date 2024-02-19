@@ -11,6 +11,10 @@ import "../stylesheets/Language.scss"
 import { useSelector } from 'react-redux';
 
 const CreateProject = () => {
+    useEffect(()=> {
+        document.title = `Nouveau Projet`;
+    }, []);
+
     const navigate = useNavigate();
 
     const user = useSelector(state => state.data.user);
@@ -186,10 +190,12 @@ const CreateProject = () => {
                     <b>{errors.description}</b>
                 </div>
 
+
                 <div className='form-group'>
                     <div>
                         <label for="image">Image d'illustration :</label>
                         <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.image} onChange={(e) => handleInput(e)}/>
+
                     </div>
                     <div>
                         <label htmlFor="languages">Langages envisagés:</label>

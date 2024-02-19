@@ -1,4 +1,5 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
+
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import axios from '../api/axios';
@@ -8,6 +9,9 @@ import swal from 'sweetalert';
 import { message } from 'antd';
 
 const Register = () => {
+    useEffect(()=> {
+        document.title = `Inscription`;
+    }, []);
     const [newUser, setNewUser] = useState({
         email: "",
         name: "",
