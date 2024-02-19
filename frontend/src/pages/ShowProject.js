@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Modal } from "antd"
+import { Modal, Steps } from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
 import Language from '../components/Language.js';
+import { PiTreeLight, PiPlantLight } from "react-icons/pi";
+import { LuNut } from "react-icons/lu";
 
 
 import "../stylesheets/ProjectDetail.scss"
@@ -22,7 +24,7 @@ const ShowProject = () => {
     const getLanguages = async () => {
         const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
 
-            setLanguages(data.languages);
+        setLanguages(data.languages);
     }
 
     useEffect(() => {
@@ -81,6 +83,8 @@ const ShowProject = () => {
     }
 
 
+
+
     return (
         <Layout>
             <div className='projectDetail'>
@@ -95,26 +99,72 @@ const ShowProject = () => {
                             <h1 id='projectTitle'>{project.title}</h1>
                             <hr className='titleDecoration'></hr>
                         </div>
-                        <h4 id='creator'>Simtouflo_59 - ({project.created_at})</h4>
+                        <div className='creator'>
+                            <h4 >Simtouflo_59</h4>
+                            <h4> {project.created_at}</h4>
+                        </div>
                     </div>
 
                     <p className='projectDescription'>{project.description}</p>
 
-                    <h3>Langages utilisés :</h3>
-                    <legend  name="languages" id="languages" value={project.languages}  required>
-                        {languagesList}
-                    </legend>
-                    <hr className='languagesDecoration'></hr>
-
-                        
-                        
-                 
-
-                    <div>
+                    <div className='updateButton'>
                         <button onClick={() => showModal()}>Modifier</button>
-                        <button onClick={() => navigate("/")}>Rejoindre le project</button>
+                    </div>
+
+                    <div className='languagesList'>
+                        <h3>Langages utilisés :</h3>
+                        <legend name="languages" id="languages" value={project.languages} required>
+                            {languagesList}
+                        </legend>
+                        <hr className='languagesDecoration'></hr>
                     </div>
                 </div>
+
+
+                <div className='startProject'>
+                    <button onClick={() => navigate("/")}>DEMARRER LE PROJET</button>
+                </div>
+
+                <Steps direction="vertical"
+                className='projectSteps'
+                    size="small"
+                    current={1}
+                    items={[
+                        { 
+
+                            description:<button className='stepOne'>Préparation</button>, icon:<LuNut />, 
+                        
+                        },
+                        {
+                           description:<button className='stepTwo'>Projet en cours</button>, icon:<PiPlantLight />,
+
+                        },
+                        {
+                            description:<button className='stepThree'>Projet terminé</button>, icon:<PiTreeLight />,
+
+                        },
+                    ]}
+                />
+                
+                <div className='collabList'>
+                    <div id='collaborators'>
+                        <h3>Collaborateurs</h3>
+                        <hr className='languagesDecoration'></hr>
+                       
+                    </div>
+                </div>
+
+                <div className='collabList'>
+                    <div id='collaborators'>
+                        <h3>Laisser un commentaire</h3>
+                        <div className='addComment'>
+                        <input type="text" placeholder='Lorem ipsum dolor' />
+                        <button className="commentButton" onClick={() => showModal()}>Poster</button>
+                        </div>
+                        <hr className='languagesDecoration'></hr>
+                    </div>
+                </div>
+
             </div>
 
             <Modal title="Modifier" open={isModalOpen} onCancel={handleCancel} footer={null} centered >

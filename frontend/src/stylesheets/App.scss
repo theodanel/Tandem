@@ -126,24 +126,24 @@ header ul {
     .active #icons:before{
         content: "\2715";
     }
-    header ul {
-        position: fixed;
-        left: -100%;
-        top: 5%;
-        flex-direction: column;
-        background-color: #f47142;
-        width: 100%;
-        text-align: center;
-        transition: 0.25s;
-    }
-    header li {
-        padding: 3px 0;
-    }
-    header li:hover {
-        background: #ff914a;
-    }
-    header.active ul {
-        left: 0;
-     }
+    // header ul {
+    //     position: fixed;
+    //     left: -100%;
+    //     top: 5%;
+    //     flex-direction: column;
+    //     background-color: #f47142;
+    //     width: 100%;
+    //     text-align: center;
+    //     transition: 0.25s;
+    // }
+    // header li {
+    //     padding: 3px 0;
+    // }
+    // header li:hover {
+    //     background: #ff914a;
+    // }
+    // header.active ul {
+    //     left: 0;
+    //  }
 }
 

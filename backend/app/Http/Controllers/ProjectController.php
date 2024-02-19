@@ -26,6 +26,8 @@ class ProjectController extends Controller
      */
     function show($id) {
         $project = Project::findOrFail($id);
+        $collaborators = $project->collaborators()->get();
+        $project->collaborators = $collaborators;
         return response()->json([
             'project' => $project,
             "status"=> 200,
