@@ -99,7 +99,7 @@ const Home = () => {
                 <SearchBar />
                 <p>Filtre x3 </p>
             </div>
-                <h2 className="title-project">Liste des projets</h2>
+                <h2 className="subtitle title-green">Projets</h2>
                 <div className='project'>
                 {/* {projects?.filter((project) => project).slice(0, 2).map((project) => (
                     <div>
@@ -113,13 +113,13 @@ const Home = () => {
             <Skeleton loading={loading} active>
             <div>
                 <div className="carousel">
-                    <h2 className="title-coeur">Les coups de coeur</h2>
+                    <h2 className="subtitle title-orange">Coups de coeur</h2>
                     <Carousel />
                 </div>
             </div>
             <div>
                 <div>
-                    <h2 className="title-project">Recommandations</h2>
+                    <h2 className="subtitle title-green">Recommandations</h2>
                     <div className="projectsList">
                        {recommendationsList}
                     </div>
