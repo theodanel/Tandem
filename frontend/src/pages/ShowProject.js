@@ -3,12 +3,16 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, Steps } from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
+
 import Language from '../components/Language.js';
 import { PiTreeLight, PiPlantLight } from "react-icons/pi";
 import { LuNut } from "react-icons/lu";
 
 
 import "../stylesheets/ProjectDetail.scss"
+
+import { useSelector } from 'react-redux';
+
 
 const ShowProject = () => {
     const { id } = useParams();
@@ -21,6 +25,7 @@ const ShowProject = () => {
 
     const navigate = useNavigate();
 
+
     const getLanguages = async () => {
         const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
 
@@ -30,6 +35,10 @@ const ShowProject = () => {
     useEffect(() => {
         getLanguages();
     }, []);
+
+
+
+    const token = useSelector(state => state.data.token);
 
 
     const languagesList = languages.map((language) => {
@@ -46,6 +55,7 @@ const ShowProject = () => {
     const getProject = async () => {
         const response = await axios.get(`http://127.0.0.1:8000/api/project/${id}`).then(res => res.data.project);
         setProject(response);
+        document.title = `${response.title}`
     };
 
     useEffect(() => {
@@ -70,7 +80,9 @@ const ShowProject = () => {
 
     const update = async (e) => {
         e.preventDefault();
-        const res = await axios.put(`http://127.0.0.1:8000/api/project/${id}/update`, { newTitle, newDescription, newCollaborators });
+
+        const res = await axios.put(`http://127.0.0.1:8000/api/project/${id}/update`, { newTitle, newDescription, newCollaborators }, { headers: { "Authorization": `Bearer ${token}` } });
+
 
         if (res.data.status === 200) {
             setNewTitle("");
@@ -82,89 +94,92 @@ const ShowProject = () => {
         } else {
             setErrors(res.data.errors);
         }
-        
+
     }
 
 
-    // Permet d'afficher la liste des collaborateurs faisant partis d'un projet
+    // Permet d'afficher la liste des collaborateurs faisant partie d'un projet
     const collaboratorsList = project.collaborators?.map((collaborator, index) => {
         return (
-            <div>
-                
-                    <div key={collaborator.id}>
-                        {collaborator.name}
-                    </div>
-        
-                
+            <div className='collaboratorCard'>
+
+                <img src={`http://localhost:8000/images/avatars/${collaborator.avatar}`} />
+                <h5 key={collaborator.id}>
+                    {collaborator.name}
+                </h5>
+
+
             </div>
         );
     });
 
 
-    console.log(project.collaborators);
+    console.log(project);
+    console.log(languages);
 
 
 
     return (
         <Layout>
             <div className='projectDetail'>
-                <div className='imagePosition'>
-                    <img className='imageSize' src={project.image} alt="" />
-                </div>
+                <div className='projectDetailPosition'>
+                    <div className='imagePosition'>
+                        <img className='imageSize' src={project.image} alt="" />
+                    </div>
 
-                {/* <div>NOMBRE DE COLLABORATEURS: {project.collaborators}</div> */}
-                <div className='descriptionPosition'>
-                    <div className='projectTitle'>
-                        <div className='titleDecoration'>
-                            <h1 id='projectTitle'>{project.title}</h1>
-                            <hr className='titleDecoration'></hr>
+                    {/* <div>NOMBRE DE COLLABORATEURS: {project.collaborators}</div> */}
+                    <div className='descriptionPosition'>
+                        <div className='projectTitle'>
+                            <div className='titleDecoration'>
+                                <h1 id='projectTitle'>{project.title}</h1>
+                                <hr className='titleDecoration'></hr>
+                            </div>
+                            <div className='creator'>
+                                <h4 >Simtouflo_59</h4>
+                                <h5> - {project.created_at}</h5>
+                            </div>
                         </div>
-                        <div className='creator'>
-                            <h4 >Simtouflo_59</h4>
-                            <h4> {project.created_at}</h4>
+
+                        <p className='projectDescription'>{project.description}</p>
+
+                        <div className='updateButton'>
+                            <button onClick={() => showModal()}>Modifier</button>
                         </div>
+
+                        <div className='languagesList'>
+                            <h3>Langages utilisés :</h3>
+                            <legend name="languages" id="languages" value={project.languages} required>
+                                {languagesList}
+                            </legend>
+                            <hr className='languagesDecoration'></hr>
+                        </div>
+
+                    <Steps direction="vertical"
+                        className='projectSteps'
+                        size="small"
+                        current={1}
+                        id="Steps"
+                        items={[
+                            {
+
+                                description: <button className='stepOne'>Démarrer le projet</button>, icon: <LuNut />,
+
+                            },
+                            {
+                                description: <button className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
+
+                            },
+                            {
+                                description: <button className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
+
+                            },
+                        ]}
+                    />
                     </div>
 
-                    <p className='projectDescription'>{project.description}</p>
 
-                    <div className='updateButton'>
-                        <button  onClick={() => showModal()}>Modifier</button>
-                    </div>
 
-                    <div className='languagesList'>
-                        <h3>Langages utilisés :</h3>
-                        <legend name="languages" id="languages" value={project.languages} required>
-                            {languagesList}
-                        </legend>
-                        <hr className='languagesDecoration'></hr>
-                    </div>
                 </div>
-
-
-                <div className='startProject'>
-                    <button onClick={() => navigate("/")}>DEMARRER LE PROJET</button>
-                </div>
-
-                <Steps direction="vertical"
-                    className='projectSteps'
-                    size="small"
-                    current={1}
-                    items={[
-                        {
-
-                            description: <button className='stepOne'>Préparation</button>, icon: <LuNut />,
-
-                        },
-                        {
-                            description: <button className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
-
-                        },
-                        {
-                            description: <button className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
-
-                        },
-                    ]}
-                />
 
                 <div className='collabList'>
                     <div id='collaborators'>
@@ -187,6 +202,8 @@ const ShowProject = () => {
                             <button className="commentButton" onClick={() => showModal()}>Poster</button>
                         </div>
                         <hr className='languagesDecoration'></hr>
+
+                        <h3>Commentaires</h3>
                     </div>
                 </div>
 
