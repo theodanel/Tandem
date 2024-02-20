@@ -7,8 +7,7 @@ const Carousel = () => {
     const [projects, setProjects] = useState([]);
 
     const getProjects = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/projects").then((res) =>
-            res.json()
+        const data = await fetch("http://127.0.0.1:8000/api/projects").then((res) => res.json()
         );
 
         setProjects(data.projects);
@@ -27,6 +26,7 @@ const Carousel = () => {
         display: 'flex',
     };
     
+    console.log(projects);
 
     return (
 

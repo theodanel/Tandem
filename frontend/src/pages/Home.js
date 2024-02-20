@@ -30,7 +30,7 @@ const Home = () => {
     getProjects();
   }, []);
   
-  const listProject = projects.map(project => {
+  const listProject = projects.slice(0, 2).map(project => {
       return (
           <Project
               key={project.id}            
@@ -78,13 +78,14 @@ const Home = () => {
             </div>
                 <h1 className="title-project">Liste des projets</h1>
                 <div className='project'>
-                {projects?.filter((project) => project).slice(0, 2).map((project) => (
+                {/* {projects?.filter((project) => project).slice(0, 2).map((project) => (
                     <div>
                         <img src={project.image} className="project-image"/>
                         <h2>{project.title}</h2>
                         <p className="project-description">{project.description}</p>
                     </div>
-                ))}
+                ))} */}
+                <div>{listProject}</div>
             </div>
             <Skeleton loading={loading} active>
             <div>
