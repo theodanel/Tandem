@@ -164,6 +164,16 @@ class ProjectController extends Controller
     }
 
     /**
+     * Cloture le projet, peu importe le nombre de personnes
+     */
+    public function close($id){
+        $project = Project::find($id);
+        $project->collaborators_max = $project->collaborators;
+        $project->open = false;
+
+    }
+
+    /**
      * Ajoute/Retire le projet aux favoris
      */
     public function favorite($id){
