@@ -27,15 +27,15 @@ const ShowProject = () => {
 
     const navigate = useNavigate();
 
-    const getLanguages = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
+    // const getLanguages = async () => {
+    //     const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
 
-        setLanguages(data.languages);
-    }
+    //     setLanguages(data.languages);
+    // }
 
-    useEffect(() => {
-        getLanguages();
-    }, []);
+    // useEffect(() => {
+    //     getLanguages();
+    // }, []);
 
     const token = useSelector(state => state.data.token);
 
@@ -99,10 +99,10 @@ const ShowProject = () => {
 
 
     // Permet d'afficher la liste des collaborateurs faisant partie d'un projet
-    const collaboratorsList = project.collaborators?.map((collaborator, index) => {
+    const collaboratorsList = project.collaboratorsList?.map((collaborator, index) => {
         return (
             <div className='collaboratorCard' key={collaborator.id}>
-                <img src={`http://localhost:8000/images/avatars/${collaborator.avatar}`} />
+                <img src={`http://localhost:8000/images/avatars/${collaborator.avatar.url}`} />
                 <h5>{collaborator.name}</h5>
             </div>
         );

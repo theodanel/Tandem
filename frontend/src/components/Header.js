@@ -25,7 +25,7 @@ function Header() {
   return (
 
     <header className={`navbar ${showTiret ? "show-nav" : "false"} `}>
-      <img src={logo} alt="" onClick={() => changeRoute("/")}>
+      <img src={logo} alt="" onClick={() => changeRoute("/")}/>
       
       <ul className="all-item">
 
