@@ -52,18 +52,25 @@ class NotificationController extends Controller
         $validator = Validator::make($request->all(),[
             'content' => "max:200",
         ]);
-        $notification = new Notification();
-        $notification->sender_id = $request->sender_id;
-        $notification->receiver_id = $request->receiver_id;
-        $notification->project_id = $request->project_id ?? null;
-        $notification->type = $request->type;
-        $notification->open = false;
-        $notification->content = $request->content ?? "";
-        $notification->save();
-
-        return response()->json([
-            'status' => 200
-        ]);
+        if($validator->fails()){
+            return response()->json([
+                'errors' => $validator->messages(),
+                'status' => "error"
+            ]);
+        }else{
+            $notification = new Notification();
+            $notification->sender_id = $request->sender_id;
+            $notification->receiver_id = $request->receiver_id;
+            $notification->project_id = $request->project_id ?? null;
+            $notification->type = $request->type;
+            $notification->open = false;
+            $notification->content = $request->content ?? "";
+            $notification->save();
+            
+            return response()->json([
+                'status' => 200
+            ]);
+        }
     }
 
     /**
