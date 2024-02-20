@@ -49,7 +49,7 @@ header {
     @media (max-width: v.$sm-breakpoint){
       .hero-image {
         width: 100%;
-        height: 40vw; // pour conserver le ratio
+        height: 50vw; // pour conserver le ratio
       }
     }
     .hero-content {
@@ -59,15 +59,24 @@ header {
       transform: translate(-50%, -50%);
       text-align: center;
       color: rgba(255, 255, 255, 0.614);
+      #home-ProjectsClose {
+        color: v.$color-orange;
+      }
+      #home-ProjetsEnCours{
+        color: v.$color-gpastel;
+      }
+      #home-NumberSub{
+        color: v.$color-green;
+      }
     }
     @media (max-width: v.$sm-breakpoint){
       .hero-content {
         position: absolute;
-        top: 25%;
+        top: 20%;
         left: 50%;
         transform: translate(-50%, -50%);
         text-align: center;
-        color: rgba(255, 255, 255, 0.614); // ou toute autre couleur selon votre design
+        color: rgb(255, 255, 255); // ou toute autre couleur selon votre design
       }
     }
   
@@ -110,10 +119,11 @@ div #home-top{
   flex-direction: column;
   align-items: center;
   #home-button{
-    border: 1px solid black;
+    border: 2px solid rgb(255, 255, 255);
     border-radius: 1rem;
     background-color: v.$color-green;
     width: 50%;
+    color: white;
   }
 }
 .project{

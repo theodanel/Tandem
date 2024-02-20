@@ -59,6 +59,7 @@ class ProjectSeeder extends Seeder
             'collaborators' => 4,
             'collaborators_max' => 4,
             'popularity' => random_int(100,200),
+            'coups-coeur' => true,
             'image' => "https://images.unsplash.com/photo-1582485565167-75055e5e6b5b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         ])->collaborator()->attach([14, 12, 13, 15]);
 
@@ -70,6 +71,7 @@ class ProjectSeeder extends Seeder
             'collaborators' => 2,
             'collaborators_max' => 4,
             'popularity' => random_int(50,150),
+            'coups-coeur' => true,
             'image' => "https://images.unsplash.com/photo-1551029506-0807df4e2031?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         ])->collaborator()->attach([21, 20]);
 
@@ -81,6 +83,7 @@ class ProjectSeeder extends Seeder
             'collaborators' => 4,
             'collaborators_max' => 4,
             'popularity' => random_int(50,150),
+            'coups-coeur' => true,
             'image' => "https://images.unsplash.com/photo-1474557157379-8aa74a6ef541?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         ])->collaborator()->attach([16, 17, 18, 19]);
 

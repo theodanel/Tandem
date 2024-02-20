@@ -1,0 +1,15 @@
+@use "variables" as v;
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+
+    input {
+        border: 2px solid v.$color-orange;
+        border-radius: 20px;
+        height: 2rem;
+        &::placeholder {
+            color: v.$color-orange;
+        }
+    }
+}
