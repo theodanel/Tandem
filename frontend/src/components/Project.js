@@ -22,11 +22,14 @@ const Project = ({ title, image, status , languages , creator_id , description, 
 
   return (
     <div className='project'>
-        <h3>{title}</h3>
         <img onClick={() => navigate(`/project/${id}`)} src={image} alt="" id='project-img'/>
+        <div>
+          <h3>{title}</h3>
+          <p>{creator.name}</p>
+        </div>
         <p>{description}</p>
-        <div>{languagesList}</div>
-        <p>{creator.name}</p>
+        <div className='languagesList-2'>{languagesList}</div>
+        
 
     </div>
   )
