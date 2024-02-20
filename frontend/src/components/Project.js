@@ -5,12 +5,12 @@ const Project = ({ title, image, profil , language , creator , description, id }
   const navigate = useNavigate();
   return (
     <div className='project'>
-        <span>{title}</span>
-        <img onClick={() => navigate(`/project/${id}`)} src={image} alt="" />
-        <span>{description}</span>
-        <span>{profil}</span>
-        <span>{language}</span>
-        <p>{creator}</p>
+        <h6>{title}</h6>
+        <img onClick={() => navigate(`/project/${id}`)} src={image} alt="" id='project-img'/>
+        <h6>{description}</h6>
+        <h6>{profil}</h6>
+        <h6>{language}</h6>
+        <h6>{creator}</h6>
     </div>
   )
 }

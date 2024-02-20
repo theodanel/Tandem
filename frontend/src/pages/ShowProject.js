@@ -4,12 +4,16 @@ import { Modal, Steps } from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
 
+
 import Language from '../components/Language.js';
 import { PiTreeLight, PiPlantLight } from "react-icons/pi";
 import { LuNut } from "react-icons/lu";
 
 
 import "../stylesheets/ProjectDetail.scss"
+
+import { useSelector } from 'react-redux';
+
 
 import { useSelector } from 'react-redux';
 
@@ -24,6 +28,7 @@ const ShowProject = () => {
     const [languages, setLanguages] = useState([]);
 
     const navigate = useNavigate();
+
 
 
     const getLanguages = async () => {
@@ -55,6 +60,7 @@ const ShowProject = () => {
     const getProject = async () => {
         const response = await axios.get(`http://127.0.0.1:8000/api/project/${id}`).then(res => res.data.project);
         setProject(response);
+        document.title = `${response.title}`
         document.title = `${response.title}`
     };
 
