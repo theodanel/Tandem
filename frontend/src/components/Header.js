@@ -32,7 +32,7 @@ function Header() {
       <ul className="all-item">
 
         {user ? (
-          <li className="item" onClick={() => changeRoute("/logout")}>
+          <li className="item" onClick={() => changeRoute(`/user/${user.id}`)}>
             <p className="item-p">{user.name}</p>
           </li>
         ) : (
