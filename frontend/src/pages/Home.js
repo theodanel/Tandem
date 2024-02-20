@@ -29,20 +29,20 @@ const Home = () => {
         getProjects();
     }, []);
 
-    const listProject = projects.map(project => {
-        return (
-            <Project
-                key={project.id}
-                title={project.title}
-                image={project.image}
-                description={project.description}
-                profil={project.profil}
-                language={project.language}
-                creator={project.creator}
-                id={project.id}>
-            </Project>
-        );
-    });
+    // const listProject = projects.map(project => {
+    //     return (
+    //         <Project
+    //             key={project.id}
+    //             title={project.title}
+    //             image={project.image}
+    //             description={project.description}
+    //             profil={project.profil}
+    //             language={project.language}
+    //             creator={project.creator}
+    //             id={project.id}>
+    //         </Project>
+    //     );
+    // });
 
     return (
         <Layout>
@@ -75,19 +75,34 @@ const Home = () => {
                 <SearchBar />
                 <p>Filtre x3 </p>
             </div>
-            <div>
-                <h1>Liste des projets</h1>
+                <h1 className="title-project">Liste des projets</h1>
+                <div className='project'>
+                {projects?.filter((project) => project).slice(0, 2).map((project) => (
+                    <div>
+                        <img src={project.image} className="project-image"/>
+                        <h2>{project.title}</h2>
+                        <p className="project-description">{project.description}</p>
+                    </div>
+                ))}
             </div>
             <div>
                 <div className="carousel">
-                    <h1>Les coups de coeur</h1>
+                    <h1 className="title-coeur">Les coups de coeur</h1>
                     <Carousel />
                 </div>
             </div>
             <div>
                 <div>
-                    <h1>Recommandations</h1>
-                    {listProject}
+                    <h1 className="title-project">Recommandations</h1>
+                    <div className='project'>
+                {projects?.filter((project) => project).slice(2 , 6).map((project) => (
+                    <div>
+                        <img src={project.image} className="project-image" />
+                        <h2>{project.title}</h2>
+                        <p className="project-description">{project.description}</p>
+                    </div>
+                ))}
+            </div>
                 </div>
                 <div>
                     <p>En voir plus</p>
