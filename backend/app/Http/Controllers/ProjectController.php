@@ -62,6 +62,7 @@ class ProjectController extends Controller
         $languages = $project->languages()->get();
         $project->languages = $languages;
 
+
         return response()->json([
             'project' => $project,
             "status" => 200,

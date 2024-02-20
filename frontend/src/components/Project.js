@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios';
 import Language from './Language';
 
-const Project = ({ title, image, profil , languages , creator_id , description, id }) => {
+const Project = ({ title, image, status , languages , creator_id , description, id }) => {
   const [creator, setCreator] = useState({})
   const navigate = useNavigate();
   const getCreator = async ()=>{
@@ -22,12 +22,12 @@ const Project = ({ title, image, profil , languages , creator_id , description, 
 
   return (
     <div className='project'>
-        <span>{title}</span>
-        <img onClick={() => navigate(`/project/${id}`)} src={image} alt="" />
-        <span>{description}</span>
-        <span>{profil}</span>
+        <h3>{title}</h3>
+        <img onClick={() => navigate(`/project/${id}`)} src={image} alt="" id='project-img'/>
+        <p>{description}</p>
         <div>{languagesList}</div>
         <p>{creator.name}</p>
+
     </div>
   )
 }
