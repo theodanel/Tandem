@@ -1,12 +1,22 @@
-import "../stylesheets/Carousel.scss";
 import { Carousel as AntdCarousel } from 'antd';
-import imgcarou from '../img/carou.jpg';
-import imgcarou2 from '../img/carou2.jpg';
-import imgcarou3 from '../img/carou3.jpg';
+import "../stylesheets/Carousel.scss";
+import { useEffect, useState } from "react";
 
 
 const Carousel = () => {
+    const [projects, setProjects] = useState([]);
 
+    const getProjects = async () => {
+        const data = await fetch("http://127.0.0.1:8000/api/projects").then((res) =>
+            res.json()
+        );
+
+        setProjects(data.projects);
+    };
+
+    useEffect(() => {
+        getProjects();
+    }, []);
     // styles CSS pour le carrousel.
     const contentStyle = {
         margin: 0,
@@ -14,30 +24,22 @@ const Carousel = () => {
         color: '#fff',
         lineHeight: '160px',
         textAlign: 'center',
+        display: 'flex',
     };
+    
 
     return (
 
-       // Rapelle de l'import carousel d'antDesign renomer en AntdCarousel
+        // Rapelle de l'import carousel d'antDesign renomer en AntdCarousel
         <AntdCarousel className='caroussel' autoplay>
-            <div>
-                <h3 style={contentStyle}>
-                {/* Rapelle de l'import de l'image dans le dossier img */}
-                    <img src={imgcarou} />
-
-                </h3>
-            </div>
-            <div>
-                <h3 style={contentStyle}>
-                    <img src={imgcarou2} />
-                </h3>
-            </div>
-            <div>
-                <h3 style={contentStyle}>
-                    <img src={imgcarou3} />
-                </h3>
-            </div>
-
+                {projects?.filter((element) => element.coeur).map((element) => (
+                    <div style={contentStyle}>
+                        
+                        <img src={element.image} id='carousel-img' />
+                        <h2>{element.title}</h2>
+                        <p id='carousel-description'>{element.description}</p>
+                    </div>
+                ))}
         </AntdCarousel>
     );
 }
