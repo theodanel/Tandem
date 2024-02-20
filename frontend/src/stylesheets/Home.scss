@@ -18,25 +18,6 @@ main{
   flex-direction: column;
 }
 
-// Code Sass pour le Header
-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .tandem {
-      text-align: center;
-      margin: auto;
-    }
-    p {
-        cursor: pointer;
-      padding: 5px;
-      margin-right: 5px;
-    }
-  }
   
   // Code Sass pour le hero et les stats 
   .hero {
@@ -106,14 +87,7 @@ header {
         }
       }
     }
-header {
-    background-color: #f47142;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    font-size: calc(0.5rem + 1.5vw);
-}
+
 div #home-top{
   display: flex;
   flex-direction: column;

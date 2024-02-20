@@ -25,7 +25,9 @@ function Header() {
   return (
 
     <header className={`navbar ${showTiret ? "show-nav" : "false"} `}>
-      <img src={logo} alt="" onClick={() => changeRoute("/")}/>
+      <div id="imgproject">
+        <img src={logo} alt="" onClick={() => changeRoute("/")}/>
+      </div>
       
       <ul className="all-item">
 
@@ -45,12 +47,13 @@ function Header() {
         <li className="item slideInDown-3" >
           <p className="item-p">Recherche</p>
         </li>
-
+        {user ? 
         <li className="item slideInDown-4" >
           <p className="item-p">Notifications</p>
         </li>
+        : ''}
       </ul>
-      <button className="separation" onClick={handleShowTiret}>
+      <button className="separation" onClick={()=>handleShowTiret()}>
         <span className="tiret"></span>
       </button>
     </header>

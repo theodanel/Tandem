@@ -8,6 +8,25 @@
 header {
   background-color: v.$primary-color;
   text-align: center;
+  background-color: #f47142;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-size: (2rem);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  color: white;
+  display: flex;
+  .tandem {
+    text-align: center;
+    margin: auto;
+  }
+  p {
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 5px;
+  }
 }
 
 .tandem {
@@ -20,7 +39,10 @@ footer {
 }
 
 #imgproject {
-  width: 25%;
+  width: 20rem;
+  img{
+    width: 100%;
+  }
 }
 
 .navbar {
@@ -103,7 +125,7 @@ ul {
   .item-p {
     display: block;
     padding: 2rem;
-    font-size: 5vw;
+    font-size: 3rem;
   }
   .separation {
     display: block;
@@ -157,21 +179,27 @@ ul {
       transform: translateY(0);
     }
     .slideInDown-1 {
-      transition: all 1s v.$transition-ease;
+      transition: all 0.8s v.$transition-ease;
     }
     .slideInDown-2 {
-      transition: all 1.1s v.$transition-ease;
+      transition: all 0.9s v.$transition-ease;
     }
     .slideInDown-3 {
-      transition: all 1.2s v.$transition-ease;
+      transition: all 1s v.$transition-ease;
     }
     .slideInDown-4 {
-      transition: all 1.3s v.$transition-ease;
+      transition: all 1.1s v.$transition-ease;
     }
   }
 
   /* button animation */
   .item {
     transform: translateY(100vh);
+  }
+}
+
+@media screen and (min-width: 767px) {
+  .separation{
+    display: none;
   }
 }
