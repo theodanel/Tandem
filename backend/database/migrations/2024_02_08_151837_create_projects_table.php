@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('popularity')->nullable();
             $table->string('image')->nullable();
             $table->string('status')->nullable();
+            // $table->json('creator')->nullable();
             $table->timestamps();
         });
     }

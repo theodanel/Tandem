@@ -10,7 +10,7 @@ class Comment extends Model
     use HasFactory;
 
     /**
-     * Pour associer un commentaire au projet via son ID (unique)
+     * Association du projet sur lequel le commentaire été rédigé (unique)
      */
     public function project()
     {
@@ -18,7 +18,7 @@ class Comment extends Model
     }
 
     /**
-     * Pour associer un commentaire à un utilisateur via son ID (unique)
+     * Association de l'utilisateur qui a écrit le commentaire (unique)
      */
     public function user()
     {
@@ -26,7 +26,7 @@ class Comment extends Model
     }
 
     /**
-     * Pour associer un commentaire à un autre commentaire via son ID (unique)
+     * Association du commentaire auquel celui-ci répond (facultatif, unique)
      */
     public function comment()
     {

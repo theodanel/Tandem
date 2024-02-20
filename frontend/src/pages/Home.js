@@ -5,6 +5,7 @@ import Project from "../components/Project";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import germe from '../img/germe.png'
+import axios from "../api/axios.js";
 
 const Home = () => {
     useEffect(() => {
@@ -14,32 +15,29 @@ const Home = () => {
     const navigate = useNavigate();
     const [projects, setProjects] = useState([]);
 
-    const getProjects = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/projects").then((res) =>
-            res.json()
-        );
+  const getProjects = async () => {
+    const res = await axios.get("/api/projects");
+    setProjects(res.data.projects);
+  };
 
-        setProjects(data.projects);
-    };
-
-    useEffect(() => {
-        getProjects();
-    }, []);
-
-    const listProject = projects.map(project => {
-        return (
-            <Project
-                key={project.id}
-                title={project.title}
-                image={project.image}
-                description={project.description}
-                profil={project.profil}
-                language={project.language}
-                creator={project.creator}
-                id={project.id}>
-            </Project>
-        );
-    });
+  useEffect(() => {
+    getProjects();
+  }, []);
+  
+  const listProject = projects.map(project => {
+      return (
+          <Project
+              key={project.id}            
+              title={project.title}
+              image={project.image}
+              description={project.description}
+              status={project.status}
+              languages={project.languages}
+              creator_id={project.user_id} 
+              id={project.id}>
+          </Project>
+      );
+  });
 
     return (
         <Layout>
