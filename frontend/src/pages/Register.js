@@ -33,7 +33,7 @@ const Register = () => {
         e.preventDefault();
         // await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/register', { newUser });
-        if(res.data.status === "success"){
+        if(res.data.status === 200){
             swal({
                 title: "Bravo !",
                 text: res.data.message,
@@ -46,6 +46,12 @@ const Register = () => {
             message.error(res.data.message);
             setErrors(res.data.errors || []);
         }
+    }
+
+    // Pour empecher un message d'erreur car non-envoi du formulaire
+    const handleNavigate = (e) =>{
+        e.preventDefault();
+        navigate('/login');
     }
 
     return (
@@ -78,7 +84,7 @@ const Register = () => {
                 <button type='submit'>Valider</button>
                 <div>
                     <p>Déjà inscrit ?</p>
-                    <button onClick={() => navigate('/login')}>Se connecter</button>
+                    <button type='button' onClick={(e) => handleNavigate(e)}>Se connecter</button>
                 </div>
             </form>
         </Fragment>

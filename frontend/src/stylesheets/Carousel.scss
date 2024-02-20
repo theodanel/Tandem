@@ -1,0 +1,15 @@
+@use "variables" as v;
+
+.caroussel{
+    background-color: v.$color-gpastel;
+    padding: 2rem;
+    
+    
+    #carousel-img{
+        width: 100%;
+        height: 100%;
+    }
+    #carousel-description {
+        background-color: white;
+    }
+}
