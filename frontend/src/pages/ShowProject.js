@@ -15,8 +15,6 @@ import "../stylesheets/ProjectDetail.scss"
 import { useSelector } from 'react-redux';
 
 
-import { useSelector } from 'react-redux';
-
 
 const ShowProject = () => {
     const { id } = useParams();
