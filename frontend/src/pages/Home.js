@@ -7,7 +7,6 @@ import Carousel from "../components/Carousel";
 import germe from '../img/germe.png';
 import germerwhite from '../img/germerwhite.png';
 import SearchBar from "../components/SearchBar";
-import germe from '../img/germe.png'
 import axios from "../api/axios.js";
 import { Skeleton } from "antd";
 
