@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('status')->nullable();
             $table->boolean('coeur')->default(false);
+
             $table->timestamps();
         });
     }

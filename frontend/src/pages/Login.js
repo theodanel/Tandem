@@ -25,7 +25,7 @@ const Login = () => {
         // login({email, password});
         // await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/login', { email, password });
-        if(res.data.status === "success"){
+        if(res.data.status === 200){
             // swal({
             //     title: "Heureux de vous revoir !",
             //     text: res.data.message,
@@ -67,7 +67,7 @@ const Login = () => {
                 <button type='submit'>Valider</button>
                 <div>
                     <p>Pas encore de compte ?</p>
-                    <button onClick={() => navigate('/register')}>S'inscrire</button>
+                    <button type='button' onClick={() => navigate('/register')}>S'inscrire</button>
                 </div>
             </form>
         </Fragment>

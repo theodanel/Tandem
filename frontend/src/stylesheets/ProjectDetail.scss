@@ -1,0 +1,232 @@
+.projectDetail {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.imagePosition {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.descriptionPosition {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    align-items: center;
+  
+}
+
+.titleDecoration {
+    width: 100%;
+    margin-bottom: 1rem;
+        hr {
+            background-color: #77DD79;
+            height: 0.3rem;
+            width: 100%;
+        }
+}
+
+.imageSize {
+    width: 100%;
+    height: 100%;
+}
+
+.projectTitle {
+    color: black;
+    display: flex;
+    width: 100%;
+    margin-bottom: 3rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: start;
+}
+
+#projectTitle {
+    width: 100%;
+}
+
+.titleDecoration{
+    width: 90%;
+}
+
+.creator{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.projectDescription {
+    color: black;
+    text-transform: lowercase;
+    margin-bottom: 4rem;
+    width: 90%;
+}
+
+.updateButton {
+    margin-bottom: 3rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    button {
+        width: 40%;
+        background-color: #F47143;
+        color: white;
+        font-weight: bold;
+        height: 4rem;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 5px #c7c7c7;
+        cursor: pointer;
+
+    }
+    button:hover {background-color: #ce5e35}
+    
+    button:active {
+    background-color: rgb(163, 76, 45);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+    }
+}
+
+#languages {
+    display: flex;
+    width: 90%;
+    flex-wrap: wrap;
+}
+
+.languagesDecoration {
+    background-color: #F47143;
+    color: #F47143;
+    height: 0.4rem;
+    margin-bottom: 3rem;
+}
+
+.languagesList {
+    display: flex;
+
+    width: 90%;
+    flex-direction: column;
+}
+
+.startProject {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4rem;
+
+    button {
+        width: 60%;
+        background-color: #77DD79;
+        color: white;
+        font-weight: bold;
+        height: 4rem;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 5px #c7c7c7;
+        cursor: pointer;
+        
+    }
+
+    button:hover {background-color: #53a554}
+    
+    button:active {
+    background-color: #2a642b;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+    }
+}
+
+.projectSteps {
+    width: 90%;
+    display: flex;
+    
+    margin-bottom: 4rem;
+    flex-direction: column;
+    align-items: center;
+    height: 20rem;
+
+
+    button {
+        width: 40%;
+        background-color: #77DD79;
+        color: white;
+        font-weight: bold;
+        height: 3.5rem;
+        border-radius: 10px;
+        border: none;
+        
+    }
+
+    .stepOne {
+        background-color: #77DD79;
+        width: 25vw;
+      
+    }
+
+    .stepTwo {
+        background-color: #77DD79;
+        width: 25vw;
+    }
+
+    .stepThree {
+        background-color: #F47143;
+        width: 25vw;
+    }
+}
+
+.collabList {
+    display: flex;
+    text-align: start;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+
+
+    hr {
+        background-color: #77DD79;
+        height: 0.3rem;
+        width: 100%;
+    }
+}
+
+#collaborators {
+    width: 90%;
+    margin-bottom: 4rem;
+
+
+    li {
+        width: 100%;
+        font-weight: bold;
+        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+
+
+            div {
+                margin-right: 2rem;
+                margin-bottom: 1rem;
+            }
+    }
+}
+
+.addComment {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+}
+
+.commentButton {
+    width: 20%;
+    background-color: #77DD79;
+    color: white;
+    font-weight: bold;
+    height: 3.5rem;
+    border-radius: 10px;
+    border: none;
+}
