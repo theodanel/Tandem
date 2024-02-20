@@ -1,7 +1,7 @@
 
 import axios from '../api/axios';
 import React, {Fragment, useEffect, useState} from 'react'
-import {Modal, Steps} from "antd"
+import {Modal, Skeleton, Steps} from "antd"
 
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
@@ -23,44 +23,23 @@ const ShowProject = () => {
     const [newTitle, setNewTitle] = useState("");
     const [newDescription, setNewDescription] = useState("");
     const [newCollaborators, setNewCollaborators] = useState("");
-    const [languages, setLanguages] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
-
-
-    const getLanguages = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
-
-        setLanguages(data.languages);
-    }
-
-    useEffect(() => {
-        getLanguages();
-    }, []);
-
-
     
     const token = useSelector(state => state.data.token);
 
-    const updateProject = (groupKey, key, value) => {
-        const newState = {
-            ...project,
-            [groupKey]: {
-                ...project[groupKey],
-                [key]: value,
-            },
-        };
-        setProject(project=> ({...project, newState}));
-      };
-
     const getProject = async()=> {
         const res = await axios.get(`/api/project/${id}`)
-        const resProject = res.data.project; 
-        setProject(project => ({...project, resProject}));
-        document.title = `${res.data.project.title}`
+        Object.keys(res.data.project).map((key, index)=>{
+            setProject(project => ({...project, [key]:res.data.project[key]}));
+        })
+        document.title = `${res.data.project.title}`;
+        setLoading(false);
     };
 
-    const languagesList = languages.map((language) => {
+
+    const languagesList = project.languages?.map((language) => {
         return (
             <Language key={language.id}
                 name={language.name}
@@ -107,48 +86,41 @@ const ShowProject = () => {
         
     }
 
-
     // Permet d'afficher la liste des collaborateurs faisant partis d'un projet
-    const collaboratorsList = project.collaborators?.map((collaborator, index) => {
+    const collaboratorsList = project.collaboratorsList?.map((collaborator, index) => {
         return (
             <div>
-                
-                    <div key={collaborator.id}>
-                        {collaborator.name}
-                    </div>
-        
-                
+                <div key={collaborator.id}>
+                    {collaborator.name}
+                </div>
             </div>
         );
     });
 
-
-
-    console.log(project);
-
-
-
     return (
         <Layout>
+            <Skeleton loading={loading} active>
+
+           
             <div className='projectDetail'>
                 <div className='imagePosition'>
-                    <img className='imageSize' src={project.resProject.image} alt="" />
+                    <img className='imageSize' src={project.image} alt="" />
                 </div>
 
-                {/* <div>NOMBRE DE COLLABORATEURS: {project.resProject.collaborators}</div> */}
+                <div>NOMBRE DE COLLABORATEURS: {project.collaborators}</div>
                 <div className='descriptionPosition'>
                     <div className='projectTitle'>
                         <div className='titleDecoration'>
-                            <h1 id='projectTitle'>{project.resProject.title}</h1>
+                            <h1 id='projectTitle'>{project.title}</h1>
                             <hr className='titleDecoration'></hr>
                         </div>
                         <div className='creator'>
                             <h4 >Simtouflo_59</h4>
-                            <h4> {project.resProject.created_at}</h4>
+                            <h4> {project.created_at}</h4>
                         </div>
                     </div>
 
-                    <p className='projectDescription'>{project.resProject.description}</p>
+                    <p className='projectDescription'>{project.description}</p>
 
                     <div className='updateButton'>
                         <button  onClick={() => showModal()}>Modifier</button>
@@ -156,7 +128,7 @@ const ShowProject = () => {
 
                     <div className='languagesList'>
                         <h3>Langages utilisés :</h3>
-                        <legend name="languages" id="languages" value={project.resProject.languages} required>
+                        <legend name="languages" id="languages" value={project.languages} required>
                             {languagesList}
                         </legend>
                         <hr className='languagesDecoration'></hr>
@@ -229,6 +201,7 @@ const ShowProject = () => {
                     <button type='submit'>Valider</button>
                 </form>
             </Modal>
+            </Skeleton>
         </Layout>
     )
 
