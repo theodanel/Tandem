@@ -40,6 +40,7 @@ Route::post('/login', [AuthController::class, "login"]);
 Route::post('/register', [AuthController::class, "register"]);
 
 
+
 // Routes protégées par authentification
 Route::middleware('auth:sanctum')->group(function () {
     
@@ -56,6 +57,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/project/{id}/step', [ProjectController::class, "nextStep"]);
     Route::put('/project/{id}/favorite', [ProjectController::class, "favorite"]);
     Route::put('/project/{id}/like', [ProjectController::class, "like"]);
+    Route::post('/project/{id}/close', [ProjectController::class, "close"]);
+    Route::put('/project/{id}/join', [ProjectController::class, "join"]);
 
     //Gestion des commentaires
     Route::post('/comment/store', [CommentController::class, "store"]);

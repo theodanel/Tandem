@@ -23,10 +23,14 @@ class ProjectFactory extends Factory
         if ($collaborators === $collaborators_max){
             $isOpen = false;
         }
+        $statuses1 = ['created', 'ongoing'];
+        $rand_status1 = array_rand($statuses1);
+        $statuses2 = ['ongoing', 'completed'];
+        $rand_status2 = array_rand($statuses2);
         if ($isOpen){
-            $status = array_rand(['created','ongoing']);
+            $status = $statuses1[$rand_status1];
         } else {
-            $status = array_rand(['ongoing','completed']);
+            $status = $statuses2[$rand_status2];
         }
         return [
             'title' => fake()->sentence(),

@@ -14,9 +14,10 @@ class ProjectController extends Controller
     /**
      * Affichage de tous les projets
      */
-    function index() {
+    function index()
+    {
         $projects = Project::all();
-        foreach($projects as $project){
+        foreach ($projects as $project) {
             $creator = $project->creator()->first();
             $languages = $project->languages()->get();
             $project->creator = $creator;
@@ -31,12 +32,13 @@ class ProjectController extends Controller
     /**
      * Affiche un seul projet
      */
-    function show($id) {
+    function show($id)
+    {
         $project = Project::findOrFail($id);
 
         //Attribution des collaborateurs et leur avatar
         $collaborators = $project->collaborators()->get();
-        foreach($collaborators as $collaborator){
+        foreach ($collaborators as $collaborator) {
             $avatar = $collaborator->avatar()->first();
             $collaborator->avatar = $avatar;
         }
@@ -44,7 +46,7 @@ class ProjectController extends Controller
 
         //Attribution des commentaires, leur auteur et leur avatar
         $comments = $project->comments()->get();
-        foreach($comments as $comment){
+        foreach ($comments as $comment) {
             $user = $comment->user()->first();
             $avatar = $user->avatar()->first();
             $user->avatar = $avatar;
@@ -62,27 +64,28 @@ class ProjectController extends Controller
 
         return response()->json([
             'project' => $project,
-            "status"=> 200,
+            "status" => 200,
         ]);
     }
 
     /**
      * Enregistre un nouveau projet
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'title' => "required|unique:projects,title|max:50|min:3",
             'description' => "required|max:1000|min:3",
             'collaborators_max' => "required|numeric"
         ]);
-        
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->messages(),
                 "message" => "Erreur dans le formulaire",
                 'status' => "error",
             ]);
-        } else{
+        } else {
             $project = new Project();
             $project->title = $request->input('title');
             $project->description = $request->input('description');
@@ -98,7 +101,7 @@ class ProjectController extends Controller
 
             $project->languages()->sync($request->languages);
 
-            return response()-> json([
+            return response()->json([
                 'status' => 200,
                 "message" => "Le projet a été ajouté."
             ]);
@@ -109,15 +112,16 @@ class ProjectController extends Controller
     /**
      * Mise à jour des infos d'un projet existant
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $project = Project::findOrFail($id);
         if ($request->user()->tokenCan($project->user_id)) {
-            $validator = Validator::make($request->all(),[
+            $validator = Validator::make($request->all(), [
                 'newTitle' => "max:50|min:3|unique:projects,title," . $project->id,
                 'newDescription' => "max:1000|min:3",
                 'newCollaborators' => "numeric"
             ]);
-            if($validator->fails()){
+            if ($validator->fails()) {
                 return response()->json([
                     'errors' => $validator->messages(),
                     "message" => "Erreur dans le formulaire."
@@ -143,22 +147,39 @@ class ProjectController extends Controller
     }
 
     /**
+     * Ajoute un collaborateur au projet
+     */
+    public function join($id)
+    {
+        $project = Project::find($id);
+        $user_id = auth()->user()->id;
+        $user = User::find($user_id);
+        if ($project->collaborators < $project->collaborators_max && !$project->collaborators()->get()->contains($user_id)) {
+            $project->collaborators()->attach($user);
+        } else if ($project->collaborators()->get()->contains($user_id)) {
+            $project->collaborators()->detach($user);
+        }
+        $project->collaborators = count($project->collaborators()->get());
+        $project->save();
+    }
+
+    
+    /**
      * Fait progresser le statut du projet
      */
-    public function nextStep($id){
+    public function nextStep($id)
+    {
         $project = Project::find($id);
-        if($project->id == auth()->user()->id){
-            if($project->status === "created"){
+        if($project->user_id == auth()->user()->id){
+            if ($project->status === "created") {
                 $project->status = "ongoing";
-            } else if ($project->status === "ongoing"){
+            } else if ($project->status === "ongoing") {
                 $project->status = "completed";
             }
+            $project->save();
             return response()->json([
-                'status' => 200
-            ]);
-        } else {
-            return response()->json([
-                "status" => "error"
+                'status' => 200,
+                'project' => $project
             ]);
         }
     }
@@ -166,17 +187,21 @@ class ProjectController extends Controller
     /**
      * Cloture le projet, peu importe le nombre de personnes
      */
-    public function close($id){
+    public function close($id)
+    {
         $project = Project::find($id);
-        $project->collaborators_max = $project->collaborators;
-        $project->open = false;
-
+        if ($project->user_id == auth()->user()->id) {
+            $project->collaborators_max = $project->collaborators;
+            $project->open = false;
+            $project->save();
+        }
     }
 
     /**
      * Ajoute/Retire le projet aux favoris
      */
-    public function favorite($id){
+    public function favorite($id)
+    {
         $project = Project::find($id);
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
@@ -186,18 +211,21 @@ class ProjectController extends Controller
     /**
      * Ajoute/Supprime un like au projet
      */
-    public function like($id){
+    public function like($id)
+    {
         $project = Project::find($id);
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
         $user->likes()->toggle($project);
         $project->popularity = count($project->likes()->get());
+        $project->save();
     }
 
     /**
      * Supprime un projet
      */
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $project = Project::findOrFail($id);
         if ($request->user()->tokenCan($project->user_id)) {
             Project::destroy($id);
