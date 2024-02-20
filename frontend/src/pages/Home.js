@@ -70,9 +70,10 @@ const Home = () => {
             <div className="hero">
                 {/* <img src={germe} alt="Faites germer vos projets" className="hero-image" /> */}
                 <div className="hero-content">
-                    <div id="slogan">
+                    {/* <div id="slogan">
                         <img src={germerwhite} alt="Faites germer vos projets"/>
-                    </div>
+                    </div> */}
+                    <h1 className="title">Faites germer vos projets</h1>
                     <div id="home-top">
                         <button id="home-button" onClick={() => navigate("/create")}>Créer un projet</button>
                     </div>
@@ -98,7 +99,7 @@ const Home = () => {
                 <SearchBar />
                 <p>Filtre x3 </p>
             </div>
-                <h1 className="title-project">Liste des projets</h1>
+                <h2 className="title-project">Liste des projets</h2>
                 <div className='project'>
                 {/* {projects?.filter((project) => project).slice(0, 2).map((project) => (
                     <div>
@@ -112,13 +113,13 @@ const Home = () => {
             <Skeleton loading={loading} active>
             <div>
                 <div className="carousel">
-                    <h1 className="title-coeur">Les coups de coeur</h1>
+                    <h2 className="title-coeur">Les coups de coeur</h2>
                     <Carousel />
                 </div>
             </div>
             <div>
                 <div>
-                    <h1 className="title-project">Recommandations</h1>
+                    <h2 className="title-project">Recommandations</h2>
                     <div className="projectsList">
                        {recommendationsList}
                     </div>
