@@ -17,6 +17,7 @@ const Home = () => {
   const getProjects = async () => {
     const res = await axios.get("/api/projects");
     setProjects(res.data.projects);
+    console.log(res.data.projects);
   };
 
   useEffect(() => {
@@ -31,8 +32,8 @@ const Home = () => {
               image={project.image}
               description={project.description}
               profil={project.profil}
-              language={project.language}
-              creator={project.creator} 
+              languages={project.languages}
+              creator_id={project.user_id} 
               id={project.id}>
           </Project>
       );
