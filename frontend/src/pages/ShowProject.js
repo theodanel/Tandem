@@ -1,6 +1,8 @@
-import axios from 'axios';
-import React, { Fragment, useEffect, useState } from 'react'
-import { Modal, Steps } from "antd"
+
+import axios from '../api/axios';
+import React, {Fragment, useEffect, useState} from 'react'
+import {Modal, Skeleton, Steps} from "antd"
+
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
 
@@ -14,8 +16,6 @@ import "../stylesheets/ProjectDetail.scss"
 
 import { useSelector } from 'react-redux';
 
-
-
 const ShowProject = () => {
     const { id } = useParams();
     const [errors, setErrors] = useState([]);
@@ -23,11 +23,9 @@ const ShowProject = () => {
     const [newTitle, setNewTitle] = useState("");
     const [newDescription, setNewDescription] = useState("");
     const [newCollaborators, setNewCollaborators] = useState("");
-    const [languages, setLanguages] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
-
-
 
     const getLanguages = async () => {
         const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
@@ -39,12 +37,19 @@ const ShowProject = () => {
         getLanguages();
     }, []);
 
-
-
     const token = useSelector(state => state.data.token);
 
+    const getProject = async()=> {
+        const res = await axios.get(`/api/project/${id}`)
+        Object.keys(res.data.project).map((key, index)=>{
+            setProject(project => ({...project, [key]:res.data.project[key]}));
+        })
+        document.title = `${res.data.project.title}`;
+        setLoading(false);
+    };
 
-    const languagesList = languages.map((language) => {
+
+    const languagesList = project.languages?.map((language) => {
         return (
             <Language key={language.id}
                 name={language.name}
@@ -53,14 +58,6 @@ const ShowProject = () => {
         );
     });
 
-
-
-    const getProject = async () => {
-        const response = await axios.get(`http://127.0.0.1:8000/api/project/${id}`).then(res => res.data.project);
-        setProject(response);
-        document.title = `${response.title}`
-        document.title = `${response.title}`
-    };
 
     useEffect(() => {
         getProject();
@@ -84,9 +81,7 @@ const ShowProject = () => {
 
     const update = async (e) => {
         e.preventDefault();
-
-        const res = await axios.put(`http://127.0.0.1:8000/api/project/${id}/update`, { newTitle, newDescription, newCollaborators }, { headers: { "Authorization": `Bearer ${token}` } });
-
+        const res = await axios.put(`/api/project/${id}/update`, {newTitle, newDescription, newCollaborators},{headers:{"Authorization":`Bearer ${token}`}});
 
         if (res.data.status === 200) {
             setNewTitle("");
@@ -102,29 +97,22 @@ const ShowProject = () => {
     }
 
 
+
     // Permet d'afficher la liste des collaborateurs faisant partie d'un projet
     const collaboratorsList = project.collaborators?.map((collaborator, index) => {
         return (
-            <div className='collaboratorCard'>
-
+            <div className='collaboratorCard' key={collaborator.id}>
                 <img src={`http://localhost:8000/images/avatars/${collaborator.avatar}`} />
-                <h5 key={collaborator.id}>
-                    {collaborator.name}
-                </h5>
-
-
+                <h5>{collaborator.name}</h5>
             </div>
         );
     });
 
-
-    console.log(project);
-    console.log(languages);
-
-
-
     return (
         <Layout>
+            <Skeleton loading={loading} active>
+
+           
             <div className='projectDetail'>
                 <div className='projectDetailPosition'>
                     <div className='imagePosition'>
@@ -143,6 +131,7 @@ const ShowProject = () => {
                                 <h5> - {project.created_at}</h5>
                             </div>
                         </div>
+      
 
                         <p className='projectDescription'>{project.description}</p>
 
@@ -158,27 +147,27 @@ const ShowProject = () => {
                             <hr className='languagesDecoration'></hr>
                         </div>
 
-                    <Steps direction="vertical"
-                        className='projectSteps'
-                        size="small"
-                        current={1}
-                        id="Steps"
-                        items={[
-                            {
+                        <Steps direction="vertical"
+                            className='projectSteps'
+                            size="small"
+                            current={1}
+                            id="Steps"
+                            items={[
+                                {
 
-                                description: <button className='stepOne'>Démarrer le projet</button>, icon: <LuNut />,
+                                    description: <button className='stepOne'>Démarrer le projet</button>, icon: <LuNut />,
 
-                            },
-                            {
-                                description: <button className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
+                                },
+                                {
+                                    description: <button className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
 
-                            },
-                            {
-                                description: <button className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
+                                },
+                                {
+                                    description: <button className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
 
-                            },
-                        ]}
-                    />
+                                },
+                            ]}
+                        />
                     </div>
 
 
@@ -227,6 +216,7 @@ const ShowProject = () => {
                     <button type='submit'>Valider</button>
                 </form>
             </Modal>
+            </Skeleton>
         </Layout>
     )
 
