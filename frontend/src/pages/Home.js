@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import germe from '../img/germe.png'
 import axios from "../api/axios.js";
+import { Skeleton } from "antd";
 
 const Home = () => {
     useEffect(() => {
@@ -14,10 +15,12 @@ const Home = () => {
 
     const navigate = useNavigate();
     const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
 
   const getProjects = async () => {
     const res = await axios.get("/api/projects");
     setProjects(res.data.projects);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -73,6 +76,7 @@ const Home = () => {
             <div>
                 <h1>Liste des projets</h1>
             </div>
+            <Skeleton loading={loading} active>
             <div>
                 <div className="carousel">
                     <h1>Les coups de coeur</h1>
@@ -94,6 +98,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            </Skeleton>
         </Layout>
     );
 };

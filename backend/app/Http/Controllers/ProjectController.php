@@ -100,6 +100,7 @@ class ProjectController extends Controller
 
             $project->save();
 
+            $project->collaborators()->attach(auth()->user()->id);
             $project->languages()->sync($request->languages);
 
             return response()->json([
@@ -120,7 +121,7 @@ class ProjectController extends Controller
             $validator = Validator::make($request->all(), [
                 'newTitle' => "max:50|min:3|unique:projects,title," . $project->id,
                 'newDescription' => "max:1000|min:3",
-                'newCollaborators' => "numeric"
+                'newCollaborators' => "numeric|max:10|min:".$project->collaborators
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -130,7 +131,7 @@ class ProjectController extends Controller
             } else {
                 $project->title = $request->input("newTitle");
                 $project->description = $request->input("newDescription");
-                $project->collaborators = $request->input("newCollaborators");
+                $project->collaborators_max = $request->input("newCollaborators");
                 $project->save();
 
                 return response()->json([
