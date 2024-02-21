@@ -9,6 +9,7 @@ import { LuUser2, LuNut } from "react-icons/lu";
 import "../stylesheets/Project.scss"
 
 
+
 const Project = ({ title, image, status , languages , creator_id , description, id, collaborators, collaborators_max }) => {
   const [creator, setCreator] = useState({})
   const navigate = useNavigate();

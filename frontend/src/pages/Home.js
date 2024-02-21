@@ -8,6 +8,7 @@ import germerwhite from '../img/germerwhite.png';
 import SearchBar from "../components/SearchBar";
 import axios from "../api/axios.js";
 import { Skeleton } from "antd";
+import SearchsBar from "../components/SearchsBar.js";
 
 
 const Home = () => {
@@ -20,13 +21,14 @@ const Home = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
-  const getProjects = async () => {
-    const res = await axios.get("/api/projects");
-    const resUsers = await axios.get('/api/users');
-    setProjects(res.data.projects);
-    setUsers(resUsers.data.users);
-    setLoading(false);
-  };
+    const getProjects = async () => {
+        const res = await axios.get("/api/projects");
+        const resUsers = await axios.get('/api/users');
+        setProjects(res.data.projects);
+        setUsers(resUsers.data.users);
+        setLoading(false);
+    };
+
 
   useEffect(() => {
     getProjects();
@@ -65,6 +67,7 @@ const Home = () => {
         </Project>
     );
 }); 
+
     const projectsCount = projects.length;
     const usersCount = users.length;
     const projectsCompleted = projects.filter(project => project.status === "completed").length;
@@ -72,11 +75,9 @@ const Home = () => {
     return (
         <Layout>
             <div className="hero">
-                {/* <img src={germe} alt="Faites germer vos projets" className="hero-image" /> */}
+
                 <div className="hero-content">
-                    {/* <div id="slogan">
-                        <img src={germerwhite} alt="Faites germer vos projets"/>
-                    </div> */}
+
                     <h1 className="title">Faites germer vos projets</h1>
                     <div id="home-top">
                         <button id="home-button" onClick={() => navigate("/create")}>Créer un projet</button>
@@ -100,38 +101,34 @@ const Home = () => {
 
 
             <div>
-                <SearchBar />
+                <SearchsBar />
                 <p>Filtre x3 </p>
             </div>
+
                 <h2 className="subtitle title-green">Projets</h2>
                 <div className=''>
-                {/* {projects?.filter((project) => project).slice(0, 2).map((project) => (
-                    <div>
-                        <img src={project.image} className="project-image"/>
-                        <h2>{project.title}</h2>
-                        <p className="project-description">{project.description}</p>
-                    </div>
-                ))} */}
+      
+
                 <div className="projectsList">{projectsList}</div>
             </div>
             <Skeleton loading={loading} active>
-            <div>
-                <div className="carousel">
-                    <h2 className="subtitle title-orange">Coups de coeur</h2>
-                    <Carousel />
-                </div>
-            </div>
-            <div>
                 <div>
-                    <h2 className="subtitle title-green">Recommandations</h2>
-                    <div className="projectsList">
-                       {recommendationsList}
+                    <div className="carousel">
+                        <h2 className="subtitle title-orange">Coups de coeur</h2>
+                        <Carousel />
                     </div>
                 </div>
                 <div>
-                    <p>En voir plus</p>
+                    <div>
+                        <h2 className="subtitle title-green">Recommandations</h2>
+                        <div className="projectsList">
+                            {recommendationsList}
+                        </div>
+                    </div>
+                    <div>
+                        <p>En voir plus</p>
+                    </div>
                 </div>
-            </div>
 
             </Skeleton>
         </Layout>

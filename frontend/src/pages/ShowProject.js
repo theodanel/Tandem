@@ -2,7 +2,6 @@
 import axios from '../api/axios';
 import React, {Fragment, useEffect, useState} from 'react'
 import {Modal, Skeleton, Steps} from "antd"
-
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
 
@@ -21,6 +20,7 @@ const ShowProject = () => {
     const [errors, setErrors] = useState([]);
     const [project, setProject] = useState({});
     const [newTitle, setNewTitle] = useState("");
+    const [status, setStatus] = useState("");
     const [newDescription, setNewDescription] = useState("");
     const [newCollaborators, setNewCollaborators] = useState("");
     const [loading, setLoading] = useState(true);
@@ -67,6 +67,7 @@ const ShowProject = () => {
         setNewTitle(project.title)
         setNewDescription(project.description)
         setNewCollaborators(project.collaborators)
+        setStatus(project.status)
     }, [project])
 
 
@@ -79,10 +80,20 @@ const ShowProject = () => {
     };
 
 
+    const [isModalStepsOpen, setIsModalStepsOpen] = useState(false);
+    const showModalSteps = () => {
+        setIsModalStepsOpen(true);
+    };
+    const handleCancel2 = () => {
+        setIsModalStepsOpen(false);
+    };
+
+
     const update = async (e) => {
         e.preventDefault();
         const res = await axios.put(`/api/project/${id}/update`, {newTitle, newDescription, newCollaborators},{headers:{"Authorization":`Bearer ${token}`}});
 
+        
         if (res.data.status === 200) {
             setNewTitle("");
             setNewDescription("");
@@ -96,7 +107,16 @@ const ShowProject = () => {
 
     }
 
+    const changeStatus = async(statusType) => {
+        const res = await axios.put(`api/project/${id}/step`, {status: statusType} ,{headers:{"Authorization":`Bearer ${token}`}})
 
+        setStatus(project.status)
+        // if(project.status === "created") {
+        //     setStatus(statusType)
+        // } else {
+        //     setErrors(res.data.errors);
+        // }
+    }
 
     // Permet d'afficher la liste des collaborateurs faisant partie d'un projet
     const collaboratorsList = project.collaboratorsList?.map((collaborator, index) => {
@@ -146,28 +166,32 @@ const ShowProject = () => {
                             </legend>
                             <hr className='languagesDecoration'></hr>
                         </div>
+                    
 
-                        <Steps direction="vertical"
-                            className='projectSteps'
-                            size="small"
-                            current={1}
-                            id="Steps"
-                            items={[
-                                {
+                       
+                            <Steps direction="vertical"
+                                className='projectSteps'
+                                size="small"
+                                current={project.status}
+                                id="Steps"
+                                items={[
+                                    {
 
-                                    description: <button className='stepOne'>Démarrer le projet</button>, icon: <LuNut />,
+                                        description: <button style={{'backgroundColor': status === 'created' ? '#77DD79' : '#77dd79a9' }} onClick={() => showModalSteps()} name='ongoing' className='stepOne'>Démarrer le projet</button>, icon: <LuNut />,
 
-                                },
-                                {
-                                    description: <button className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
+                                    },
+                                    {
+                                        description: <button style={{'backgroundColor': status != 'ongoing'  ? '#77dd79a9' : '#77DD79' }} onClick={() => showModalSteps()} name='completed' className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
 
-                                },
-                                {
-                                    description: <button className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
+                                    },
+                                    {
+                                        description: <button style={{'backgroundColor': status != 'completed' ?'#f47243b4' : '#f47243'}} className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
 
-                                },
-                            ]}
-                        />
+                                    },
+                                ]}
+                            />
+
+                        
                     </div>
 
 
@@ -202,6 +226,16 @@ const ShowProject = () => {
 
             </div>
 
+
+
+            <Modal title="" open={isModalStepsOpen} onCancel={handleCancel2} footer={null} centered >
+                <h3>Etes vous sur de vouloir passer à l'étape suivante ? </h3>
+                <button type='button' onClick={() => (changeStatus(), setIsModalStepsOpen(false))}  name='ongoing' className='stepOne'>Oui</button> <LuNut />
+                <button type='button' onClick={() => setIsModalStepsOpen(false)}  name='closeModal' className='closeModal'>Non</button> <LuNut />
+                
+            </Modal>
+
+
             <Modal title="Modifier" open={isModalOpen} onCancel={handleCancel} footer={null} centered >
                 <form onSubmit={(e) => update(e)}>
                     <input type='text' id='newTitle' name='newTitle' value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
@@ -213,7 +247,7 @@ const ShowProject = () => {
                     {/* <input type="number" id="newCollaborators" name="newCollaborators" min="1" max="20" value={newCollaborators} onChange={(e) => setNewCollaborators(e.target.value)} />
                     <b>{errors.newCollaborators}</b> */}
 
-                    <button type='submit'>Valider</button>
+                    <input type='submit' value={"Valider"}/>
                 </form>
             </Modal>
             </Skeleton>

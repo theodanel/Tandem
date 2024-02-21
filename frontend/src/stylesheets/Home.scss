@@ -23,8 +23,10 @@
   }
   .hero-content {
     display: flex;
+    text-align: center;
     flex-direction: column;
     align-items: center;
+    color: rgb(255, 255, 255); // ou toute autre couleur selon votre design
     gap: 2rem;
     #slogan{
       width: 50rem;
@@ -52,16 +54,7 @@
     #home-NumberSub{
       color: v.$color-green;
     }
-  }
-  @media (max-width: v.$sm-breakpoint){
-    .hero-content {
-      // position: absolute;
-      // top: 20%;
-      // left: 50%;
-      // transform: translate(-50%, -50%);
-      text-align: center;
-      color: rgb(255, 255, 255); // ou toute autre couleur selon votre design
-    }
+
   }
   .hero-slogan {
     font-size: 2em; // ajustez selon la taille souhaitée
@@ -80,6 +73,12 @@ div #home-top{
     width: fit-content;
     color: white;
   }
+}
+.project{
+  img{
+  width: 100%;
+  height: 100%;
+}
 }
 .title-project{
   text-shadow: 5px 1px 0 v.$color-green;
@@ -236,7 +235,7 @@ div #home-top{
       font-size: 1.2em;
     }
   }
-
+  
   .projectsList{
     display: grid;
     padding: 8rem;
