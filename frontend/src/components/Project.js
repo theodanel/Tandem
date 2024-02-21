@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios';
 import Language from './Language';
-import { Progress } from 'antd';
+import { Popover, Progress } from 'antd';
 import { FaUser } from "react-icons/fa";
+import { PiPlantLight, PiTreeLight } from "react-icons/pi";
+import { LuNut } from "react-icons/lu";
 import "../stylesheets/Project.scss"
 
 
@@ -31,22 +33,39 @@ const Project = ({ title, image, status , languages , creator_id , description, 
     '100%': '#F47143'
   }
 
+  const icon = () =>{
+    switch(status){
+      case("created"):
+        return <Popover placement="right" content="Le projet n'a pas démarré !">
+          <div className='icon nut' ><LuNut size={40} color='white'/></div>
+          </Popover>;
+      case("ongoing"):
+        return <Popover placement="right" content="Projet en cours"><div className='icon plant' ><PiPlantLight size={40} color='white' /></div></Popover>
+        case("completed"):
+        return <Popover placement="right" content="Projet terminé !">
+        <div className='icon tree'><PiTreeLight size={40} color='white' /></div></Popover>
+    }
+  }
+
   return (
     <div className='project'>
-      <div className='img'>
-        <img onClick={() => navigate(`/project/${id}`)} src={image} alt="" id='project-img'/>
-      </div>
-      <div className='project-body'>
-        <div>
-          <div>
-            <h3>{title}</h3>
-            <p>{creator.name}</p>
-          </div>
-          <p className='description'>{description}</p>
+      {icon()}
+      <div className='container'>
+        <div className='img'>
+          <img onClick={() => navigate(`/project/${id}`)} src={image} alt=""/>
         </div>
-        <div className='bottom-row'>
-          <div className='languagesList-2'>{languagesList}</div>
-          <div className='progress'><FaUser size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} /><Progress className={collaborators === collaborators_max ? 'orange' : 'green'} type='circle' percent={(collaborators/collaborators_max)*100} size="small" format={(percent) => `${collaborators}/${collaborators_max}`} strokeColor={collaborators === collaborators_max ? '#F47143' : colors} /></div>
+        <div className='project-body'>
+          <div>
+            <div>
+              <h3>{title}</h3>
+              <p>{creator.name}</p>
+            </div>
+            <p className='description'>{description}</p>
+          </div>
+          <div className='bottom-row'>
+            <div className='languagesList-2'>{languagesList}</div>
+            <div className='progress'><FaUser size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} /><Progress className={collaborators === collaborators_max ? 'orange' : 'green'} type='circle' percent={(collaborators/collaborators_max)*100} size="small" format={(percent) => `${collaborators}/${collaborators_max}`} strokeColor={collaborators === collaborators_max ? '#F47143' : colors} /></div>
+          </div>
         </div>
       </div>
     </div>
