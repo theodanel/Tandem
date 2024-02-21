@@ -10,36 +10,37 @@
 
 .languagesList-2{
     display: grid;
-
     grid-template-columns: min-content auto repeat(15, 1fr);
-
     gap: 1rem;
     width: fit-content;
+    .checkbox{
+        &:has(input:checked) .img{
+            background-color: white;
+        }
+    }
 }
 
 .language{
     flex: 1;
-    caret-color: transparent;
     display: flex;
     width: fit;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    cursor: pointer;
     img{
-        height: 100%;
-        opacity: 0.5;
-        
+        width: 100%;
     }
     p {
         color: black;
-        text-transform: none;
-        transition: all 100ms;
-        cursor: pointer;
     }
-    input{
-        display: none;
+    .img{
+        width: fit-content;
     }
+}
+
+.checkbox{
+    caret-color: transparent;
+    cursor: pointer;
     .img{
         padding: 1rem;
         margin: 0 1rem;
@@ -47,7 +48,18 @@
         height: 6rem;
         overflow: hidden;
         transition: all 100ms;
-      
+    }
+    img{
+        height: 100%;
+        opacity: 0.5;
+    }
+    p {
+        text-transform: none;
+        transition: all 100ms;
+        cursor: pointer;
+    }
+    input{
+        display: none;
     }
     &:hover img{
         opacity: 1;

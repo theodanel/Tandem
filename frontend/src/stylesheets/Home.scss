@@ -140,11 +140,16 @@ div #home-top{
       margin-top: 1rem;
     }
   }
-  .img img{
+  .project-img img{
     width: 100%;
   }
-  .languagesList-2{
-    flex: 1;
+  .languagesList-3{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    .language{
+      flex: 0.15;
+    }
   }
   .bottom-row{
     display: flex;

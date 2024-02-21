@@ -108,6 +108,7 @@ const CreateProject = () => {
                 checked={checkedState[index]}
                 action={() => handleOnChange(language.id)}
                 image={language.logo}
+                type='checkbox'
             />
         );
     });
@@ -120,6 +121,7 @@ const CreateProject = () => {
             checked={checkedState[language.id-1]}
             action={() => handleOnChange(language.id)}
             image={language.logo}
+            type='checkbox'
         />
         )
     })
