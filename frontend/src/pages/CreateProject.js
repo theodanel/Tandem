@@ -166,7 +166,7 @@ const CreateProject = () => {
     return (
         <Fragment>
             <form onSubmit={(e) => saveProject(e)}>
-                <h1>Création de projet</h1>
+                <h1 className="title">Création de projet</h1>
                 {!user?  <Link to={'/login'}><Tag color="warning" icon={<ExclamationCircleOutlined />} className='alert'>Pour créer un projet, veuillez vous connecter</Tag></Link> :""}
                 <div className='form-group'>
                     <div className='flex-col'>

@@ -51,7 +51,7 @@ const Login = () => {
     return (
         <Fragment>
             <form onSubmit={(e)=>handleLogin(e)}>
-                <h1>Connexion</h1>
+                <h1 className="title">Connexion</h1>
                 <div className='form-group'>
                     <div className='flex-col'>
                         <label htmlFor='email'>Email :</label>
@@ -60,6 +60,8 @@ const Login = () => {
                     </div>
                     <div className='flex-col'>
                         <label htmlFor='password'>Mot de passe :</label>
+                        <input type='password' name='password' value={password} placeholder='Mot de passe' onChange={(e)=> setPassword(e.target.value)} required />
+                      
                     </div>
                 </div>
                 <button type='submit'>Valider</button>

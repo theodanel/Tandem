@@ -28,6 +28,8 @@ function App() {
       <Route path='/user/:id' element={<ShowUser />} />
 
       <Route path='/login' element={<Login />} />
+
+      <Route path='*' element={<Form content="notFound" />} />
     </Routes>
     {/* </AuthProvider> */}
     </BrowserRouter>
