@@ -25,12 +25,14 @@ function Header() {
   return (
 
     <header className={`navbar ${showTiret ? "show-nav" : "false"} `}>
-      <img src={logo} alt="" onClick={() => changeRoute("/")}>
+      <div id="imgproject">
+        <img src={logo} alt="" onClick={() => changeRoute("/")}/>
+      </div>
       
       <ul className="all-item">
 
         {user ? (
-          <li className="item" onClick={() => changeRoute("/logout")}>
+          <li className="item" onClick={() => changeRoute(`/user/${user.id}`)}>
             <p className="item-p">{user.name}</p>
           </li>
         ) : (
@@ -45,12 +47,13 @@ function Header() {
         <li className="item slideInDown-3" >
           <p className="item-p">Recherche</p>
         </li>
-
+        {user ? 
         <li className="item slideInDown-4" >
           <p className="item-p">Notifications</p>
         </li>
+        : ''}
       </ul>
-      <button className="separation" onClick={handleShowTiret}>
+      <button className="separation" onClick={()=>handleShowTiret()}>
         <span className="tiret"></span>
       </button>
     </header>

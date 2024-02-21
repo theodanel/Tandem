@@ -5,74 +5,57 @@ import Layout from '../components/Layout';
 import User from '../components/User';
 import Language from '../components/Language';
 import "../stylesheets/UserDetail.scss";
+import axios from '../api/axios.js';
+import { Skeleton } from 'antd';
 
 const UserPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [projects, setProjects] = useState([]);
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState({});
     const [languages, setLanguages] = useState([]);
+    const [projectsList, setProjectsList] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-
-    const getLanguages = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
-
-        setLanguages(data.languages);
+    const getData = async () => {
+        const data1 = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
+        setLanguages(data1.languages);
+        const data2 = await fetch("http://127.0.0.1:8000/api/projects").then(res => res.json());
+        setProjectsList(data2.projects.filter(project=>project.user_id == id ).map(project => {
+            return (
+                <Project
+                    key={project.id}
+                    name={project.name}
+                    image={project.image}
+                    description={project.description}
+                    profil={project.profil}
+                    languages={project.languages}
+                    creator_id={project.user_id} >
+                </Project>
+            );
+        }));
+   
+        const res = await axios.get(`/api/user/${id}`);
+        setUser(res.data.user);
+        document.title = `${res.data.user.name}`;
+        setLoading(false);
     }
-
     useEffect(() => {
-        getLanguages();
-    }, []);
+        getData();
+    }, [])
 
-
-    const languagesList = languages.map((language, index) => {
+    const languagesList = user.languagesList?.map((language, index) => {
         return (
             <Language key={language.id}
-                name={language.name}
-                image={language.logo}
+            name={language.name}
+            image={language.logo}
             />
         );
     });
-
-    const getProjects = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/projects").then(res => res.json());
-
-        setProjects(data.projects);
-        console.log(data.projects)
-    }
-
-    useEffect(() => {
-        getProjects();
-    }, []
-    )
-    const listProject = projects.map(project => {
-        return (
-            <Project
-                key={project.id}
-                name={project.name}
-                image={project.image}
-                description={project.description}
-                profil={project.profil}
-                language={project.language}
-                creator={project.creator} >
-            </Project>
-
-        );
-
-    });
-    useEffect(() => {
-        getUser()
-    }, [])
-
-    const getUser = async () => {
-        const data = await fetch(`http://127.0.0.1:8000/api/user/${id}`).then(res => res.json());
-
-        setUser(data.user);
-        console.log(data.user)
-    }
+      
     return (
         <Layout>
-            <div>
+            <Skeleton  loading={loading} active>
+            <div id='user'>
                 <div id='user-avatar'>
                     <img src={`http://localhost:8000/images/avatars/${user.avatar}`} />
                 </div>
@@ -95,10 +78,11 @@ const UserPage = () => {
                         <button id='user-button-project'>+</button>
                     </div>
                     <div>
-                        {listProject}
+                        {projectsList}
                     </div>
                 </div>
-            </div>
+            </div>                
+            </Skeleton>
         </Layout>
     )
 }

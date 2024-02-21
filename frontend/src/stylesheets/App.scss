@@ -18,4 +18,22 @@ main{
   flex-direction: column;
 }
 
+.title{
+  font-family: 'Ananda', sans-serif;
+  font-size: 5rem;
+  font-weight: 100;
+}
+
+.subtitle{
+  font-family: 'Hittedal Sans', sans-serif;                                      
+}
+
+.title-green{
+  color: v.$color-green-dark;
+}
+
+.title-orange{
+  color: v.$primary-color;
+}
+
 
