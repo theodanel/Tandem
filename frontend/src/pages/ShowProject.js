@@ -80,6 +80,15 @@ const ShowProject = () => {
     };
 
 
+    const [isModalStepsOpen, setIsModalStepsOpen] = useState(false);
+    const showModalSteps = () => {
+        setIsModalStepsOpen(true);
+    };
+    const handleCancel2 = () => {
+        setIsModalStepsOpen(false);
+    };
+
+
     const update = async (e) => {
         e.preventDefault();
         const res = await axios.put(`/api/project/${id}/update`, {newTitle, newDescription, newCollaborators},{headers:{"Authorization":`Bearer ${token}`}});
@@ -101,7 +110,7 @@ const ShowProject = () => {
     const changeStatus = async(statusType) => {
         const res = await axios.put(`api/project/${id}/step`, {status: statusType} ,{headers:{"Authorization":`Bearer ${token}`}})
 
-      
+        setStatus(project.status)
         // if(project.status === "created") {
         //     setStatus(statusType)
         // } else {
@@ -168,15 +177,15 @@ const ShowProject = () => {
                                 items={[
                                     {
 
-                                        description: <button style={{'backgroundColor': status === 'created' ? '#77DD79' : '#77dd79a9' }} onClick={(e) => changeStatus("ongoing")} name='ongoing' className='stepOne'>Démarrer le projet</button>, icon: <LuNut />,
+                                        description: <button style={{'backgroundColor': status === 'created' ? '#77DD79' : '#77dd79a9' }} onClick={() => showModalSteps()} name='ongoing' className='stepOne'>Démarrer le projet</button>, icon: <LuNut />,
 
                                     },
                                     {
-                                        description: <button style={{'backgroundColor': status != 'ongoing'  ? '#77dd79a9' : '#77DD79' }} onClick={(e) => changeStatus("completed")} name='completed' className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
+                                        description: <button style={{'backgroundColor': status != 'ongoing'  ? '#77dd79a9' : '#77DD79' }} onClick={() => showModalSteps()} name='completed' className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
 
                                     },
                                     {
-                                        description: <button style={{'backgroundColor': status != 'completed' ?'#f47243b4' : '#f47243'}} onClick={(e) => changeStatus("finish")} className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
+                                        description: <button style={{'backgroundColor': status != 'completed' ?'#f47243b4' : '#f47243'}} className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
 
                                     },
                                 ]}
@@ -216,6 +225,16 @@ const ShowProject = () => {
                 </div>
 
             </div>
+
+
+
+            <Modal title="" open={isModalStepsOpen} onCancel={handleCancel2} footer={null} centered >
+                <h3>Etes vous sur de vouloir passer à l'étape suivante ? </h3>
+                <button type='button' onClick={() => (changeStatus(), setIsModalStepsOpen(false))}  name='ongoing' className='stepOne'>Oui</button> <LuNut />
+                <button type='button' onClick={() => setIsModalStepsOpen(false)}  name='closeModal' className='closeModal'>Non</button> <LuNut />
+                
+            </Modal>
+
 
             <Modal title="Modifier" open={isModalOpen} onCancel={handleCancel} footer={null} centered >
                 <form onSubmit={(e) => update(e)}>
