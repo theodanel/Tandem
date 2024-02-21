@@ -56,12 +56,10 @@ const Login = () => {
                     <div className='flex-col'>
                         <label htmlFor='email'>Email :</label>
                         <input type='email' name='email' value={email} placeholder='tandem@email.fr' onChange={(e)=> setEmail(e.target.value)} autoFocus required />
-                        <b>{errors.email}</b>
+                   
                     </div>
                     <div className='flex-col'>
                         <label htmlFor='password'>Mot de passe :</label>
-                        <input type='password' name='password' value={password} placeholder='Mot de passe' onChange={(e)=> setPassword(e.target.value)} required />
-                        <b>{errors.password}</b>
                     </div>
                 </div>
                 <button type='submit'>Valider</button>

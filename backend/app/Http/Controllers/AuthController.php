@@ -36,8 +36,7 @@ class AuthController extends Controller
  
         if($validator->fails()){
             return response()->json([
-                'errors' => $validator->messages(),
-                "message" => "Erreur du formulaire",
+                "message" => "Identifiants incorrects",
                 'status' => "error"
             ]);
         } else if (auth()->attempt($credentials)) { // test la connection avec les données de la requêtes
@@ -91,7 +90,8 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $credentials['name'],
                 'email' => $credentials['email'],
-                'password' => bcrypt($credentials['password'])
+                'password' => bcrypt($credentials['password']),
+                'avatar_id' => random_int(1,39)
             ]);
 
             // connecte l'utilisateur
