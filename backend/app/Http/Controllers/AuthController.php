@@ -91,7 +91,6 @@ class AuthController extends Controller
                 'name' => $credentials['name'],
                 'email' => $credentials['email'],
                 'password' => bcrypt($credentials['password']),
-                'avatar_id' => random_int(1,39)
             ]);
 
             // connecte l'utilisateur
