@@ -1,28 +1,28 @@
 import "../stylesheets/SearchBar.scss";
 import { useState } from "react";
 
-function SearchBar({ categories, setCategories }) {
+function SearchBar({ projects, setProjects }) {
   const [value, setValue] = useState("");
 
   const handleChange = (e) => {
     setValue(e.target.value);
 
     let filterList = [];
-    categories.list.forEach((category) => {
-      const tmpCategory = { ...category };
+    projects.list.forEach((projects) => {
+      const tmpProjects = { ...projects };
 
-      const prestations = tmpCategory.prestations.filter((item) =>
+      const prestations = tmpProjects.prestations.filter((item) =>
         item.name.toLowerCase().includes(e.target.value)
       );
 
       if (prestations.length > 0) {
-        tmpCategory.prestations = prestations;
+        tmpProjects.prestations = prestations;
         filterList.push(tmpCategory);
       }
     });
 
-    setCategories({
-      ...categories,
+    setProjects({
+      ...projects,
       filtered: filterList,
     });
   };
