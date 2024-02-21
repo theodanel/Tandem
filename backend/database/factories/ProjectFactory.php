@@ -36,7 +36,7 @@ class ProjectFactory extends Factory
             'title' => fake()->sentence(),
             'description' => fake()->text(),
             'user_id' => fake()->numberBetween(1,10),
-            'image' => fake()->imageUrl(),
+            'image' => "https://picsum.photos/id/".random_int(9,600)."/800/450",
             'collaborators' => $collaborators,
             'collaborators_max' => $collaborators_max,
             'open' => $isOpen,

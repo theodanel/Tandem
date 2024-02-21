@@ -1,71 +1,73 @@
 @use "reset";
 @use "variables" as v;
  
-  // Code Sass pour le hero et les stats 
-  .hero {
-    display: flex;
-    justify-content: center;
-    height: fit-content;
-    background-image: url("../img/germe.png");
-    background-size: cover;
-    padding: 3rem 0;
- 
+// Code Sass pour le hero et les stats 
+.hero {
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+  background-image: url("../img/germe.png");
+  background-size: cover;
+  padding: 3rem 0;
+
+  .hero-image {
+    width: 100%;
+    // height: 25vw; // pour conserver le ratio
+  }
+  //position: relative;
+  @media (max-width: v.$sm-breakpoint){
     .hero-image {
       width: 100%;
-      // height: 25vw; // pour conserver le ratio
+      // height: 50vw; // pour conserver le ratio
     }
-    //position: relative;
-    @media (max-width: v.$sm-breakpoint){
-      .hero-image {
+  }
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    #slogan{
+      width: 50rem;
+      img{
         width: 100%;
-        // height: 50vw; // pour conserver le ratio
       }
     }
+
+    p {
+      transition: all 1s;
+    }
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    text-align: center;
+    // color: rgba(255, 255, 255, 0.614);
+    color: white;
+    #home-ProjectsClose {
+      color: v.$color-orange;
+    }
+    #home-ProjetsEnCours{
+      color: v.$color-gpastel;
+    }
+    #home-NumberSub{
+      color: v.$color-green;
+    }
+  }
+  @media (max-width: v.$sm-breakpoint){
     .hero-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
-      #slogan{
-        width: 50rem;
-        img{
-          width: 100%;
-        }
-      }
       // position: absolute;
-      // top: 50%;
+      // top: 20%;
       // left: 50%;
       // transform: translate(-50%, -50%);
       text-align: center;
-      // color: rgba(255, 255, 255, 0.614);
-      color: white;
-      #home-ProjectsClose {
-        color: v.$color-orange;
-      }
-      #home-ProjetsEnCours{
-        color: v.$color-gpastel;
-      }
-      #home-NumberSub{
-        color: v.$color-green;
-      }
+      color: rgb(255, 255, 255); // ou toute autre couleur selon votre design
     }
-    @media (max-width: v.$sm-breakpoint){
-      .hero-content {
-        // position: absolute;
-        // top: 20%;
-        // left: 50%;
-        // transform: translate(-50%, -50%);
-        text-align: center;
-        color: rgb(255, 255, 255); // ou toute autre couleur selon votre design
-      }
-    }
-  
-      .hero-slogan {
-        font-size: 2em; // ajustez selon la taille souhaitée
-        margin-bottom: 20px;
-      }
-      
-    }
+  }
+  .hero-slogan {
+    font-size: 2em; // ajustez selon la taille souhaitée
+    margin-bottom: 20px;
+  } 
+}
 
 div #home-top{
   display: flex;
@@ -94,12 +96,19 @@ div #home-top{
   flex-direction: column;
   gap: 4rem;
 }
+
+
+
 .project{
   display: flex;
   flex-direction: column;
   box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.396);
   position: relative;
   border-radius: 1rem;
+  transition: all 200ms;
+  &:hover{
+    box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.575);
+  }
   .container{
     flex: 1;
     border-radius: 1rem;
@@ -136,19 +145,51 @@ div #home-top{
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
+    .project-title:hover{
+      cursor: pointer;
+    }
+    .creator{
+      width: 100%;     
+      p{
+        width: fit-content;
+        text-decoration: underline;
+        color: #8C8C8C;
+        transition: all 200ms;
+        &:hover{
+          cursor: pointer;
+          color: v.$color-green-dark;
+          text-decoration-color: v.$color-green-dark;
+        }
+      }
+    }
     .description{
       margin-top: 1rem;
     }
   }
-  .project-img img{
-    width: 100%;
+  .project-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 40%;
+    img{
+      flex-shrink: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+    &:hover{
+      cursor: pointer;
+    }
   }
+
   .languagesList-3{
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
     .language{
-      flex: 0.15;
+      flex: 0.10;
     }
   }
   .bottom-row{
@@ -188,7 +229,7 @@ div #home-top{
   .projectsList{
     display: grid;
     padding: 8rem;
-    grid-template-columns:  repeat(4, 1fr);
+    grid-template-columns:  repeat(2, 1fr);
     gap: 4rem;
     width: fit-content;
     .project{
@@ -206,5 +247,17 @@ div #home-top{
     }
   }
 }
+
+@media (min-width: v.$lg-breakpoint){
+  .projectsList{
+    grid-template-columns:  repeat(4, 1fr);
+    .languagesList-3{
+      .language{
+        flex: 0.15;
+      }
+    }
+  }
+}
+
 
 

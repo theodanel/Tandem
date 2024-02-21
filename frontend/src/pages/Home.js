@@ -104,7 +104,7 @@ const Home = () => {
                 <p>Filtre x3 </p>
             </div>
                 <h2 className="subtitle title-green">Projets</h2>
-                <div className='project'>
+                <div className=''>
                 {/* {projects?.filter((project) => project).slice(0, 2).map((project) => (
                     <div>
                         <img src={project.image} className="project-image"/>
