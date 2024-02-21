@@ -1,6 +1,21 @@
-// div .project{
-//     #project-image{
-//         width: 50%;
-//     }
-// }
+@use "reset";
+@use "variables" as v;
+
+.progress{
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    .green{
+        .ant-progress-text{
+            
+            font-size: 2rem;
+        }
+    }
+    .orange{
+        .ant-progress-text{
+            color: v.$primary-color;
+            font-size: 2rem;
+        }
+    }
+}
 

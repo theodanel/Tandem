@@ -29,40 +29,45 @@ const Home = () => {
         setLoading(false);
     };
 
-    useEffect(() => {
-        getProjects();
-    }, []);
 
-    
-    const projectsList = projects.slice(0, 8).map(project => {
-        return (
-            <Project
-                key={project.id}
-                title={project.title}
-                image={project.image}
-                description={project.description}
-                status={project.status}
-                languages={project.languages}
-                creator_id={project.user_id}
-                id={project.id}>
-            </Project>
-        );
-    });
+  useEffect(() => {
+    getProjects();
+  }, []);
+  
+  const projectsList = projects.slice(0, 8).map(project => {
+      return (
+          <Project
+              key={project.id}            
+              title={project.title}
+              image={project.image}
+              description={project.description}
+              status={project.status}
+              languages={project.languages}
+              creator_id={project.user_id} 
+              collaborators={project.collaborators}
+              collaborators_max={project.collaborators_max}
+              id={project.id}>
+          </Project>
+      );
+  });
 
-    const recommendationsList = projects.slice(2, 6).map(project => {
-        return (
-            <Project
-                key={project.id}
-                title={project.title}
-                image={project.image}
-                description={project.description}
-                status={project.status}
-                languages={project.languages}
-                creator_id={project.user_id}
-                id={project.id}>
-            </Project>
-        );
-    });
+  const recommendationsList = projects.slice(2, 6).map(project => {
+    return (
+        <Project
+            key={project.id}            
+            title={project.title}
+            image={project.image}
+            description={project.description}
+            status={project.status}
+            languages={project.languages}
+            creator_id={project.user_id} 
+            collaborators={project.collaborators}
+            collaborators_max={project.collaborators_max}
+            id={project.id}>
+        </Project>
+    );
+}); 
+
     const projectsCount = projects.length;
     const usersCount = users.length;
     const projectsCompleted = projects.filter(project => project.status === "completed").length;
@@ -99,8 +104,11 @@ const Home = () => {
                 <SearchsBar />
                 <p>Filtre x3 </p>
             </div>
-            <h2 className="subtitle title-green">Projets</h2>
-            <div className='project'>
+
+                <h2 className="subtitle title-green">Projets</h2>
+                <div className=''>
+      
+
                 <div className="projectsList">{projectsList}</div>
             </div>
             <Skeleton loading={loading} active>

@@ -57,7 +57,7 @@ const Register = () => {
     return (
         <Fragment>
             <form onSubmit={(e)=>handleLogin(e)}>
-                <h1>Inscription</h1>
+                <h1 className="title">Inscription</h1>
                 <div className='form-group'>
                     <div className='flex-col'>
                         <label htmlFor='name'>Choisissez un pseudo :</label>
