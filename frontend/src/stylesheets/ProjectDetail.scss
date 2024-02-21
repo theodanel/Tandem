@@ -73,7 +73,7 @@
 
     @media (min-width: v.$xl-breakpoint) {
         width: 90%;
-        height: 80vh;
+        height: 70vh;
 
     }
 
@@ -383,21 +383,6 @@
     }
 
     .stepOne {
-        background-color: #77DD79;
-        width: 50vw;
-
-        @media (min-width: v.$sm-breakpoint) {
-            width: 80vw;
-            height: 4vh;
-        }
-
-        @media (min-width: v.$xl-breakpoint) {
-            width: 12vw;
-            height: 6vh;
-        }
-    }
-
-    .stepTwo {
         background-color: #77dd79a9;
         width: 50vw;
 
@@ -412,8 +397,8 @@
         }
     }
 
-    .stepThree {
-        background-color: #f4724391;
+    .stepTwo {
+        background-color: #77DD79;
         width: 50vw;
 
         @media (min-width: v.$sm-breakpoint) {
@@ -426,6 +411,25 @@
             height: 6vh;
         }
     }
+
+    .stepThree {
+        background-color: #f47243b4;
+        width: 50vw;
+
+        @media (min-width: v.$sm-breakpoint) {
+            width: 80vw;
+            height: 4vh;
+        }
+
+        @media (min-width: v.$xl-breakpoint) {
+            width: 12vw;
+            height: 6vh;
+        }
+    }
+}
+
+.ModalText {
+    color: black;
 }
 
 .collabList {
@@ -518,6 +522,10 @@
     h5 {
         width: 50%;
         margin-bottom: 1rem;
+    }
+
+    img {
+        height: 6rem;
     }
 
 
