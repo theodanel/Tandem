@@ -2,20 +2,38 @@
 @use "variables" as v;
 
 html{
-    min-height: 100vh;
-  }
-  
-  .App {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  main{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
+  min-height: 100vh;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+main{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.title{
+  font-family: 'Ananda', sans-serif;
+  font-size: 5rem;
+  font-weight: 100;
+}
+
+.subtitle{
+  font-family: 'Hittedal Sans', sans-serif;                                      
+}
+
+.title-green{
+  color: v.$color-green-dark;
+}
+
+.title-orange{
+  color: v.$primary-color;
+}
+
 

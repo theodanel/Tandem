@@ -6,6 +6,7 @@ import {Modal, Skeleton, Steps} from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
 
+
 import Language from '../components/Language.js';
 import { PiTreeLight, PiPlantLight } from "react-icons/pi";
 import { LuNut } from "react-icons/lu";
@@ -14,7 +15,6 @@ import { LuNut } from "react-icons/lu";
 import "../stylesheets/ProjectDetail.scss"
 
 import { useSelector } from 'react-redux';
-
 
 const ShowProject = () => {
     const { id } = useParams();
@@ -26,7 +26,17 @@ const ShowProject = () => {
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
-    
+
+    // const getLanguages = async () => {
+    //     const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
+
+    //     setLanguages(data.languages);
+    // }
+
+    // useEffect(() => {
+    //     getLanguages();
+    // }, []);
+
     const token = useSelector(state => state.data.token);
 
     const getProject = async()=> {
@@ -83,16 +93,17 @@ const ShowProject = () => {
         } else {
             setErrors(res.data.errors);
         }
-        
+
     }
 
-    // Permet d'afficher la liste des collaborateurs faisant partis d'un projet
+
+
+    // Permet d'afficher la liste des collaborateurs faisant partie d'un projet
     const collaboratorsList = project.collaboratorsList?.map((collaborator, index) => {
         return (
-            <div>
-                <div key={collaborator.id}>
-                    {collaborator.name}
-                </div>
+            <div className='collaboratorCard' key={collaborator.id}>
+                <img src={`http://localhost:8000/images/avatars/${collaborator.avatar.url}`} />
+                <h5>{collaborator.name}</h5>
             </div>
         );
     });
@@ -103,63 +114,65 @@ const ShowProject = () => {
 
            
             <div className='projectDetail'>
-                <div className='imagePosition'>
-                    <img className='imageSize' src={project.image} alt="" />
-                </div>
+                <div className='projectDetailPosition'>
+                    <div className='imagePosition'>
+                        <img className='imageSize' src={project.image} alt="" />
+                    </div>
 
-                <div>NOMBRE DE COLLABORATEURS: {project.collaborators}</div>
-                <div className='descriptionPosition'>
-                    <div className='projectTitle'>
-                        <div className='titleDecoration'>
-                            <h1 id='projectTitle'>{project.title}</h1>
-                            <hr className='titleDecoration'></hr>
+                    {/* <div>NOMBRE DE COLLABORATEURS: {project.collaborators}</div> */}
+                    <div className='descriptionPosition'>
+                        <div className='projectTitle'>
+                            <div className='titleDecoration'>
+                                <h1 id='projectTitle'>{project.title}</h1>
+                                <hr className='titleDecoration'></hr>
+                            </div>
+                            <div className='creator'>
+                                <h4 >Simtouflo_59</h4>
+                                <h5> - {project.created_at}</h5>
+                            </div>
                         </div>
-                        <div className='creator'>
-                            <h4 >Simtouflo_59</h4>
-                            <h4> {project.created_at}</h4>
+      
+
+                        <p className='projectDescription'>{project.description}</p>
+
+                        <div className='updateButton'>
+                            <button onClick={() => showModal()}>Modifier</button>
                         </div>
+
+                        <div className='languagesList'>
+                            <h3>Langages utilisés :</h3>
+                            <legend name="languages" id="languages" value={project.languages} required>
+                                {languagesList}
+                            </legend>
+                            <hr className='languagesDecoration'></hr>
+                        </div>
+
+                        <Steps direction="vertical"
+                            className='projectSteps'
+                            size="small"
+                            current={1}
+                            id="Steps"
+                            items={[
+                                {
+
+                                    description: <button className='stepOne'>Démarrer le projet</button>, icon: <LuNut />,
+
+                                },
+                                {
+                                    description: <button className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
+
+                                },
+                                {
+                                    description: <button className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
+
+                                },
+                            ]}
+                        />
                     </div>
 
-                    <p className='projectDescription'>{project.description}</p>
 
-                    <div className='updateButton'>
-                        <button  onClick={() => showModal()}>Modifier</button>
-                    </div>
 
-                    <div className='languagesList'>
-                        <h3>Langages utilisés :</h3>
-                        <legend name="languages" id="languages" value={project.languages} required>
-                            {languagesList}
-                        </legend>
-                        <hr className='languagesDecoration'></hr>
-                    </div>
                 </div>
-
-
-                <div className='startProject'>
-                    <button onClick={() => navigate("/")}>DEMARRER LE PROJET</button>
-                </div>
-
-                <Steps direction="vertical"
-                    className='projectSteps'
-                    size="small"
-                    current={1}
-                    items={[
-                        {
-
-                            description: <button className='stepOne'>Préparation</button>, icon: <LuNut />,
-
-                        },
-                        {
-                            description: <button className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
-
-                        },
-                        {
-                            description: <button className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
-
-                        },
-                    ]}
-                />
 
                 <div className='collabList'>
                     <div id='collaborators'>
@@ -182,6 +195,8 @@ const ShowProject = () => {
                             <button className="commentButton" onClick={() => showModal()}>Poster</button>
                         </div>
                         <hr className='languagesDecoration'></hr>
+
+                        <h3>Commentaires</h3>
                     </div>
                 </div>
 

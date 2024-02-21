@@ -1,11 +1,21 @@
-import "../stylesheets/style.css";
-import React, { useEffect, useState } from 'react'
+import "../stylesheets/MenuBurger.scss";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "../context/AuthContext";
 import logo from "../img/logo.png"
 
+
 function Header() {
 
+  const [showTiret, setShowTiret] = useState(false)
+  const handleShowTiret = () => {
+    setShowTiret(!showTiret)
+  }
+
+  const changeRoute = (path) => {
+    handleShowTiret()
+    navigate(path)
+  }
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
 
@@ -13,19 +23,39 @@ function Header() {
   const navigate = useNavigate();
 
   return (
-    <header id="nav" className="active">
-          <img src={logo} alt="" onClick={() => navigate("/")}/>
-      <ul>
+
+    <header className={`navbar ${showTiret ? "show-nav" : "false"} `}>
+      <div id="imgproject">
+        <img src={logo} alt="" onClick={() => changeRoute("/")}/>
+      </div>
+      
+      <ul className="all-item">
+
         {user ? (
-          <li onClick={() => navigate("/logout")}>{user.name}</li>
+          <li className="item" onClick={() => changeRoute(`/user/${user.id}`)}>
+            <p className="item-p">{user.name}</p>
+          </li>
         ) : (
-          <li onClick={() => navigate("/login")}>Connexion</li>
+          <li className="item slideInDown-1"  onClick={() => changeRoute("/login")}>
+            <p className="item-p">Connexion</p>
+          </li>
         )}
-        <li onClick={() => navigate("/create")}>Créer un projet</li>
-        <li>Recherche</li>
-        <li>Notifications</li>
+        <li className="item slideInDown-2" onClick={() => changeRoute("/create")}>
+          <p className="item-p">Créer un projet</p>
+        </li>
+
+        <li className="item slideInDown-3" >
+          <p className="item-p">Recherche</p>
+        </li>
+        {user ? 
+        <li className="item slideInDown-4" >
+          <p className="item-p">Notifications</p>
+        </li>
+        : ''}
       </ul>
-      <div id="icons" ></div>
+      <button className="separation" onClick={()=>handleShowTiret()}>
+        <span className="tiret"></span>
+      </button>
     </header>
   );
 }
