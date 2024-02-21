@@ -101,8 +101,11 @@ div #home-top{
   position: relative;
   border-radius: 1rem;
   .container{
+    flex: 1;
     border-radius: 1rem;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
   .icon{
     position: absolute;

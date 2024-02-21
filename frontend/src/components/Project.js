@@ -64,7 +64,14 @@ const Project = ({ title, image, status , languages , creator_id , description, 
           </div>
           <div className='bottom-row'>
             <div className='languagesList-2'>{languagesList}</div>
-            <div className='progress'><FaUser size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} /><Progress className={collaborators === collaborators_max ? 'orange' : 'green'} type='circle' percent={(collaborators/collaborators_max)*100} size="small" format={(percent) => `${collaborators}/${collaborators_max}`} strokeColor={collaborators === collaborators_max ? '#F47143' : colors} /></div>
+            {status !== "completed" ?
+              <Popover placement="left" content={collaborators === collaborators_max ? "Equipe complète" : ` ${collaborators_max - collaborators} place(s) restante(s)`}>
+                <div className='progress'>
+                  <FaUser size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} />
+                  <Progress className={collaborators === collaborators_max ? 'orange' : 'green'} type='circle' percent={(collaborators/collaborators_max)*100} size="small" format={(percent) => `${collaborators}/${collaborators_max}`} strokeColor={collaborators === collaborators_max ? '#F47143' : colors} />
+                </div>
+              </Popover>
+             : ""}
           </div>
         </div>
       </div>
