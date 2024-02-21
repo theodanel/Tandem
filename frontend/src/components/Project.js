@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios';
 import Language from './Language';
+import "../stylesheets/Project.scss";
 
 const Project = ({ title, image, status , languages , creator_id , description, id }) => {
   const [creator, setCreator] = useState({})
