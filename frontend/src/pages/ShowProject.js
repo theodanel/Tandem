@@ -177,15 +177,15 @@ const ShowProject = () => {
                                 items={[
                                     {
 
-                                        description: <button style={{'backgroundColor': status === 'created' ? '#77DD79' : '#77dd79a9' }} onClick={() => showModalSteps()} name='ongoing' className='stepOne'>Démarrer le projet</button>, icon: <LuNut />,
+                                        description: <button style={{'backgroundColor': status === 'created' ? '#77DD79' : '#77dd79a9' }} onClick={() => showModalSteps()} name='ongoing' className='stepOne'>Démarrer le projet</button>, icon: <LuNut className='stepsIcons'/>,
 
                                     },
                                     {
-                                        description: <button style={{'backgroundColor': status != 'ongoing'  ? '#77dd79a9' : '#77DD79' }} onClick={() => showModalSteps()} name='completed' className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
+                                        description: <button style={{'backgroundColor': status != 'ongoing'  ? '#77dd79a9' : '#77DD79' }} onClick={() => showModalSteps()} name='completed' className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight className='stepsIcons'/>,
 
                                     },
                                     {
-                                        description: <button style={{'backgroundColor': status != 'completed' ?'#f47243b4' : '#f47243'}} className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
+                                        description: <button style={{'backgroundColor': status != 'completed' ?'#f47243b4' : '#f47243'}} className='stepThree'>Projet terminé</button>, icon: <PiTreeLight className='stepsIcons'/>,
 
                                     },
                                 ]}
@@ -230,8 +230,8 @@ const ShowProject = () => {
 
             <Modal title="" open={isModalStepsOpen} onCancel={handleCancel2} footer={null} centered >
                 <h3>Etes vous sur de vouloir passer à l'étape suivante ? </h3>
-                <button type='button' onClick={() => (changeStatus(), setIsModalStepsOpen(false))}  name='ongoing' className='stepOne'>Oui</button> <LuNut />
-                <button type='button' onClick={() => setIsModalStepsOpen(false)}  name='closeModal' className='closeModal'>Non</button> <LuNut />
+                <button type='button' onClick={() => (changeStatus(), setIsModalStepsOpen(false))}  name='ongoing' className='stepOne'>Oui</button> 
+                <button type='button' onClick={() => setIsModalStepsOpen(false)}  name='closeModal' className='closeModal'>Non</button> 
                 
             </Modal>
 
