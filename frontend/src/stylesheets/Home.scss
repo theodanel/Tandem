@@ -6,19 +6,21 @@
   display: flex;
   justify-content: center;
   height: fit-content;
-  background-image: url("../img/germe.png");
+  // background-image: url("../img/germe.png");
+  background-image: url("https://images.unsplash.com/photo-1623212035189-386c459dd983?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-size: cover;
-  padding: 3rem 0;
+  background-position: center;
+ 
 
   .hero-image {
-    width: 100%;
-    // height: 25vw; // pour conserver le ratio
+    padding: 5rem 0;
+    backdrop-filter: blur(2px);
+    background-color: rgba(31, 31, 31, 0.3);
+    flex: 1;
   }
-  //position: relative;
   @media (max-width: v.$sm-breakpoint){
     .hero-image {
       width: 100%;
-      // height: 50vw; // pour conserver le ratio
     }
   }
   .hero-content {
@@ -26,7 +28,7 @@
     text-align: center;
     flex-direction: column;
     align-items: center;
-    color: rgb(255, 255, 255); // ou toute autre couleur selon votre design
+    color: rgb(255, 255, 255);
     gap: 2rem;
     #slogan{
       width: 50rem;
@@ -34,17 +36,16 @@
         width: 100%;
       }
     }
-
-    p {
-      transition: all 1s;
-    }
-    // position: absolute;
-    // top: 50%;
-    // left: 50%;
-    // transform: translate(-50%, -50%);
     text-align: center;
-    // color: rgba(255, 255, 255, 0.614);
     color: white;
+
+    .hero-stat{
+      p{
+        font-size: 4rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 0px white;
+      }
+    }
     #home-ProjectsClose {
       color: v.$color-orange;
     }
@@ -57,22 +58,44 @@
 
   }
   .hero-slogan {
-    font-size: 2em; // ajustez selon la taille souhaitée
+    font-size: 2em;
     margin-bottom: 20px;
   } 
 }
 
-div #home-top{
+.home{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  #home-button{
-    border: 2px solid rgb(255, 255, 255);
-    border-radius: 1rem;
-    background-color: v.$color-green;
-    width: fit-content;
-    color: white;
+  gap: 3rem;
+}
+.hero-stats{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  h3 {
+    font-size: 1.5em;
   }
+}
+
+.hidden-sm{
+  display: none;
+}
+
+#home-button{
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 1rem;
+  background-color: v.$color-green;
+  width: fit-content;
+  color: white;
+}
+
+.flex{
+  display: flex;
+}
+.search{
+  width: 80%;
+  margin: auto;
+  justify-content: space-between;
 }
 .project{
   img{
@@ -95,8 +118,6 @@ div #home-top{
   flex-direction: column;
   gap: 4rem;
 }
-
-
 
 .project{
   display: flex;
@@ -210,35 +231,38 @@ div #home-top{
 }
 .carousel{
   background-color: v.$color-gpastel;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  padding: 1rem;
 }
 
 @media (min-width: v.$sm-breakpoint){
+  .home{
+    gap: 0;
+  }
+  .home section:not(:first-child){
+    padding: 2rem 4rem;
+  }
+  .hidden-sm{
+    display: block;
+  }
+
+  .hidden-md{
+    display: none;
+  }
+
   .hero-stats {
-    display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-wrap: wrap;
+    flex-direction: row;
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
 
   .hero-stat {
-    margin: 0 15px;
-
-    h3 {
-      font-size: 1.5em;
-    }
-
-    p {
-      font-size: 1.2em;
-    }
+    margin: 0 15px; 
   }
   
   .projectsList{
     display: grid;
-    padding: 8rem;
+    padding: 4rem 8rem;
     grid-template-columns:  repeat(2, 1fr);
     gap: 4rem;
     width: fit-content;

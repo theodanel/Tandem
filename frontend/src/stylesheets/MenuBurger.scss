@@ -39,7 +39,7 @@ footer {
 }
 
 #imgproject {
-  width: 20rem;
+  width: 10rem;
   img{
     width: 100%;
   }
@@ -55,7 +55,7 @@ footer {
   justify-content: space-between;
   // position: fixed;
   width: 100%;
-  min-height: 75px;
+  min-height: fit-content;
   padding: 1rem;
   background: #f47143;
   color: v.$text-color;
@@ -203,6 +203,9 @@ ul {
 }
 
 @media screen and (min-width: 767px) {
+  #imgproject {
+    width: 15rem;
+  }
   .separation{
     display: none;
   }
