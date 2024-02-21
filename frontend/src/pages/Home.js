@@ -42,6 +42,8 @@ const Home = () => {
               status={project.status}
               languages={project.languages}
               creator_id={project.user_id} 
+              collaborators={project.collaborators}
+              collaborators_max={project.collaborators_max}
               id={project.id}>
           </Project>
       );
@@ -57,6 +59,8 @@ const Home = () => {
             status={project.status}
             languages={project.languages}
             creator_id={project.user_id} 
+            collaborators={project.collaborators}
+            collaborators_max={project.collaborators_max}
             id={project.id}>
         </Project>
     );

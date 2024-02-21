@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios';
 import Language from './Language';
+import { Progress } from 'antd';
+import { FaUser } from "react-icons/fa";
+import "../stylesheets/Project.scss"
 
-const Project = ({ title, image, status , languages , creator_id , description, id }) => {
+
+const Project = ({ title, image, status , languages , creator_id , description, id, collaborators, collaborators_max }) => {
   const [creator, setCreator] = useState({})
   const navigate = useNavigate();
   const getCreator = async ()=>{
@@ -14,11 +18,18 @@ const Project = ({ title, image, status , languages , creator_id , description, 
     getCreator();
   },[]);
 
-  const languagesList = languages.map(language=>{
+  const languagesList = languages.map((language, index)=>{
     return(
-      <Language name={language.name} action={null} checked={null} image={language.logo} />
+      <Language key={index} name={language.name} action={null} checked={null} image={language.logo} />
     )
   })
+
+  const colors = {
+    '0%': '#2EC458',
+    '30%': '#ADDDB2',
+    '60%': '#FFD7B4',
+    '100%': '#F47143'
+  }
 
   return (
     <div className='project'>
@@ -33,7 +44,10 @@ const Project = ({ title, image, status , languages , creator_id , description, 
           </div>
           <p className='description'>{description}</p>
         </div>
-        <div className='languagesList-2'>{languagesList}</div>
+        <div className='bottom-row'>
+          <div className='languagesList-2'>{languagesList}</div>
+          <div className='progress'><FaUser size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} /><Progress className={collaborators === collaborators_max ? 'orange' : 'green'} type='circle' percent={(collaborators/collaborators_max)*100} size="small" format={(percent) => `${collaborators}/${collaborators_max}`} strokeColor={collaborators === collaborators_max ? '#F47143' : colors} /></div>
+        </div>
       </div>
     </div>
   )
