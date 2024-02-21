@@ -8,6 +8,7 @@ import germerwhite from '../img/germerwhite.png';
 import SearchBar from "../components/SearchBar";
 import axios from "../api/axios.js";
 import { Skeleton } from "antd";
+import SearchsBar from "../components/SearchsBar.js";
 
 
 const Home = () => {
@@ -95,7 +96,7 @@ const Home = () => {
 
 
             <div>
-                <SearchBar />
+                <SearchsBar />
                 <p>Filtre x3 </p>
             </div>
             <h2 className="subtitle title-green">Projets</h2>
