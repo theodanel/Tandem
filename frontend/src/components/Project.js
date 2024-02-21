@@ -37,13 +37,13 @@ const Project = ({ title, image, status , languages , creator_id , description, 
     switch(status){
       case("created"):
         return <Popover placement="right" content="Le projet n'a pas démarré !">
-          <div className='icon nut' ><LuNut size={40} color='white'/></div>
+          <div className='icon nut' onClick={() => navigate(`/project/${id}`)} ><LuNut size={40} color='white'/></div>
           </Popover>;
       case("ongoing"):
-        return <Popover placement="right" content="Projet en cours"><div className='icon plant' ><PiPlantLight size={40} color='white' /></div></Popover>
+        return <Popover placement="right" content="Projet en cours"><div className='icon plant' onClick={() => navigate(`/project/${id}`)} ><PiPlantLight size={40} color='white' /></div></Popover>
         case("completed"):
         return <Popover placement="right" content="Projet terminé !">
-        <div className='icon tree'><PiTreeLight size={40} color='white' /></div></Popover>
+        <div className='icon tree' onClick={() => navigate(`/project/${id}`)}><PiTreeLight size={40} color='white' /></div></Popover>
     }
   }
 
@@ -57,8 +57,8 @@ const Project = ({ title, image, status , languages , creator_id , description, 
         <div className='project-body'>
           <div>
             <div>
-              <h3 className='project-title'>{title}</h3>
-              <div className='creator'>
+              <h3 className='project-title' onClick={() => navigate(`/project/${id}`)}>{title}</h3>
+              <div className='project-creator'>
                 <p onClick={()=>navigate(`/user/${creator_id}`)} >{creator.name}</p>
               </div>
             </div>
