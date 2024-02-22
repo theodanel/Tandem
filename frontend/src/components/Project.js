@@ -3,14 +3,17 @@ import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios';
 import Language from './Language';
 import { Popover, Progress } from 'antd';
-import { FaUser } from "react-icons/fa";
 import { PiPlantLight, PiTreeLight } from "react-icons/pi";
 import { LuUser2, LuUsers2, LuNut } from "react-icons/lu";
+import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
+import { FaHeart , FaRegHeart } from "react-icons/fa";
+
+
 import "../stylesheets/Project.scss"
 
 
 
-const Project = ({ title, image, status , languages , creator_id , description, id, collaborators, collaborators_max }) => {
+const Project = ({user, title, image, status , languages , creator_id , description, id, collaborators, collaborators_max }) => {
   const [creator, setCreator] = useState({})
   const navigate = useNavigate();
   const getCreator = async ()=>{
@@ -48,9 +51,51 @@ const Project = ({ title, image, status , languages , creator_id , description, 
     }
   }
 
+  const favoris = () =>{
+    if(user){
+      return  (
+        <Popover placement="left" content="Retirer des favoris">
+          <div className='favorites'><IoBookmark size={25} /></div>
+        </Popover>
+      )
+    } else {
+      return  (
+        <Popover placement="left" content="Ajouter aux favoris">
+          <div className='favorites'><IoBookmarkOutline size={25} /></div>
+        </Popover>
+      )
+    }
+  }
+
+  const like = () => {
+    if(user){
+      return  (
+        <Popover placement="left" content="Retirer le like">
+          <div className='likes'><FaHeart size={25} /></div>
+        </Popover>
+      )
+    } else {
+      return  (
+        <Popover placement="left" content="Liker le projet">
+          <div className='likes'><FaRegHeart size={25} /></div>
+        </Popover>
+      )
+    }
+  }
+
+  const handleLike = async() => {
+    if(user){
+      axios.put(`/api/project/${id}/like`);
+    }
+  }
+
   return (
     <div className='project'>
       {icon()}
+      <div className='user-actions'>
+        {favoris()}
+        {like()}
+      </div>
       <div className='container'>
         <div className='project-img'>
           <img onClick={() => navigate(`/project/${id}`)} src={image} alt=""/>

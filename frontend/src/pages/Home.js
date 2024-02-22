@@ -9,12 +9,14 @@ import SearchBar from "../components/SearchBar";
 import axios from "../api/axios.js";
 import { Skeleton } from "antd";
 import SearchsBar from "../components/SearchsBar.js";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   useEffect(() => {
     document.title = `Tandem`;
   }, []);
 
+  const user = useSelector(state => state.data.user);
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [users, setUsers] = useState([]);
@@ -45,6 +47,7 @@ const Home = () => {
         collaborators={project.collaborators}
         collaborators_max={project.collaborators_max}
         id={project.id}
+        user={user}
       ></Project>
     );
   });
@@ -62,6 +65,7 @@ const Home = () => {
         collaborators={project.collaborators}
         collaborators_max={project.collaborators_max}
         id={project.id}
+        user={user}
       ></Project>
     );
   });
