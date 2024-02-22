@@ -207,7 +207,7 @@ const CreateProject = () => {
                         <b>{errors.languages}</b>
                         
                         <Modal title="Choisir des langages" open={isModal1Open} width="fit-content" onCancel={()=> handleCancel1()} footer={null} centered>
-                            <div className='languagesList'>
+                            <div className='languagesList-1'>
                                 {languagesList}
                             </div>
                             <button onClick={()=>handleCancel1()}>Valider</button>
