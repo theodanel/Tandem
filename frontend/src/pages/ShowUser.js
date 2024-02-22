@@ -31,12 +31,18 @@ const UserPage = () => {
             return (
                 <Project
                     key={project.id}
+                    title={project.title}
                     name={project.name}
                     image={project.image}
+                    status={project.status}
                     description={project.description}
                     profil={project.profil}
                     languages={project.languages}
-                    creator_id={project.user_id} >
+                    creator_id={project.user_id}
+                    collaborators={project.collaborators}
+                    collaborators_max={project.collaborators_max}
+                    id={project.id}
+                    >
                 </Project>
             );
         }));
@@ -108,10 +114,13 @@ const UserPage = () => {
                     </legend>
                 </div>
                 <div id='user-project'>
-                    <div id='user-div'>
-                        <h1>projets</h1>
-                        <button id='user-button-project'>+</button>
+                    <h1>Projets crées</h1>
+                    <div>
+                        {projectsList}
                     </div>
+                </div>
+                <div id='user-project'>
+                    <h1>Participation :</h1>
                     <div>
                         {projectsList}
                     </div>
