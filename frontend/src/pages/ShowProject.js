@@ -27,16 +27,6 @@ const ShowProject = () => {
 
     const navigate = useNavigate();
 
-    // const getLanguages = async () => {
-    //     const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
-
-    //     setLanguages(data.languages);
-    // }
-
-    // useEffect(() => {
-    //     getLanguages();
-    // }, []);
-
     const token = useSelector(state => state.data.token);
 
     const getProject = async()=> {

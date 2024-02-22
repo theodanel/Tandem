@@ -180,15 +180,21 @@
       width: 100%;     
       display: flex;
       justify-content: flex-end;
-      p{
-        width: fit-content;
-        text-decoration: underline;
-        color: #8C8C8C;
-        transition: all 200ms;
-        &:hover{
-          cursor: pointer;
+      div{
+        display: flex;
+        gap: 0.5rem;
+        p, .user-icon{
+          width: fit-content;
+          text-decoration: underline;
+          color: #8C8C8C;
+          transition: all 200ms;
+        }
+        &:hover p, &:hover .user-icon{
           color: v.$color-green-dark;
           text-decoration-color: v.$color-green-dark;
+        }
+        &:hover{
+          cursor: pointer;
         }
       }
     }

@@ -5,7 +5,7 @@ import Language from './Language';
 import { Popover, Progress } from 'antd';
 import { FaUser } from "react-icons/fa";
 import { PiPlantLight, PiTreeLight } from "react-icons/pi";
-import { LuUser2, LuNut } from "react-icons/lu";
+import { LuUser2, LuUsers2, LuNut } from "react-icons/lu";
 import "../stylesheets/Project.scss"
 
 
@@ -60,7 +60,10 @@ const Project = ({ title, image, status , languages , creator_id , description, 
             <div>
               <h3 className='project-title' onClick={() => navigate(`/project/${id}`)}>{title}</h3>
               <div className='project-creator'>
-                <p onClick={()=>navigate(`/user/${creator_id}`)} >{creator.name}</p>
+                <div onClick={()=>navigate(`/user/${creator_id}`)}>
+                  <LuUser2 className='user-icon'/>
+                  <p>{creator.name}</p>
+                </div>
               </div>
             </div>
             <p className='description' >{description.length>150?`${description.substring(0, 150)}...`: description}</p>
@@ -70,7 +73,7 @@ const Project = ({ title, image, status , languages , creator_id , description, 
             {/* {status !== "completed" ? */}
               <Popover placement="left" content={collaborators === collaborators_max ? "Equipe complète" : ` ${collaborators_max - collaborators} place(s) restante(s)`}>
                 <div className='progress'>
-                <LuUser2 size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} />
+                <LuUsers2 size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} />
                   <Progress className={collaborators === collaborators_max ? 'orange' : 'green'} type='circle' percent={(collaborators/collaborators_max)*100} size="small" format={(percent) => `${collaborators}/${collaborators_max}`} strokeColor={collaborators === collaborators_max ? '#F47143' : colors} />
                 </div>
               </Popover>
