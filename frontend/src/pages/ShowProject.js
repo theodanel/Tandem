@@ -138,7 +138,7 @@ const ShowProject = () => {
 
 
     const postComments = async () => {
-        const res = await axios.post(`/api/comment/${id}/store`, {content: postComment}, {headers:{"Authorization":`Bearer ${token}`}});
+        const res = await axios.post(`/api/comment/${id}/store`, {comment: postComment.comments}, {headers:{"Authorization":`Bearer ${token}`}});
 
         
         if (res.data.status === 200) {
@@ -148,6 +148,8 @@ const ShowProject = () => {
         }
 
     }
+
+    console.log(postComment);
 
 
 
@@ -239,7 +241,7 @@ const ShowProject = () => {
                     <div id='collaborators'>
                         <h3>Laisser un commentaire</h3>
                         <div className='addComment'>
-                            <input onChange={(e)=> handleChange(e)} type="textarea" placeholder='Lorem ipsum dolor' />
+                            <textarea onChange={(e)=> handleChange(e)}  placeholder='Lorem ipsum dolor' name='comments' id='comments' />
                             <button type='button'  className="commentButton" onClick={() => postComments()}>Poster</button>
                         </div>
                         <hr className='languagesDecoration'></hr>
