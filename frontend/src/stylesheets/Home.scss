@@ -297,5 +297,12 @@
   }
 }
 
-
+@media (min-width: v.$xl-breakpoint){
+  .projectsList{
+    grid-template-columns:  repeat(5, 1fr);
+    .languagesList-3{
+      grid-template-columns:  repeat(5, 1fr);
+    }
+  }
+}
 
