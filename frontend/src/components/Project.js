@@ -10,12 +10,15 @@ import { FaHeart , FaRegHeart } from "react-icons/fa";
 
 
 import "../stylesheets/Project.scss"
+import { useDispatch } from 'react-redux';
+import { getUser } from '../slices';
 
 
 
 const Project = ({user, title, image, status , languages , creator_id , description, id, collaborators, collaborators_max }) => {
   const [creator, setCreator] = useState({})
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const getCreator = async ()=>{
     const res = await axios.get(`/api/user/${creator_id}`);
     setCreator(res.data.user)
@@ -23,6 +26,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
   useEffect(()=>{
     getCreator();
   },[]);
+
 
   const languagesList = languages.map((language, index)=>{
     return(
@@ -52,14 +56,14 @@ const Project = ({user, title, image, status , languages , creator_id , descript
   }
 
   const favoris = () =>{
-    if(user){
-      return  (
+    if(user?.favorites.includes(id)){
+      return (
         <Popover placement="left" content="Retirer des favoris">
-          <div className='favorites'><IoBookmark size={25} /></div>
+          <div className='favorites' onClick={()=>{}} ><IoBookmark size={25} /></div>
         </Popover>
       )
     } else {
-      return  (
+      return (
         <Popover placement="left" content="Ajouter aux favoris">
           <div className='favorites'><IoBookmarkOutline size={25} /></div>
         </Popover>
@@ -68,24 +72,30 @@ const Project = ({user, title, image, status , languages , creator_id , descript
   }
 
   const like = () => {
-    if(user){
-      return  (
-        <Popover placement="left" content="Retirer le like">
-          <div className='likes'><FaHeart size={25} /></div>
-        </Popover>
-      )
-    } else {
-      return  (
-        <Popover placement="left" content="Liker le projet">
-          <div className='likes'><FaRegHeart size={25} /></div>
-        </Popover>
-      )
-    }
+  
+      if (user?.likes.find(like => like.project_id === id)){
+        return (
+          <Popover placement="left" content="Retirer le like">
+            <div className='likes' onClick={()=>handleLike()}><FaHeart size={25} /></div>
+          </Popover>
+        )
+      } else {
+        return (
+          <Popover placement="left" content="Liker le projet">
+            <div className='likes' onClick={()=>handleLike()}><FaRegHeart size={25} /></div>
+          </Popover>
+        )
+      }
   }
 
   const handleLike = async() => {
     if(user){
       axios.put(`/api/project/${id}/like`);
+      const res = await axios.get(`/api/user`).then(res => res.data.user);
+      console.log(res);
+      dispatch(getUser(res));
+    } else {
+
     }
   }
 

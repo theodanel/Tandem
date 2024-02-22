@@ -17,7 +17,16 @@ class AuthController extends Controller
      */
     public function user()
     {
-        return auth()->user();
+        $user = auth()->user();
+        $user->refresh();
+        $favorites = $user->favorites()->get(array('project_id'));
+        $likes = $user->likes()->get(array('project_id'));
+        $user->favorites = $favorites;
+        $user->likes = $likes;
+
+        return response()->json([
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -43,6 +52,12 @@ class AuthController extends Controller
 
             // connecte l'utilisateur
             $user = auth()->user();
+
+            // retourne les likes et favoris
+            $favorites = $user->favorites()->get(array('project_id'));
+            $likes = $user->likes()->get(array('project_id'));
+            $user->favorites = $favorites;
+            $user->likes = $likes;
 
             // le if sert juste à éviter un bug d'affichage de VSCode pour le $user->createToken()
             if ($user instanceof \App\Models\User) {

@@ -21,9 +21,13 @@ const dataSlice = createSlice({
             localStorage.removeItem("token");
             localStorage.removeItem("user");
         },
+        getUser: (state, {payload}) => {
+            state.user = {...state.user, payload};
+            localStorage.setItem("user", JSON.stringify(state.user));
+        }
     }
 })
 
-export const { addUser, removeUser} = dataSlice.actions;
+export const { addUser, removeUser, getUser} = dataSlice.actions;
 
 export default dataSlice.reducer;
