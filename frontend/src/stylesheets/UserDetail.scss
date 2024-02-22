@@ -6,9 +6,27 @@
     align-items: center;
 }
 
+.profile{
+    display: flex;
+    justify-content: center ;
+    margin: 2rem;
+    width: 80%;
+    position: relative;
+    .top-right-btn{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .bottom-left-btn{
+        position: absolute;
+        bottom: 0;
+        left: 0; 
+    }
+}
+
 #user-avatar {
     padding: 2rem;
-    border: 2px solid v.$primary-color;
+    border: 2px solid v.$color-green-dark;
     background-color: v.$color-gpastel;
     border-radius: 100%;
     width: 20rem;
