@@ -117,17 +117,19 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
         $project = Project::findOrFail($id);
-        if ($request->user()->tokenCan($project->user_id)) {
-            $validator = Validator::make($request->all(), [
-                'newTitle' => "max:50|min:3|unique:projects,title," . $project->id,
-                'newDescription' => "max:1000|min:3",
-                'newCollaborators' => "numeric|max:10|min:".$project->collaborators
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages(),
-                    "message" => "Erreur dans le formulaire."
+        if ($project->user_id == auth()->user()->id) {
+            if ($request->user()->tokenCan($project->user_id)) {
+                $validator = Validator::make($request->all(), [
+                    'newTitle' => "max:50|min:3|unique:projects,title," . $project->id,
+                    'newDescription' => "max:1000|min:3",
+                    'newCollaborators' => "numeric|max:10|min:" . $project->collaborators
                 ]);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'errors' => $validator->messages(),
+                        "message" => "Erreur dans le formulaire."
+                    ]);
+                }
             } else {
                 $project->title = $request->input("newTitle");
                 $project->description = $request->input("newDescription");
@@ -165,14 +167,14 @@ class ProjectController extends Controller
         $project->save();
     }
 
-    
+
     /**
      * Fait progresser le statut du projet
      */
     public function nextStep($id)
     {
         $project = Project::find($id);
-        if($project->user_id == auth()->user()->id){
+        if ($project->user_id == auth()->user()->id) {
             if ($project->status === "created") {
                 $project->status = "ongoing";
             } else if ($project->status === "ongoing") {
