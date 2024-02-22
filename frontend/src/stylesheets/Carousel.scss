@@ -70,6 +70,9 @@
 
     .container-carousel-body {
       flex: 0.7;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
       .titleCreator-carousel {
         display: flex;
         justify-content: space-between;
@@ -83,13 +86,25 @@
       .creator-carousel {
         text-decoration: underline;
       }
-
-      .project-body-carousel {
-        padding: 1rem;
-        .description{
-          font-size: large;
-          text-align: center;
-          padding-top: 2rem;
+      .project-body-between{
+        display: flex;
+        justify-content: space-between;
+        height: 75%;
+        .project-body-carousel {
+          padding: 1rem;
+          display: flex;
+          justify-content: space-between;
+          flex-direction: column;
+          .description{
+            font-size: large;
+            text-align: center;
+            padding-top: 2rem;
+          }
+          .progress {
+            display: flex;
+            justify-content: flex-end;
+            
+          }
         }
       }
     }
