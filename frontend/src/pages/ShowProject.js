@@ -22,6 +22,7 @@ const ShowProject = () => {
     const [newTitle, setNewTitle] = useState("");
     const [status, setStatus] = useState("");
     const [newDescription, setNewDescription] = useState("");
+    const [postComment, setPostComment] = useState([]);
     const [newCollaborators, setNewCollaborators] = useState("");
     const [loading, setLoading] = useState(true);
 
@@ -68,6 +69,7 @@ const ShowProject = () => {
         setNewDescription(project.description)
         setNewCollaborators(project.collaborators)
         setStatus(project.status)
+        setPostComment(project.comments)
     }, [project])
 
 
@@ -127,6 +129,38 @@ const ShowProject = () => {
             </div>
         );
     });
+
+    const comments = project.comments?.map((comment) => {
+        return (
+            <div key={comment.id}>
+                <p>{comment.content}</p>
+            </div>
+        );
+    });
+
+
+    const handleChange = (e) => {
+        setPostComment({
+            ...postComment,
+            [e.target.name] : e.target.value
+        })
+    }
+
+
+    const postComments = async () => {
+        const res = await axios.post(`/api/comment/${id}/store`, {content: postComment}, {headers:{"Authorization":`Bearer ${token}`}});
+
+        
+        if (res.data.status === 200) {
+            setPostComment(project.comments)
+        } else {
+            setErrors(res.data.errors);
+        }
+
+    }
+
+
+
 
     return (
         <Layout>
@@ -215,12 +249,13 @@ const ShowProject = () => {
                     <div id='collaborators'>
                         <h3>Laisser un commentaire</h3>
                         <div className='addComment'>
-                            <input type="text" placeholder='Lorem ipsum dolor' />
-                            <button className="commentButton" onClick={() => showModal()}>Poster</button>
+                            <input onChange={(e)=> handleChange(e)} type="textarea" placeholder='Lorem ipsum dolor' />
+                            <button type='button'  className="commentButton" onClick={() => postComments()}>Poster</button>
                         </div>
                         <hr className='languagesDecoration'></hr>
 
                         <h3>Commentaires</h3>
+                        {comments}
                     </div>
                 </div>
 
