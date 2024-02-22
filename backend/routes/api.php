@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LanguageController;
@@ -39,12 +40,9 @@ Route::get('/comments/{id}', [CommentController::class, 'show']);
 Route::post('/login', [AuthController::class, "login"]);
 Route::post('/register', [AuthController::class, "register"]);
 
-
-
-
 // Routes protégées par authentification
 Route::middleware('auth:sanctum')->group(function () {
-    
+
     // Gestion de l'utilisateur
     Route::get('/user', [AuthController::class, 'user']);
     Route::put('/user/{id}/update', [UserController::class, "update"]);
@@ -53,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Gestion des projets
     Route::post('/project/store', [ProjectController::class, "store"]);
-    Route::put('/project/{id}/update', [ProjectController::class, "update"]);    
+    Route::put('/project/{id}/update', [ProjectController::class, "update"]);
     Route::delete('/project/{id}/delete', [ProjectController::class, "delete"]);
     Route::put('/project/{id}/step', [ProjectController::class, "nextStep"]);
     Route::put('/project/{id}/favorite', [ProjectController::class, "favorite"]);
@@ -62,14 +60,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/project/{id}/join', [ProjectController::class, "join"]);
 
     //Gestion des commentaires
-    Route::post('/comment/{id}/store', [CommentController::class, "store"]);
     Route::put('/comment/{id}/update', [CommentController::class, "update"]);
     Route::delete('/comment/{id}/delete', [CommentController::class, "delete"]);
+    Route::post('/comment/{id}/store', [CommentController::class, "store"]);
 
     //Gestion des notifications
     Route::get('/notifications/{id}/sent', [NotificationController::class, "showSent"]);
     Route::get('/notifications/{id}/received', [NotificationController::class, "showReceived"]);
     Route::post('/notification/send', [NotificationController::class, "send"]);
     Route::delete('/notification/{id}/delete', [NotificationController::class, "delete"]);
-
 });

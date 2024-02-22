@@ -30,24 +30,26 @@ class CommentController extends Controller
     /**
      * Création d'un nouveau commentaire / Réponse à un commentaire
      * 
-     * @param string $request Contenu du commentaire
+     * @param  $request Contenu du commentaire
      * @param int $project_id ID du projet commenté
      * @param int $comment_id ID du commentaire auquel celui-ci répond (facultatif)
      */
     public function store(Request $request, $project_id, $comment_id = null){
-        $validator = Validator::make($request, "min:3|max:1000");
-        if($validator->fails()){
-            return response()->json([
-                'errors' => $validator->messages(),
-                'status' => "error"
-            ]);
-        } else {
+        // $validator = Validator::make($request, "min:3|max:1000");
+        // if($validator->fails()){
+        //     return response()->json([
+        //         'errors' => $validator->messages(),
+        //         'status' => "error"
+        //     ]);
+        // } else {
+            $content = $request->all();
+
             $comment = new Comment();
-            $comment->content = $request;
+            $comment->content = $content["comment"];
             $comment->user_id = auth()->user()->id;
             $comment->comment_id = $comment_id;
             $comment->project_id = $project_id;
-
+            
             $project = Project::find($project_id);
             if($project->user_id == auth()->user()->id){
                 $comment->admin = true;
@@ -61,7 +63,7 @@ class CommentController extends Controller
                 'status' => 200
             ]);
         }
-    }
+    // }
 
     /**
      * Mise à jour d'un commentaire
