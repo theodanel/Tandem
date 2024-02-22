@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios';
 import Language from './Language';
-import { Popover, Progress } from 'antd';
+import { Modal, Popover, Progress } from 'antd';
 import { PiPlantLight, PiTreeLight } from "react-icons/pi";
 import { LuUser2, LuUsers2, LuNut } from "react-icons/lu";
 import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
@@ -16,9 +16,18 @@ import { getUser } from '../slices';
 
 
 const Project = ({user, title, image, status , languages , creator_id , description, id, collaborators, collaborators_max }) => {
-  const [creator, setCreator] = useState({})
+  const [creator, setCreator] = useState({});
+  const [render, setRender] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+      setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+      setIsModalOpen(false);
+  };
+
   const getCreator = async ()=>{
     const res = await axios.get(`/api/user/${creator_id}`);
     setCreator(res.data.user)
@@ -56,16 +65,16 @@ const Project = ({user, title, image, status , languages , creator_id , descript
   }
 
   const favoris = () =>{
-    if(user?.favorites.includes(id)){
+    if (user?.favorites.find(favorite => favorite.project_id === id)){
       return (
         <Popover placement="left" content="Retirer des favoris">
-          <div className='favorites' onClick={()=>{}} ><IoBookmark size={25} /></div>
+          <div className='favorites' onClick={()=>handleAction("favorite")} ><IoBookmark className='action-icon' size={25} /></div>
         </Popover>
       )
     } else {
       return (
         <Popover placement="left" content="Ajouter aux favoris">
-          <div className='favorites'><IoBookmarkOutline size={25} /></div>
+          <div className='favorites' onClick={()=>handleAction("favorite")}><IoBookmarkOutline className='action-icon' size={25} /></div>
         </Popover>
       )
     }
@@ -76,26 +85,26 @@ const Project = ({user, title, image, status , languages , creator_id , descript
       if (user?.likes.find(like => like.project_id === id)){
         return (
           <Popover placement="left" content="Retirer le like">
-            <div className='likes' onClick={()=>handleLike()}><FaHeart size={25} /></div>
+            <div className='likes' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} /></div>
           </Popover>
         )
       } else {
         return (
           <Popover placement="left" content="Liker le projet">
-            <div className='likes' onClick={()=>handleLike()}><FaRegHeart size={25} /></div>
+            <div className='likes' onClick={()=>handleAction("like")}><FaRegHeart className='action-icon' size={25} /></div>
           </Popover>
         )
       }
   }
 
-  const handleLike = async() => {
+  const handleAction = async(action) => {
     if(user){
-      axios.put(`/api/project/${id}/like`);
+      axios.put(`/api/project/${id}/${action}`);
       const res = await axios.get(`/api/user`).then(res => res.data.user);
-      console.log(res);
       dispatch(getUser(res));
+      setRender("");
     } else {
-
+      setIsModalOpen(true);
     }
   }
 
@@ -136,6 +145,12 @@ const Project = ({user, title, image, status , languages , creator_id , descript
           </div>
         </div>
       </div>
+
+      <Modal title="Connexion requise" open={isModalOpen} onCancel={()=>handleCancel()} footer={null} centered >
+        <h3>Veuillez vous connecter pour réaliser cette action</h3>
+        <button type='button' onClick={() => navigate('/login')} >Me connecter</button>
+        <button type='button' onClick={() => setIsModalOpen(false)}>Non merci</button>
+      </Modal>
     </div>
   )
 }

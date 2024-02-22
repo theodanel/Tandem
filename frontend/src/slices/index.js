@@ -22,7 +22,7 @@ const dataSlice = createSlice({
             localStorage.removeItem("user");
         },
         getUser: (state, {payload}) => {
-            state.user = {...state.user, payload};
+            state.user = payload;
             localStorage.setItem("user", JSON.stringify(state.user));
         }
     }
