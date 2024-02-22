@@ -2,17 +2,32 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios';
 import Language from './Language';
-import { Popover, Progress } from 'antd';
-import { FaUser } from "react-icons/fa";
+import { Modal, Popover, Progress } from 'antd';
 import { PiPlantLight, PiTreeLight } from "react-icons/pi";
-import { LuUser2, LuNut } from "react-icons/lu";
+import { LuUser2, LuUsers2, LuNut } from "react-icons/lu";
+import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
+import { FaHeart , FaRegHeart } from "react-icons/fa";
+
+
 import "../stylesheets/Project.scss"
+import { useDispatch } from 'react-redux';
+import { getUser } from '../slices';
 
 
 
-const Project = ({ title, image, status , languages , creator_id , description, id, collaborators, collaborators_max }) => {
-  const [creator, setCreator] = useState({})
+const Project = ({user, title, image, status , languages , creator_id , description, id, collaborators, collaborators_max }) => {
+  const [creator, setCreator] = useState({});
+  const [render, setRender] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+      setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+      setIsModalOpen(false);
+  };
+
   const getCreator = async ()=>{
     const res = await axios.get(`/api/user/${creator_id}`);
     setCreator(res.data.user)
@@ -20,6 +35,7 @@ const Project = ({ title, image, status , languages , creator_id , description, 
   useEffect(()=>{
     getCreator();
   },[]);
+
 
   const languagesList = languages.map((language, index)=>{
     return(
@@ -48,9 +64,57 @@ const Project = ({ title, image, status , languages , creator_id , description, 
     }
   }
 
+  const favoris = () =>{
+    if (user?.favorites.find(favorite => favorite.project_id === id)){
+      return (
+        <Popover placement="left" content="Retirer des favoris">
+          <div className='favorites' onClick={()=>handleAction("favorite")} ><IoBookmark className='action-icon' size={25} /></div>
+        </Popover>
+      )
+    } else {
+      return (
+        <Popover placement="left" content="Ajouter aux favoris">
+          <div className='favorites' onClick={()=>handleAction("favorite")}><IoBookmarkOutline className='action-icon' size={25} /></div>
+        </Popover>
+      )
+    }
+  }
+
+  const like = () => {
+  
+      if (user?.likes.find(like => like.project_id === id)){
+        return (
+          <Popover placement="left" content="Retirer le like">
+            <div className='likes' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} /></div>
+          </Popover>
+        )
+      } else {
+        return (
+          <Popover placement="left" content="Liker le projet">
+            <div className='likes' onClick={()=>handleAction("like")}><FaRegHeart className='action-icon' size={25} /></div>
+          </Popover>
+        )
+      }
+  }
+
+  const handleAction = async(action) => {
+    if(user){
+      axios.put(`/api/project/${id}/${action}`);
+      const res = await axios.get(`/api/user`).then(res => res.data.user);
+      dispatch(getUser(res));
+      setRender("");
+    } else {
+      setIsModalOpen(true);
+    }
+  }
+
   return (
     <div className='project'>
       {icon()}
+      <div className='user-actions'>
+        {favoris()}
+        {like()}
+      </div>
       <div className='container'>
         <div className='project-img'>
           <img onClick={() => navigate(`/project/${id}`)} src={image} alt=""/>
@@ -60,7 +124,10 @@ const Project = ({ title, image, status , languages , creator_id , description, 
             <div>
               <h3 className='project-title' onClick={() => navigate(`/project/${id}`)}>{title}</h3>
               <div className='project-creator'>
-                <p onClick={()=>navigate(`/user/${creator_id}`)} >{creator.name}</p>
+                <div onClick={()=>navigate(`/user/${creator_id}`)}>
+                  <LuUser2 className='user-icon'/>
+                  <p>{creator.name}</p>
+                </div>
               </div>
             </div>
             <p className='description' >{description.length>150?`${description.substring(0, 150)}...`: description}</p>
@@ -70,7 +137,7 @@ const Project = ({ title, image, status , languages , creator_id , description, 
             {/* {status !== "completed" ? */}
               <Popover placement="left" content={collaborators === collaborators_max ? "Equipe complète" : ` ${collaborators_max - collaborators} place(s) restante(s)`}>
                 <div className='progress'>
-                <LuUser2 size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} />
+                <LuUsers2 size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} />
                   <Progress className={collaborators === collaborators_max ? 'orange' : 'green'} type='circle' percent={(collaborators/collaborators_max)*100} size="small" format={(percent) => `${collaborators}/${collaborators_max}`} strokeColor={collaborators === collaborators_max ? '#F47143' : colors} />
                 </div>
               </Popover>
@@ -78,6 +145,12 @@ const Project = ({ title, image, status , languages , creator_id , description, 
           </div>
         </div>
       </div>
+
+      <Modal title="Connexion requise" open={isModalOpen} onCancel={()=>handleCancel()} footer={null} centered >
+        <h3>Veuillez vous connecter pour réaliser cette action</h3>
+        <button type='button' onClick={() => navigate('/login')} >Me connecter</button>
+        <button type='button' onClick={() => setIsModalOpen(false)}>Non merci</button>
+      </Modal>
     </div>
   )
 }
