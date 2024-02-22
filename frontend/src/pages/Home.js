@@ -4,11 +4,9 @@ import Layout from "../components/Layout";
 import Project from "../components/Project";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
-import germerwhite from "../img/germerwhite.png";
 import SearchBar from "../components/SearchBar";
 import axios from "../api/axios.js";
 import { Skeleton } from "antd";
-import SearchsBar from "../components/SearchsBar.js";
 
 const Home = () => {
   useEffect(() => {
@@ -104,7 +102,7 @@ const Home = () => {
 
         <section className="flex search">
           <div>
-            <SearchsBar />
+            <SearchBar />
             <p>Filtre x3 </p>
           </div>
           <div className="hidden-sm">

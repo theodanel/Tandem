@@ -1,45 +1,25 @@
-// import "../stylesheets/SearchBar.scss";
-// import { useState } from "react";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// function SearchBar({ projects, setProjects }) {
-//   const [value, setValue] = useState("");
+const SearchBar = () => {
+  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
 
-//   const handleChange = (e) => {
-//     setValue(e.target.value);
+  const handleSearch = () => {
+    // Navigue vers la page de résultats avec la requête comme paramètre d'URL
+    navigate(`/results?query=${query}`);
+  };
 
-//     let filterList = [];
-//     projects.list.forEach((projects) => {
-//       const tmpProjects = { ...projects };
+  return (
+    <div>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      <button onClick={handleSearch}>Rechercher</button>
+    </div>
+  );
+};
 
-//       const prestations = tmpProjects.prestations.filter((item) =>
-//         item.name.toLowerCase().includes(e.target.value)
-//       );
-
-//       if (prestations.length > 0) {
-//         tmpProjects.prestations = prestations;
-//         filterList.push(tmpCategory);
-//       }
-//     });
-
-//     setProjects({
-//       ...projects,
-//       filtered: filterList,
-//     });
-//   };
-
-//   return (
-//     <div className="search-bar">
-//       <div>
-//         <input
-//           id="searchbar"
-//           type="search"
-//           placeholder="Chercher un projet..." 
-//           onChange={handleChange}
-//           value={value}
-//         />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default SearchBar;
+export default SearchBar;

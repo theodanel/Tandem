@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Logout from './pages/Logout';
 import Form from './components/Form.js';
+import Results from './components/Results.js';
 // import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -28,6 +29,8 @@ function App() {
       <Route path='/user/:id' element={<ShowUser />} />
 
       <Route path='/login' element={<Login />} />
+
+      <Route path="/results" element={<Results />}/>
 
       <Route path='*' element={<Form content="notFound" />} />
     </Routes>
