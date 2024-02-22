@@ -7,7 +7,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 const Carousel = () => {
     const [projects, setProjects] = useState([]);
-    const navigate = useNavigate() ;
+    const navigate = useNavigate();
     const getProjects = async () => {
         const data = await fetch("http://127.0.0.1:8000/api/projects").then((res) => res.json()
         );
@@ -33,15 +33,17 @@ const Carousel = () => {
         return (
             <div className='project-carousel'>
                 <div className='contenair-carousel' onClick={() => navigate(`/project/${project.id}`)}>
-                    <div>
+                    <div className='container-carousel-img'>
                         <img src={project.image} alt="" id='project-img' />
                     </div>
-                    <div className='titleCreator-carousel'>
-                        <h2>{project.title}</h2>
-                        <h5 className='creator-carousel'>{project.creator.name}</h5>
-                    </div>
-                    <div className='project-body project-body-carousel'>
-                        <p className='description'>{project.description}</p>
+                    <div className='container-carousel-body'>
+                        <div className='titleCreator-carousel'>
+                            <h2>{project.title}</h2>
+                            <h5 className='creator-carousel'>{project.creator.name}</h5>
+                        </div>
+                        <div className='project-body project-body-carousel'>
+                            <p className='description'>{project.description}</p>
+                        </div>
                     </div>
 
                 </div>
