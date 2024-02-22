@@ -22,6 +22,7 @@ const ShowProject = () => {
     const [newTitle, setNewTitle] = useState("");
     const [status, setStatus] = useState("");
     const [newDescription, setNewDescription] = useState("");
+    const [postComment, setPostComment] = useState([]);
     const [newCollaborators, setNewCollaborators] = useState("");
     const [loading, setLoading] = useState(true);
 
@@ -68,6 +69,7 @@ const ShowProject = () => {
         setNewDescription(project.description)
         setNewCollaborators(project.collaborators)
         setStatus(project.status)
+        setPostComment(project.comments)
     }, [project])
 
 
@@ -128,6 +130,38 @@ const ShowProject = () => {
         );
     });
 
+    const comments = project.comments?.map((comment) => {
+        return (
+            <div key={comment.id}>
+                <p>{comment.content}</p>
+            </div>
+        );
+    });
+
+
+    const handleChange = (e) => {
+        setPostComment({
+            ...postComment,
+            [e.target.name] : e.target.value
+        })
+    }
+
+
+    const postComments = async () => {
+        const res = await axios.post(`/api/comment/${id}/store`, {content: postComment}, {headers:{"Authorization":`Bearer ${token}`}});
+
+        
+        if (res.data.status === 200) {
+            setPostComment(project.comments)
+        } else {
+            setErrors(res.data.errors);
+        }
+
+    }
+
+
+
+
     return (
         <Layout>
             <Skeleton loading={loading} active>
@@ -177,15 +211,15 @@ const ShowProject = () => {
                                 items={[
                                     {
 
-                                        description: <button style={{'backgroundColor': status === 'created' ? '#77DD79' : '#77dd79a9' }} onClick={() => showModalSteps()} name='ongoing' className='stepOne'>Démarrer le projet</button>, icon: <LuNut />,
+                                        description: <button style={{'backgroundColor': status === 'created' ? '#77DD79' : '#77dd79a9' }} onClick={() => showModalSteps()} name='ongoing' className='stepOne'>Démarrer le projet</button>, icon: <LuNut className='stepsIcons'/>,
 
                                     },
                                     {
-                                        description: <button style={{'backgroundColor': status != 'ongoing'  ? '#77dd79a9' : '#77DD79' }} onClick={() => showModalSteps()} name='completed' className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight />,
+                                        description: <button style={{'backgroundColor': status != 'ongoing'  ? '#77dd79a9' : '#77DD79' }} onClick={() => showModalSteps()} name='completed' className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight className='stepsIcons'/>,
 
                                     },
                                     {
-                                        description: <button style={{'backgroundColor': status != 'completed' ?'#f47243b4' : '#f47243'}} className='stepThree'>Projet terminé</button>, icon: <PiTreeLight />,
+                                        description: <button style={{'backgroundColor': status != 'completed' ?'#f47243b4' : '#f47243'}} className='stepThree'>Projet terminé</button>, icon: <PiTreeLight className='stepsIcons'/>,
 
                                     },
                                 ]}
@@ -215,12 +249,13 @@ const ShowProject = () => {
                     <div id='collaborators'>
                         <h3>Laisser un commentaire</h3>
                         <div className='addComment'>
-                            <input type="text" placeholder='Lorem ipsum dolor' />
-                            <button className="commentButton" onClick={() => showModal()}>Poster</button>
+                            <input onChange={(e)=> handleChange(e)} type="textarea" placeholder='Lorem ipsum dolor' />
+                            <button type='button'  className="commentButton" onClick={() => postComments()}>Poster</button>
                         </div>
                         <hr className='languagesDecoration'></hr>
 
                         <h3>Commentaires</h3>
+                        {comments}
                     </div>
                 </div>
 
@@ -230,8 +265,8 @@ const ShowProject = () => {
 
             <Modal title="" open={isModalStepsOpen} onCancel={handleCancel2} footer={null} centered >
                 <h3>Etes vous sur de vouloir passer à l'étape suivante ? </h3>
-                <button type='button' onClick={() => (changeStatus(), setIsModalStepsOpen(false))}  name='ongoing' className='stepOne'>Oui</button> <LuNut />
-                <button type='button' onClick={() => setIsModalStepsOpen(false)}  name='closeModal' className='closeModal'>Non</button> <LuNut />
+                <button type='button' onClick={() => (changeStatus(), setIsModalStepsOpen(false))}  name='ongoing' className='stepOne'>Oui</button> 
+                <button type='button' onClick={() => setIsModalStepsOpen(false)}  name='closeModal' className='closeModal'>Non</button> 
                 
             </Modal>
 

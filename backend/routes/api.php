@@ -41,6 +41,7 @@ Route::post('/register', [AuthController::class, "register"]);
 
 
 
+
 // Routes protégées par authentification
 Route::middleware('auth:sanctum')->group(function () {
     
@@ -61,7 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/project/{id}/join', [ProjectController::class, "join"]);
 
     //Gestion des commentaires
-    Route::post('/comment/store', [CommentController::class, "store"]);
+    Route::post('/comment/{id}/store', [CommentController::class, "store"]);
     Route::put('/comment/{id}/update', [CommentController::class, "update"]);
     Route::delete('/comment/{id}/delete', [CommentController::class, "delete"]);
 
