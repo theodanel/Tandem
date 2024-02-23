@@ -7,27 +7,18 @@ import { PiPlantLight, PiTreeLight } from "react-icons/pi";
 import { LuUser2, LuUsers2, LuNut } from "react-icons/lu";
 import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
 import { FaHeart , FaRegHeart } from "react-icons/fa";
-
-
-import "../stylesheets/Project.scss"
-import { useDispatch } from 'react-redux';
-import { getUser } from '../slices';
+import "../stylesheets/Project.scss";
 
 
 
-const Project = ({user, title, image, status , languages , creator_id , description, id, collaborators, collaborators_max }) => {
+const Project = ({user, title, image, status , languages , creator_id , description, id, collaborators, collaborators_max, likes, favorites }) => {
   const [creator, setCreator] = useState({});
-  const [render, setRender] = useState();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-      setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-      setIsModalOpen(false);
-  };
 
+  // Modale en cas de non-connexion pour les Likes/Favoris
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Récupère les données du créateur du projet
   const getCreator = async ()=>{
     const res = await axios.get(`/api/user/${creator_id}`);
     setCreator(res.data.user)
@@ -36,13 +27,14 @@ const Project = ({user, title, image, status , languages , creator_id , descript
     getCreator();
   },[]);
 
-
+  // Affichage de la liste des langages du projet
   const languagesList = languages.map((language, index)=>{
     return(
       <Language key={index} name={language.name} action={null} checked={null} image={language.logo} />
     )
   })
 
+  // Couleurs pour le compteur de collaborateurs
   const colors = {
     '0%': '#2EC458',
     '50%': '#ADDDB2',
@@ -50,6 +42,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
     '100%': '#F47143'
   }
 
+  // Affichage des différentes icones selon l'avancement du projet
   const icon = () =>{
     switch(status){
       case("created"):
@@ -64,8 +57,11 @@ const Project = ({user, title, image, status , languages , creator_id , descript
     }
   }
 
+
+  // Affichage de l'icone Favoris selon si le projet est un favori de l'utilisateur
   const favoris = () =>{
-    if (user?.favorites.find(favorite => favorite.project_id === id)){
+    // if (user?.favorites.find(favorite => favorite.project_id === id)){
+    if (favorites?.find(favorite => favorite.user_id === user?.id)){
       return (
         <Popover placement="left" content="Retirer des favoris">
           <div className='favorites' onClick={()=>handleAction("favorite")} ><IoBookmark className='action-icon' size={25} /></div>
@@ -80,9 +76,10 @@ const Project = ({user, title, image, status , languages , creator_id , descript
     }
   }
 
+  // Affichage de l'icone like selon si le projet est liké par l'utilisateur
   const like = () => {
-  
-      if (user?.likes.find(like => like.project_id === id)){
+      // if (user?.likes.find(like => like.project_id === id)){
+      if (likes?.find(like => like.user_id === user?.id)){
         return (
           <Popover placement="left" content="Retirer le like">
             <div className='likes' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} /></div>
@@ -97,12 +94,11 @@ const Project = ({user, title, image, status , languages , creator_id , descript
       }
   }
 
+
+  // Ajoute/Enlève un like/favori si l'utilisateur est connecté, sinon ouvre une modale
   const handleAction = async(action) => {
     if(user){
       axios.put(`/api/project/${id}/${action}`);
-      const res = await axios.get(`/api/user`).then(res => res.data.user);
-      dispatch(getUser(res));
-      setRender("");
     } else {
       setIsModalOpen(true);
     }
@@ -110,15 +106,20 @@ const Project = ({user, title, image, status , languages , creator_id , descript
 
   return (
     <div className='project'>
+
       {icon()}
+
       <div className='user-actions'>
         {favoris()}
         {like()}
       </div>
+
       <div className='container'>
+
         <div className='project-img'>
           <img onClick={() => navigate(`/project/${id}`)} src={image} alt=""/>
         </div>
+
         <div className='project-body'>
           <div>
             <div>
@@ -132,21 +133,24 @@ const Project = ({user, title, image, status , languages , creator_id , descript
             </div>
             <p className='description' >{description.length>150?`${description.substring(0, 150)}...`: description}</p>
           </div>
+
           <div className='bottom-row'>
-            <div className='languagesList-3'>{languagesList}</div>
+            <div className='languagesList-3'>
+              {languagesList}
+            </div>
             {/* {status !== "completed" ? */}
-              <Popover placement="left" content={collaborators === collaborators_max ? "Equipe complète" : ` ${collaborators_max - collaborators} place(s) restante(s)`}>
-                <div className='progress'>
-                <LuUsers2 size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} />
-                  <Progress className={collaborators === collaborators_max ? 'orange' : 'green'} type='circle' percent={(collaborators/collaborators_max)*100} size="small" format={(percent) => `${collaborators}/${collaborators_max}`} strokeColor={collaborators === collaborators_max ? '#F47143' : colors} />
-                </div>
-              </Popover>
-             {/* : ""} */}
+            <Popover placement="left" content={collaborators === collaborators_max ? "Equipe complète" : ` ${collaborators_max - collaborators} place(s) restante(s)`}>
+              <div className='progress'>
+              <LuUsers2 size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} />
+                <Progress className={collaborators === collaborators_max ? 'orange' : 'green'} type='circle' percent={(collaborators/collaborators_max)*100} size="small" format={(percent) => `${collaborators}/${collaborators_max}`} strokeColor={collaborators === collaborators_max ? '#F47143' : colors} />
+              </div>
+            </Popover>
+            {/* : ""} */}
           </div>
         </div>
       </div>
 
-      <Modal title="Connexion requise" open={isModalOpen} onCancel={()=>handleCancel()} footer={null} centered >
+      <Modal title="Connexion requise" open={isModalOpen} onCancel={()=>setIsModalOpen(false)} footer={null} centered >
         <h3>Veuillez vous connecter pour réaliser cette action</h3>
         <button type='button' onClick={() => navigate('/login')} >Me connecter</button>
         <button type='button' onClick={() => setIsModalOpen(false)}>Non merci</button>
