@@ -61,7 +61,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
   // Affichage de l'icone Favoris selon si le projet est un favori de l'utilisateur
   const favoris = () =>{
     // if (user?.favorites.find(favorite => favorite.project_id === id)){
-    if (favorites?.find(favorite => favorite.user_id === user.id)){
+    if (favorites?.find(favorite => favorite.user_id === user?.id)){
       return (
         <Popover placement="left" content="Retirer des favoris">
           <div className='favorites' onClick={()=>handleAction("favorite")} ><IoBookmark className='action-icon' size={25} /></div>
@@ -79,7 +79,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
   // Affichage de l'icone like selon si le projet est liké par l'utilisateur
   const like = () => {
       // if (user?.likes.find(like => like.project_id === id)){
-      if (likes?.find(like => like.user_id === user.id)){
+      if (likes?.find(like => like.user_id === user?.id)){
         return (
           <Popover placement="left" content="Retirer le like">
             <div className='likes' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} /></div>
