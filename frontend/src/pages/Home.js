@@ -92,12 +92,12 @@ const Home = () => {
               </div>
               <div className="hero-stats">
                 <div className="hero-stat">
-                  <h3>Projets en cours</h3>
-                  <p id="home-ProjetsEnCours"><CountUp end={projectsCount} /></p>
+                  <h3>Collaborateurs</h3>
+                  <p id="home-NumberSub"><CountUp end={usersCount}/></p>
                 </div>
                 <div className="hero-stat">
-                  <h3>Abonnés</h3>
-                  <p id="home-NumberSub"><CountUp end={usersCount}/></p>
+                  <h3>Projets en cours</h3>
+                  <p id="home-ProjetsEnCours"><CountUp end={projectsCount} /></p>
                 </div>
                 <div className="hero-stat">
                   <h3>Projets terminés</h3>
