@@ -4,12 +4,12 @@ import Layout from "../components/Layout";
 import Project from "../components/Project";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
-import germerwhite from "../img/germerwhite.png";
 import SearchBar from "../components/SearchBar";
 import axios from "../api/axios.js";
 import { Skeleton } from "antd";
 import SearchsBar from "../components/SearchsBar.js";
 import { useSelector } from "react-redux";
+import CountUp from "react-countup";
 
 const Home = () => {
   useEffect(() => {
@@ -92,16 +92,16 @@ const Home = () => {
               </div>
               <div className="hero-stats">
                 <div className="hero-stat">
-                  <h3>Nombre de projets en cours</h3>
-                  <p id="home-ProjetsEnCours">{projectsCount}</p>
+                  <h3>Projets en cours</h3>
+                  <p id="home-ProjetsEnCours"><CountUp end={projectsCount} /></p>
                 </div>
                 <div className="hero-stat">
-                  <h3>Nombre d'abonnés</h3>
-                  <p id="home-NumberSub">{usersCount}</p>
+                  <h3>Abonnés</h3>
+                  <p id="home-NumberSub"><CountUp end={usersCount}/></p>
                 </div>
                 <div className="hero-stat">
-                  <h3>Nombre de projets terminés</h3>
-                  <p id="home-ProjectsClose">{projectsCompleted}</p>
+                  <h3>Projets terminés</h3>
+                  <p id="home-ProjectsClose"><CountUp end={projectsCompleted}/></p>
                 </div>
               </div>
             </div>
