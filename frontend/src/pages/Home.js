@@ -32,7 +32,7 @@ const Home = () => {
 
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [projects]);
 
   const projectsList = projects.slice(0, 8).map((project) => {
     return (
@@ -47,6 +47,8 @@ const Home = () => {
         collaborators={project.collaborators}
         collaborators_max={project.collaborators_max}
         id={project.id}
+        likes ={project.likes}
+        favorites={project.favorites}
         user={user}
       ></Project>
     );
