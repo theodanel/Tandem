@@ -279,6 +279,10 @@ const ShowProject = () => {
                     <input type='text' id='newDescription' name='newDescription' value={newDescription} onChange={(e) => setNewDescription(e.target.value)} />
                     <b>{errors.newDescription}</b>
 
+                    <div className='languagesList'>
+                                {languagesList}
+                            </div>
+
                     {/* <input type="number" id="newCollaborators" name="newCollaborators" min="1" max="20" value={newCollaborators} onChange={(e) => setNewCollaborators(e.target.value)} />
                     <b>{errors.newCollaborators}</b> */}
 

@@ -120,9 +120,7 @@
     }
 
     @media (min-width: v.$xl-breakpoint) {
-        width: 70%;
-
-
+        width: 80%;
     }
 }
 
@@ -281,14 +279,18 @@
 
 
     @media (min-width: v.$sm-breakpoint) {
-        height: 0.5rem;
+    }
+
+    @media (min-width: v.$xl-breakpoint) {
+        height: 0.4rem;
+        width: 90%;
     }
 
 }
 
 .languagesList {
     display: flex;
-    width: 90%;
+    width: 100%;
     flex-direction: column;
 
 
