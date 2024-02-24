@@ -36,7 +36,7 @@ Route::get('/languages/project/{id}', [LanguageController::class, "projectLangua
 Route::get('/languages/user/{id}', [LanguageController::class, "userLanguages"]);
 
 // Avatars
-Route::get('avatars', [AvatarController::class, "index"]);
+Route::get('/avatars', [AvatarController::class, "index"]);
 
 // Commentaires
 Route::get('/comments/{id}', [CommentController::class, 'show']);

@@ -11,9 +11,9 @@ class AvatarController extends Controller
      * Affichage de tous les avatars de la table
      */
     function index() {
-        $avatars = Avatar::all();
+        $avatars = Avatar::all()->sortBy("url");
         return response()->json([
-            'languages' => $avatars,
+            'avatars' => $avatars,
             "status" => 200,
         ]);
     } 

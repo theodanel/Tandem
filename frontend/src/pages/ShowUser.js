@@ -17,13 +17,19 @@ import "../stylesheets/UserDetail.scss";
 
 
 const UserPage = () => {
-    const { id } = useParams();
     const navigate = useNavigate();
+    const { id } = useParams();
+    const loggedUser = useSelector(state => state.data.user)
+
+    //===========
+    //STATE
+    //===========
     const [user, setUser] = useState({});
     const [updateUser, setUpdateUser] = useState({})
-    const loggedUser = useSelector(state => state.data.user)
     const [allLanguages, setAllLanguages] = useState([]);
     const [userProjects, setUserProjects] = useState([]);
+    const [avatars, setAvatars] = useState([]);
+    const [date, setDate] = useState("");
     const [loading, setLoading] = useState({
         user:true,
         languages:true,
@@ -32,8 +38,10 @@ const UserPage = () => {
         params:false,
         contacts:false,
         languages:false,
+        logout:false,
+        avatars:false,
     });
-    const [date, setDate] = useState("");
+
 
     const handleModals = (name, status) =>{
         setModals({
@@ -49,6 +57,10 @@ const UserPage = () => {
         })
     }
 
+
+    //===========
+    //API CALLS
+    //===========
     const getData = async () => {
         const resUser = await axios.get(`/api/user/${id}`).then(res => res.data.user);
         document.title = `${resUser.name}`;
@@ -79,6 +91,50 @@ const UserPage = () => {
             handleLoading("languages",false)
         }
     }
+
+    const getAvatars = async()=>{
+        const resAvatars = await axios.get("/api/avatars")
+        setAvatars(resAvatars.data.avatars);
+       
+    }
+
+    const handleAvatars = () => {
+        if(loggedUser.id === user.id){
+            getAvatars();
+            handleModals('avatars',true);
+        }
+    }
+
+    //===========
+    //LISTS RENDERS
+    //===========
+    const avatarsList = avatars.map((avatar, index) => {
+        return (
+            <div className='avatar' key={index}>
+                <img src={`http://localhost:8000/images/avatars/${avatar.url}`} />
+            </div>
+        )
+    })
+
+    const createdProjects = userProjects.filter(project=>project.user_id == id).map(project=> {
+        return (
+            <Project
+                key={project.id}
+                title={project.title}
+                name={project.name}
+                image={project.image}
+                status={project.status}
+                description={project.description}
+                profil={project.profil}
+                languages={project.languages}
+                creator_id={project.user_id}
+                collaborators={project.collaborators}
+                collaborators_max={project.collaborators_max}
+                id={project.id}
+                >
+            </Project>
+        );
+    })
 
     const projectsList = userProjects.map(project => {
         return (
@@ -120,7 +176,7 @@ const UserPage = () => {
             />
         );
     });
-
+    
     const updateForm = () => {
         return(
             <form>
@@ -147,19 +203,44 @@ const UserPage = () => {
         )
     }
 
-    const params = () => {
+
+    //===========
+    //MODALS
+    //===========
+    const paramsModal = () => {
         return(
             <Modal title="Paramètres du profil" open={modals.params} onCancel={()=>handleModals("params", false)} footer={null} centered >
                 {updateForm()}
-                <button type='button' onClick={()=>navigate('/logout')} >Déconnexion</button>
             </Modal>
         )
     }
 
-    const contacts =() => {
+    const contactsModal =() => {
         return(
             <Modal title={`Contacts de ${user.name}`} open={modals.contacts} onCancel={()=>handleModals("contacts", false)} footer={null} centered >
                 
+            </Modal>
+        )
+    }
+
+    const logoutModal =() => {
+        return(
+            <Modal title={`Déconnexion`} open={modals.logout} onCancel={()=>handleModals("logout", false)} footer={null} centered >
+                <p>Voulez-vous vous déconnecter ?</p>
+                <button type='button' onClick={()=>navigate('/logout')}>Oui</button>
+                <button type='button' onClick={()=>handleModals("logout", false)}>Non</button>
+                
+            </Modal>
+        )
+    }
+
+    const avatarsModal =()=> {
+        return(
+            <Modal title={`Changer d'avatar`} open={modals.avatars} onCancel={()=>handleModals("avatars", false)} footer={null} centered>
+                <div className='avatarsList'>
+                    {avatarsList}
+                </div>
+
             </Modal>
         )
     }
@@ -171,18 +252,29 @@ const UserPage = () => {
                 <div className='profile'>
                     <FaArrowLeft size={25} className='top-left-btn' onClick={()=>navigate(-1)}/>
                     {loggedUser?.id === user.id ? 
-                        <button type='button' className='top-right-btn' onClick={()=>handleModals("params", true)}>Paramètres</button>
+                        <div className='top-right-btn'>
+                            <button type='button'  onClick={()=>handleModals("params", true)}>Favoris
+                            </button>
+                            <button type='button' onClick={()=>handleModals("params", true)}>Paramètres
+                            </button>
+                            <button type='button' onClick={()=>handleModals("logout", true)} >Déconnexion</button>
+                        </div>
                     :
                         <button type='button' className='top-right-btn'><LuUserPlus2 />Ajouter</button>
                     }
                     <button type='button' className='contacts' onClick={()=>handleModals("contacts", true)}>Contacts</button>
 
                     {/* Modals */}
-                    {params()}
-                    {contacts()}
+                    {paramsModal()}
+                    {contactsModal()}
+                    {logoutModal()}
+                    {avatarsModal()}
 
-                    <div id='user-avatar'>
+                    <div className={loggedUser.id === user.id?'avatar img-hover':'avatar'} onClick={()=>handleAvatars()}>
                         <img src={`http://localhost:8000/images/avatars/${user.avatar}`} />
+                        {loggedUser.id === user.id?
+                        <p className='hidden'>Changer d'avatar</p>
+                        :""}
                     </div>
                     <div className='links'>
                         {user.github?
@@ -216,13 +308,13 @@ const UserPage = () => {
                 </div>
                 <div id='user-project'>
                     <h2>Projets créés</h2>
-                    <div>
-                        {projectsList}
+                    <div className='projectsList'>
+                        {createdProjects}
                     </div>
                 </div>
                 <div id='user-project'>
                     <h2>Participation :</h2>
-                    <div>
+                    <div className='projectsList'>
                         {projectsList}
                     </div>
                 </div>
