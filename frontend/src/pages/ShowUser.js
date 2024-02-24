@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Collapse, Modal, Popover, Skeleton } from 'antd';
+import { Collapse, Modal, Popover, Skeleton, message } from 'antd';
 import { format } from "date-fns";
 import { FaGithub, FaDiscord, FaArrowLeft } from "react-icons/fa";
 import { LuUserPlus2 } from "react-icons/lu";
@@ -123,6 +123,12 @@ const UserPage = () => {
             setAllLanguages(resLanguages);
             handleLoading("languages",false)
             setCheckedState(new Array(resLanguages.length).fill(false))
+            checkedState.map((state,index)=>{
+                console.log('test');
+                if( index+1 === 2){
+                    setCheckedState(states => states[index]=true)
+                }
+            })
         }
     }
 
@@ -140,12 +146,24 @@ const UserPage = () => {
 
     const updateAvatar = async()=>{
         await axios.put(`/api/user/${user.id}/update/avatar`, {"avatar":updateUser.avatar_id} , { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} )
-        handleModals("avatars", false)
+        handleModals("avatars", false);
+        message.success("Avatar mis à jour")
+    }
+
+    const handleForm = async (e)=>{
+        e.preventDefault();
+        const update = await axios.put(`/api/user/${id}/update`, updateUser, { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`});
+        if(update.data.status === 200){
+            handleModals("params",false);
+            message.success("Profil mis à jour")
+        } else {
+            message.error("Erreur")
+        }
     }
 
     useEffect(() => {
         getData();
-    }, [id, modals.avatars])
+    }, [id, modals.avatars, modals.params])
 
 
 
@@ -164,7 +182,9 @@ const UserPage = () => {
                     type='radio'
                     id={avatar.url}
                     value={avatar.id}
-                    checked={updateUser.avatar_id === avatar.id? true : false}  name='avatar_id' />
+                    checked={updateUser.avatar_id === avatar.id? true : false} 
+                    onChange={()=>handleAvatar(avatar.id)}
+                    name='avatar_id' />
                 <img src={`http://localhost:8000/images/avatars/${avatar.url}`} alt={avatar.url} />
             </div>
         )
@@ -249,14 +269,14 @@ const UserPage = () => {
      */
     const updateForm = () => {
         return(
-            <form>
+            <form onSubmit={(e)=>handleForm(e)}>
                 <div className='flex-col'>
                     <label htmlFor='name'>Pseudo</label>
-                    <input type='text' id='name' name='name' value={updateUser.name} onChange={(e)=>handleUpdateUser(e)} required/>
+                    <input type='text' id='name' name='name' value={updateUser.name} onChange={(e)=>handleUpdateUser(e)} required max={54} min={3}/>
                 </div>
                 <div className='flex-col'>
                     <label htmlFor='description'>Description</label>
-                    <textarea name='description' onChange={(e)=>handleUpdateUser(e)} value={updateUser.description} maxLength={1000}></textarea>
+                    <textarea name='description' onChange={(e)=>handleUpdateUser(e)} value={updateUser.description} maxLength={500}></textarea>
                 </div>
                 <div className='form-group'>
                     <div className='flex-col'>
@@ -376,7 +396,13 @@ const UserPage = () => {
                 </div>
                 <div id='user-language'>
                     <h2>Langages connus</h2>
-                    {languagesList?.length>0 ? languagesList : loggedUser.id === user.id ? <p onClick={()=>handleModals('params', true)}>Ajouter des langages</p> : <p>L'utilisateur n'a indiqué aucun langage pour le moment</p>}
+                    {languagesList?.length>0 ? 
+                        <div className='languagesList-1'>{languagesList}</div> 
+                    : loggedUser.id === user.id ? 
+                        <p onClick={()=>handleModals('params', true)}>Ajouter des langages</p> 
+                    : 
+                        <p>L'utilisateur n'a indiqué aucun langage pour le moment</p>
+                    }
                 </div>
                 <div id='user-project'>
                     <h2>Projets créés</h2>

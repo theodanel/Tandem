@@ -37,7 +37,10 @@ class UserController extends Controller
     public function update(Request $request, $id){
         if (auth()->user()->id == $id){
             $validator = Validator::make($request->all(),[
-                'newPseudo' => "required|max:54|unique:users,pseudo,".$id,
+                'name' => "required|max:54|min:3|unique:users,name,".$id,
+                'description' => "max:500",
+                'discord' => "max:54",
+                "github" => "max:54",
             ]);
             if($validator->fails()){
                 return response()->json([
@@ -47,7 +50,11 @@ class UserController extends Controller
                 ]);
             } else{
                 $user = User::findOrFail($id);
-                $user->pseudo = $request->input("newPseudo");
+                $user->name = $request->input("name");
+                $user->description = $request->input("description");
+                $user->github = $request->input("github");
+                $user->discord = $request->input("discord");
+                $user->languages()->attach($request->input("languages"));
                 $user->save();
                 
                 return response()->json([
