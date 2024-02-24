@@ -37,7 +37,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    transition: all 200ms;
+    transition: background-color 200ms, transform 100ms;
     img {
       width: 100%;
       transition: all 200ms;
@@ -74,7 +74,16 @@
     gap: 0.7rem 1rem;
     .avatar{
         width: 8rem;
-       padding: 1rem;
+        padding: 1rem;
+        &:hover, &:has(input:checked){
+            background-color: v.$color-green;
+        }
+        &:active{
+            transform: scale(0.9);
+        }
+        input{
+            display: none;
+        }
     }             
 }
 

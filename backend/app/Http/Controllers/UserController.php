@@ -64,6 +64,23 @@ class UserController extends Controller
     }
 
     /**
+     * Met à jour l'avatar d'un utilisateur
+     */
+    public function updateAvatar(Request $request, $id){
+        if (auth()->user()->id == $id){
+
+            $user = User::findOrFail($id);
+            $user->avatar_id = $request->all()["avatar"];
+            $user->save();
+        } else {
+            return response()->json([
+                "status" => "error",
+                "message" => "Action impossible"
+            ]);
+        }
+    }
+
+    /**
      * Supprime un utilisateur
      */
     public function delete($id){

@@ -20,6 +20,7 @@ const UserPage = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const loggedUser = useSelector(state => state.data.user)
+    const token = useSelector(state => state.data.token)
 
     //===========
     //STATE
@@ -57,6 +58,19 @@ const UserPage = () => {
         })
     }
 
+    const handleForm = (e) =>{
+        setUpdateUser({
+            ...updateUser,
+            [e.target.name] : e.target.value
+        })
+    }
+
+    const handleAvatar = (value) =>{
+        setUpdateUser({
+            ...updateUser,
+            avatar_id : value
+        })
+    }
 
     //===========
     //API CALLS
@@ -75,14 +89,12 @@ const UserPage = () => {
             description: resUser.description,
             languages: resUser.languagesList,
             github: resUser.github,
-            discord: resUser.discord
+            discord: resUser.discord,
+            avatar_id: resUser.avatar_id
         })
         setDate(resUser.created_at);
     }
 
-    useEffect(() => {
-        getData();
-    }, [id])
 
     const getLanguages = async() => {
         if(loading.languages){
@@ -94,8 +106,7 @@ const UserPage = () => {
 
     const getAvatars = async()=>{
         const resAvatars = await axios.get("/api/avatars")
-        setAvatars(resAvatars.data.avatars);
-       
+        setAvatars(resAvatars.data.avatars);  
     }
 
     const handleAvatars = () => {
@@ -105,13 +116,28 @@ const UserPage = () => {
         }
     }
 
+    const updateAvatar = async()=>{
+        await axios.put(`/api/user/${user.id}/update/avatar`, {"avatar":updateUser.avatar_id} , { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} )
+        handleModals("avatars", false)
+    }
+
+    useEffect(() => {
+        getData();
+    }, [id, modals.avatars])
+
     //===========
     //LISTS RENDERS
     //===========
     const avatarsList = avatars.map((avatar, index) => {
         return (
-            <div className='avatar' key={index}>
-                <img src={`http://localhost:8000/images/avatars/${avatar.url}`} />
+            <div className="avatar" key={index} onClick={()=>handleAvatar(avatar.id)} name='avatar_id'>
+                <label htmlFor={avatar.url}></label>
+                <input 
+                    type='radio'
+                    id={avatar.url}
+                    value={avatar.id}
+                    checked={updateUser.avatar_id === avatar.id? true : false}  name='avatar_id' />
+                <img src={`http://localhost:8000/images/avatars/${avatar.url}`} alt={avatar.url} />
             </div>
         )
     })
@@ -240,6 +266,7 @@ const UserPage = () => {
                 <div className='avatarsList'>
                     {avatarsList}
                 </div>
+                <button type='button' onClick={()=>updateAvatar()}>Valider</button>
 
             </Modal>
         )
