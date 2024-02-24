@@ -87,8 +87,14 @@
     }             
 }
 
+.ant-modal{
+
+    width: 100%;
+}
+
 .ant-modal-content{
-    width: fit-content;
+    min-width: fit-content;
+    margin: auto;
 }
 
 

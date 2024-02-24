@@ -42,7 +42,28 @@ const UserPage = () => {
         logout:false,
         avatars:false,
     });
+    const [checkedState, setCheckedState] = useState([]);
 
+     // Ajout / suppression d'un langage selon son état checked
+     const handleLanguage = (languageId) => {
+        // Mise à jour de la valeur du checked du langage sélectionné (true devient false et vice versa)
+        const updatedCheckedState = checkedState.map((item, index) =>
+            // parcourt le tableau et ne change que le langage selectionné
+            index === languageId-1 ? !item : item
+        );
+
+        // Mise à jour du tableau checked avec cette nouvelle donnée
+        setCheckedState(updatedCheckedState);
+
+        // 2 actions possible selon l'état checked :
+        if (updatedCheckedState[languageId-1]) { // si checked : true
+            // Ajout de l'id du langage dans le tableau project.languages
+            setUpdateUser({...updateUser, languages:[...updateUser.languages, languageId]});
+        } else { // si checked : false
+            // Filtre le tableau project.languages pour retirer l'id du langage
+            setUpdateUser({...updateUser, languages:[...updateUser.languages.filter(id => id !== languageId)]});
+        }
+    };
 
     const handleModals = (name, status) =>{
         setModals({
@@ -58,7 +79,7 @@ const UserPage = () => {
         })
     }
 
-    const handleForm = (e) =>{
+    const handleUpdateUser = (e) =>{
         setUpdateUser({
             ...updateUser,
             [e.target.name] : e.target.value
@@ -101,6 +122,7 @@ const UserPage = () => {
             const resLanguages = await axios("/api/languages").then(res => res.data.languages);
             setAllLanguages(resLanguages);
             handleLoading("languages",false)
+            setCheckedState(new Array(resLanguages.length).fill(false))
         }
     }
 
@@ -125,9 +147,15 @@ const UserPage = () => {
         getData();
     }, [id, modals.avatars])
 
+
+
     //===========
     //LISTS RENDERS
     //===========
+
+    /**
+     * Liste tous les avatars
+     */
     const avatarsList = avatars.map((avatar, index) => {
         return (
             <div className="avatar" key={index} onClick={()=>handleAvatar(avatar.id)} name='avatar_id'>
@@ -142,6 +170,9 @@ const UserPage = () => {
         )
     })
 
+    /**
+     * Liste les projets créés par l'utilisateur
+     */
     const createdProjects = userProjects.filter(project=>project.user_id == id).map(project=> {
         return (
             <Project
@@ -162,6 +193,9 @@ const UserPage = () => {
         );
     })
 
+    /**
+     * Liste les projets auxquels participe l'utilisateur
+     */
     const projectsList = userProjects.map(project => {
         return (
             <Project
@@ -182,6 +216,9 @@ const UserPage = () => {
         );
     })
 
+    /**
+     * Liste les langages de l'utilisateur
+     */
     const languagesList = user.languagesList?.map((language, index) => {
         return (
             <Language key={language.id}
@@ -191,40 +228,48 @@ const UserPage = () => {
         );
     });
 
+    /**
+     * Liste tous les langages
+     */
     const allLanguagesList = allLanguages.map((language, index) => {
         return (
             <Language key={language.id}
                 name={language.name}
-                // checked={checkedState[index]}
-                // action={() => handleOnChange(language.id)}
+                checked={checkedState[index]}
+                action={() => handleLanguage(language.id)}
                 image={language.logo}
                 type='checkbox'
             />
         );
     });
     
+
+    /**
+     * Formulaire de mise à jour utilisateur
+     */
     const updateForm = () => {
         return(
             <form>
                 <div className='flex-col'>
-                    <label>Pseudo</label>
-                    <input type='text' value={updateUser.name}/>
+                    <label htmlFor='name'>Pseudo</label>
+                    <input type='text' id='name' name='name' value={updateUser.name} onChange={(e)=>handleUpdateUser(e)} required/>
                 </div>
                 <div className='flex-col'>
-                    <label>Description</label>
-                    <textarea>{updateUser.description}</textarea>
+                    <label htmlFor='description'>Description</label>
+                    <textarea name='description' onChange={(e)=>handleUpdateUser(e)} value={updateUser.description} maxLength={1000}></textarea>
                 </div>
                 <div className='form-group'>
                     <div className='flex-col'>
-                        <label>Github</label>
-                        <input type='text' value={updateUser.github}/>
+                        <label htmlFor='github'>Github</label>
+                        <input type='text' id='github' name='github' value={updateUser.github} onChange={(e)=>handleUpdateUser(e)}/>
                     </div>
                     <div className='flex-col'>
-                        <label>Discord</label>
-                        <input type='text' value={updateUser.discord}/>
+                        <label htmlFor='discord'>Discord</label>
+                        <input type='text' id='discord' name='discord' value={updateUser.discord} onChange={(e)=>handleUpdateUser(e)}/>
                     </div>
                 </div>
-                <Collapse onChange={()=>{getLanguages()}} items={[{label:"Langages", children:<Skeleton loading={loading.languages} active>{allLanguagesList}</Skeleton>}]} />
+                <Collapse onChange={()=>{getLanguages()}} items={[{label:"Langages", children:<Skeleton loading={loading.languages} active><div className='languagesList-3'>{allLanguagesList}</div></Skeleton>}]} />
+                <button type='submit'>Valider</button>
             </form>
         )
     }
