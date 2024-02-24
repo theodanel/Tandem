@@ -50,22 +50,52 @@
       }
     }
     #home-ProjectsClose {
-      text-shadow: 0px 0px v.$color-orange, 
-        1px 1px v.$color-orange, 
-        2px 2px v.$color-orange, 
-        3px 3px v.$color-orange;
+      text-shadow: 0.5px 0px v.$primary-color,
+  1px 0.5px v.$primary-color,
+  1.5px 1px v.$primary-color,
+  2px 1.5px v.$primary-color,
+  2.5px 2px v.$primary-color,
+  3px 2.5px v.$primary-color,
+  0px 0.5px v.$primary-color,
+  0.5px 1px v.$primary-color,
+  1px 1.5px v.$primary-color,
+  1.5px 2px v.$primary-color,
+  2px 2.5px v.$primary-color,
+  2.5px 3px v.$primary-color,
+  3px 3px v.$primary-color,
     }
     #home-ProjetsEnCours{
-      text-shadow: 0px 0px v.$color-green, 
-        1px 1px v.$color-green, 
-        2px 2px v.$color-green, 
-        3px 3px v.$color-green;
+      text-shadow: 0.5px 0px v.$color-green,
+      1px 0.5px v.$color-green,
+      1.5px 1px v.$color-green,
+      2px 1.5px v.$color-green,
+      2.5px 2px v.$color-green,
+      3px 2.5px v.$color-green,
+      0px 0.5px v.$color-green,
+      0.5px 1px v.$color-green,
+      1px 1.5px v.$color-green,
+      1.5px 2px v.$color-green,
+      2px 2.5px v.$color-green,
+      2.5px 3px v.$color-green,
+      3px 3px v.$color-green,
     }
     #home-NumberSub{
-      text-shadow: 0px 0px v.$color-green-dark, 
-        1px 1px v.$color-green-dark, 
-        2px 2px v.$color-green-dark, 
-        3px 3px v.$color-green-dark;
+      text-shadow: 0.5px 0px v.$color-green-dark,
+      1px 0.5px v.$color-green-dark,
+      1.5px 1px v.$color-green-dark,
+      2px 1.5px v.$color-green-dark,
+      2.5px 2px v.$color-green-dark,
+      3px 2.5px v.$color-green-dark,
+      0px 0.5px v.$color-green-dark,
+      0.5px 1px v.$color-green-dark,
+      1px 1.5px v.$color-green-dark,
+      1.5px 2px v.$color-green-dark,
+      2px 2.5px v.$color-green-dark,
+      2.5px 3px v.$color-green-dark,
+      3px 3px v.$color-green-dark,
+     
+
+   
     }
 
   }
@@ -199,11 +229,22 @@
         transform: scale(1);
       }
     }
-    .favorites {
+    .favorites, .likes{
+      color: white;
+    }
+    .favorites:hover {
       color: #FFC702;
     }
-    .likes {
+    .likes:hover {
       color: #FF0000;
+    }
+    .full{
+      &.favorites{
+        color: #FFC702;
+      }
+      &.likes{
+        color: #FF0000;
+      }
     }
   }
   &:hover .user-actions{

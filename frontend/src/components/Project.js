@@ -64,7 +64,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
     if (favorites?.find(favorite => favorite.user_id === user?.id)){
       return (
         <Popover placement="left" content="Retirer des favoris">
-          <div className='favorites' onClick={()=>handleAction("favorite")} ><IoBookmark className='action-icon' size={25} /></div>
+          <div className='favorites full' onClick={()=>handleAction("favorite")} ><IoBookmark className='action-icon' size={25} /></div>
         </Popover>
       )
     } else {
@@ -82,7 +82,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
       if (likes?.find(like => like.user_id === user?.id)){
         return (
           <Popover placement="left" content="Retirer le like">
-            <div className='likes' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} /></div>
+            <div className='likes full' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} /></div>
           </Popover>
         )
       } else {
