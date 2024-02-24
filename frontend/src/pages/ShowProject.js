@@ -61,7 +61,7 @@ const ShowProject = () => {
 
     useEffect(() => {
         getProject();
-    }, [])
+    }, [id])
 
     useEffect(() => {
         setNewTitle(project.title)

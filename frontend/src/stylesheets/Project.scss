@@ -30,7 +30,7 @@
       z-index: 1;
       top: 2rem;
       left: 2rem;
-      box-shadow: 0px 2px 3px 1px rgba(0, 0, 0, 0.396);
+  
       transition: all 200ms;
       &:hover{
         cursor: pointer;
@@ -42,12 +42,15 @@
     }
     .nut{
       background-color:  v.$color-green-dark;
+      box-shadow: 0px 2px 0px 1px #1e9c41;
     }
     .plant{
       background-color:  v.$color-green;
+      box-shadow: 0px 2px 0px 1px v.$color-green-dark;
     }
     .tree{
       background-color:  v.$primary-color;
+      box-shadow: 0px 2px 0px 1px rgb(198, 82, 39);
     }
     .project-body{
       padding: 1rem;

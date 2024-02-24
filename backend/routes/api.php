@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\NotificationController;
@@ -22,7 +23,7 @@ use PharIo\Manifest\AuthorElement;
 */
 
 // Projets
-Route::get('/projects', [ProjectController::class, "index"]);
+Route::get('/projects/{id?}', [ProjectController::class, "index"]);
 Route::get('/project/{id}', [ProjectController::class, "show"]);
 
 // Utilisateurs
@@ -31,6 +32,11 @@ Route::get('/user/{id}', [UserController::class, "show"]);
 
 // Langages
 Route::get('/languages', [LanguageController::class, "index"]);
+Route::get('/languages/project/{id}', [LanguageController::class, "projectLanguages"]);
+Route::get('/languages/user/{id}', [LanguageController::class, "userLanguages"]);
+
+// Avatars
+Route::get('avatars', [AvatarController::class, "index"]);
 
 // Commentaires
 Route::get('/comments/{id}', [CommentController::class, 'show']);
