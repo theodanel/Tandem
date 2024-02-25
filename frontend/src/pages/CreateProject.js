@@ -236,10 +236,10 @@ const CreateProject = () => {
                     <button className='btn-orange-big' onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
                 }
                 <Modal title="Connexion requise" open={isModal2Open} width="fit-content" onCancel={()=>handleCancel2()} footer={null} centered>
-                    <h3>Pour créer un projet, veuillez vous connecter</h3>
-                    <div>
-                        <button onClick={()=>navigate('/login')}>Connexion</button>
-                        <button  onClick={()=>navigate('/register')}>Inscription</button>
+                    <p>Pour créer un projet, veuillez vous connecter</p>
+                    <div className='flex center'>
+                        <button className='btn-green' onClick={()=>navigate('/login')}>Connexion</button>
+                        <button className='btn-green' onClick={()=>navigate('/register')}>Inscription</button>
                     </div>
                 </Modal>
 

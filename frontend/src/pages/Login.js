@@ -34,7 +34,7 @@ const Login = () => {
             // })
             message.success(`Bienvenue, ${res.data.user.name} !`)
             dispatch(addUser(res.data));
-            navigate('/');
+            navigate(-1);
         } else {
             message.error(res.data.message);
             setErrors(res.data.errors || []);
@@ -44,7 +44,7 @@ const Login = () => {
     // Redirection automatique si utilisateur déjà connecté
     useEffect(() => {
         if (token) {
-          navigate('/')
+          navigate(-1)
         }
       }, [])
 

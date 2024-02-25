@@ -41,7 +41,7 @@ const Register = () => {
                 button: "OK"
             })
             dispatch(addUser(res.data));
-            navigate('/');
+            navigate(-1);
         } else {
             message.error(res.data.message);
             setErrors(res.data.errors || []);

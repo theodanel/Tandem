@@ -19,6 +19,12 @@ function Header() {
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
 
+  /**
+   * Pour bien récupérer l'utilisateur après connexion
+   */
+  useEffect(()=>{
+    setUser(JSON.parse(localStorage.getItem("user")) || null)
+  })
 
   const navigate = useNavigate();
 

@@ -665,7 +665,7 @@ const UserPage = () => {
                 <div className="projectsList">{createdProjects}</div>
               ) : (
                 <p className="blank">
-                  L'utilisateur n'a pas ecnore créé de projets.
+                  L'utilisateur n'a pas encore créé de projets.
                 </p>
               )}
             </Skeleton>
