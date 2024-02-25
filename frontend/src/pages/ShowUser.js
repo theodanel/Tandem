@@ -392,7 +392,7 @@ const UserPage = () => {
                         </div>
                         <button type='button' className='contacts' onClick={()=>handleModals("contacts", true)}>Contacts</button>
                     </div>
-                    <div>         
+                    <div className='description-profile'>         
                         <div className='user-description'>
                             <div id='user-name'>
                                 <h1>{user.name}</h1>
@@ -407,7 +407,7 @@ const UserPage = () => {
                             : loggedUser.id === user.id ? 
                                 <p onClick={()=>handleModals('params', true)}>Ajouter des langages</p> 
                             : 
-                                <p>L'utilisateur n'a indiqué aucun langage pour le moment.</p>
+                                <p className='blank'>L'utilisateur n'a indiqué aucun langage pour le moment.</p>
                             }
                         </div>
                     </div>
@@ -421,7 +421,7 @@ const UserPage = () => {
                             {createdProjects}
                         </div>
                         :
-                        <p>L'utilisateur n'a pas ecnore créé de projets.</p>
+                        <p className='blank'>L'utilisateur n'a pas ecnore créé de projets.</p>
                         }
                     </div>
                     <div id='user-projects'>
@@ -431,7 +431,7 @@ const UserPage = () => {
                             {projectsList}
                         </div>
                         :
-                        <p>L'utilisateur n'a participé à aucun projet pour le moment.</p>
+                        <p className='blank'>L'utilisateur n'a participé à aucun projet pour le moment.</p>
                         }
                     </div>
                 {/* </div> */}
