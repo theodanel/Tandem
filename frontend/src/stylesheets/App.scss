@@ -42,6 +42,11 @@ footer{
   color: v.$primary-color;
 }
 
+.center{
+  margin: auto;
+  width: fit-content;
+}
+
 button{
   display: flex;
   text-align: center;

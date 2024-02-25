@@ -370,7 +370,7 @@ const UserPage = () => {
             value={updateUser.name}
             onChange={(e) => handleUpdateUser(e)}
             required
-            max={54}
+            max={20}
             min={3}
           />
         </div>
@@ -392,6 +392,7 @@ const UserPage = () => {
               name="github"
               value={updateUser.github}
               onChange={(e) => handleUpdateUser(e)}
+              max={20}
             />
           </div>
           <div className="flex-col">
@@ -402,6 +403,7 @@ const UserPage = () => {
               name="discord"
               value={updateUser.discord}
               onChange={(e) => handleUpdateUser(e)}
+              max={20}
             />
           </div>
         </div>
@@ -420,7 +422,7 @@ const UserPage = () => {
             },
           ]}
         />
-        <button type="submit">Valider</button>
+        <button type="submit"className="btn-green center" >Valider</button>
       </form>
     );
   };
@@ -464,12 +466,14 @@ const UserPage = () => {
         centered
       >
         <p>Voulez-vous vous déconnecter ?</p>
-        <button type="button" onClick={() => handleLogout()}>
-          Oui
-        </button>
-        <button type="button" onClick={() => handleModals("logout", false)}>
-          Non
-        </button>
+        <div className="flex center">
+            <button type="button" className="btn-red" onClick={() => handleLogout()}>
+            Oui
+            </button>
+            <button type="button" className="btn-green" onClick={() => handleModals("logout", false)}>
+            Non
+            </button>
+        </div>
       </Modal>
     );
   };

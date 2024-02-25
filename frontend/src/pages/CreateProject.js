@@ -155,7 +155,6 @@ const CreateProject = () => {
                 description: '',
                 languages: [],
             })
-            message.success(res.data.message)
             setErrors([]);
             navigate('/', project);
         } else {
@@ -219,7 +218,7 @@ const CreateProject = () => {
                             <div className='languagesList-1'>
                                 {languagesList}
                             </div>
-                            <button onClick={()=>handleCancel1()}>Valider</button>
+                            <button className='btn-green center' onClick={()=>handleCancel1()}>Valider</button>
                         </Modal>
 
                       

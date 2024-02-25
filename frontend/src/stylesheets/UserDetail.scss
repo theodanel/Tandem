@@ -158,12 +158,12 @@
         align-items: center;
         gap: 0.5rem;
         transition: all 200ms;
-        overflow: hidden;
+        word-break: break-all;
     }
     p{
         text-decoration: underline;
         max-width: 12rem;
-        text-overflow: ellipsis;
+        
     }
     .discord-icon{
         color:#7289da
@@ -271,14 +271,11 @@
             display: flex;
             max-width: 100%;
             margin: auto;
-            white-space: nowrap;
             svg{
                 min-width: 25px;
             }
-            p{
-                min-width: fit-content;
-            }
         }
+        
     }
     .languagesList-profile{
         grid-template-columns: repeat(10, 1fr);
