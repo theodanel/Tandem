@@ -365,19 +365,16 @@ const UserPage = () => {
             <div id='user'>
                 <div className='user-profile'>
                         <FaArrowLeft size={25} className='top-left-btn' onClick={()=>navigate(-1)}/>
-                        <div className='top-right-btn'>
                             {loggedUser?.id === user.id ? 
-                                <Fragment>
+                                <div className='top-right-btn'>
                                     <button type='button'  onClick={()=>handleModals("params", true)}>Favoris
                                     </button>
                                     <button type='button' onClick={()=>handleModals("params", true)}>Paramètres
                                     </button>
                                     <button type='button' onClick={()=>handleModals("logout", true)} >Déconnexion</button>
-                                </Fragment>
-                                :
-                                <button type='button' ><LuUserPlus2 />Ajouter</button>
+                                </div>
+                                : "" 
                             }
-                        </div>
                     <div className='profile'>
                         <div className={loggedUser?.id === user.id?'avatar img-hover':'avatar'} onClick={()=>handleAvatars()}>
                             <img src={`http://localhost:8000/images/avatars/${user.avatar}`} />
@@ -403,7 +400,10 @@ const UserPage = () => {
                             </Popover>
                             :""}
                         </div>
-                        <button type='button' className='contacts' onClick={()=>handleModals("contacts", true)}>Contacts</button>
+                        <div  className='contacts' >
+                            <button type='button' ><LuUserPlus2 />Ajouter</button>
+                            <button type='button'onClick={()=>handleModals("contacts", true)}>Contacts</button>
+                        </div>
                     </div>
                     <div className='description-profile'>         
                         <div className='user-description'>
