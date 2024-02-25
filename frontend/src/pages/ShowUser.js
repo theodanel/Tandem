@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Collapse, Modal, Popover, Skeleton, message } from 'antd';
@@ -14,13 +14,15 @@ import Language from '../components/Language';
 import axios from '../api/axios.js';
 
 import "../stylesheets/UserDetail.scss";
+import { removeUser } from '../slices/index.js';
 
 
 const UserPage = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { id } = useParams();
-    const loggedUser = useSelector(state => state.data.user)
-    const token = useSelector(state => state.data.token)
+    const loggedUser = useSelector(state => state.data.user) || {}
+    const token = useSelector(state => state.data.token) || {}
 
     //===========
     //STATE
@@ -162,6 +164,17 @@ const UserPage = () => {
         } else {
             message.error("Erreur")
         }
+    }
+
+    const handleLogout = async ()=>{
+        const res = await axios.post(`/api/logout/${user.id}`,{headers:{"Authorization":`Bearer ${token}`}})
+        if(res.data.status === 200){
+            
+            message.success(`Déconnexion réussie`)
+            
+            dispatch(removeUser(res.data));
+        }
+        navigate('/');
     }
 
     useEffect(() => {
@@ -321,7 +334,7 @@ const UserPage = () => {
         return(
             <Modal title={`Déconnexion`} open={modals.logout} onCancel={()=>handleModals("logout", false)} footer={null} centered >
                 <p>Voulez-vous vous déconnecter ?</p>
-                <button type='button' onClick={()=>navigate('/logout')}>Oui</button>
+                <button type='button' onClick={()=>handleLogout()}>Oui</button>
                 <button type='button' onClick={()=>handleModals("logout", false)}>Non</button>
                 
             </Modal>
@@ -366,7 +379,7 @@ const UserPage = () => {
                             }
                         </div>
                     <div className='profile'>
-                        <div className={loggedUser.id === user.id?'avatar img-hover':'avatar'} onClick={()=>handleAvatars()}>
+                        <div className={loggedUser?.id === user.id?'avatar img-hover':'avatar'} onClick={()=>handleAvatars()}>
                             <img src={`http://localhost:8000/images/avatars/${user.avatar}`} />
                             {loggedUser.id === user.id?
                             <p className='hidden'>Changer d'avatar</p>
@@ -398,13 +411,13 @@ const UserPage = () => {
                                 <h1>{user.name}</h1>
                                 <p className='date'>Membre depuis le : {date? format(date, "dd/MM/yyyy") : ""}</p>
                             </div>
-                            {user.description? <p>{user.description}</p> : loggedUser.id === user.id ? <p onClick={()=>handleModals('params', true)}>Ajouter une description</p> : ""}
+                            {user.description? <p>{user.description}</p> : loggedUser?.id === user.id ? <p onClick={()=>handleModals('params', true)}>Ajouter une description</p> : ""}
                         </div>
                         <div id='user-languages'>
                             <h2>Langages connus :</h2>
                             {languagesList?.length>0 ? 
                                 <div className='languagesList-profile'>{languagesList}</div> 
-                            : loggedUser.id === user.id ? 
+                            : loggedUser?.id === user.id ? 
                                 <p onClick={()=>handleModals('params', true)}>Ajouter des langages</p> 
                             : 
                                 <p className='blank'>L'utilisateur n'a indiqué aucun langage pour le moment.</p>
@@ -412,7 +425,7 @@ const UserPage = () => {
                         </div>
                     </div>
                 </div>
-                {/* <div className='user-body'> */}
+                <div className='user-body'>
                
                     <div id='user-created'>
                         <h2>Projets créés :</h2>
@@ -434,7 +447,7 @@ const UserPage = () => {
                         <p className='blank'>L'utilisateur n'a participé à aucun projet pour le moment.</p>
                         }
                     </div>
-                {/* </div> */}
+                </div>
             </div>                
             </Skeleton>
         </Layout>
