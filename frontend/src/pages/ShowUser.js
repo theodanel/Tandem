@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -272,7 +272,7 @@ const UserPage = () => {
      */
     const updateForm = () => {
         return(
-            <form onSubmit={(e)=>handleForm(e)}>
+            <form onSubmit={(e)=>handleForm(e)} className='params'>
                 <div className='flex-col'>
                     <label htmlFor='name'>Pseudo</label>
                     <input type='text' id='name' name='name' value={updateUser.name} onChange={(e)=>handleUpdateUser(e)} required max={54} min={3}/>
@@ -342,83 +342,99 @@ const UserPage = () => {
 
     return (
         <Layout>
+            {/* Modals */}
+            {paramsModal()}
+            {contactsModal()}
+            {logoutModal()}
+            {avatarsModal()}
+            
             <Skeleton  loading={loading.user} active>
             <div id='user'>
-                <div className='profile'>
-                    <FaArrowLeft size={25} className='top-left-btn' onClick={()=>navigate(-1)}/>
-                    {loggedUser?.id === user.id ? 
+                <div className='user-profile'>
+                        <FaArrowLeft size={25} className='top-left-btn' onClick={()=>navigate(-1)}/>
                         <div className='top-right-btn'>
-                            <button type='button'  onClick={()=>handleModals("params", true)}>Favoris
-                            </button>
-                            <button type='button' onClick={()=>handleModals("params", true)}>Paramètres
-                            </button>
-                            <button type='button' onClick={()=>handleModals("logout", true)} >Déconnexion</button>
+                            {loggedUser?.id === user.id ? 
+                                <Fragment>
+                                    <button type='button'  onClick={()=>handleModals("params", true)}>Favoris
+                                    </button>
+                                    <button type='button' onClick={()=>handleModals("params", true)}>Paramètres
+                                    </button>
+                                    <button type='button' onClick={()=>handleModals("logout", true)} >Déconnexion</button>
+                                </Fragment>
+                                :
+                                <button type='button' ><LuUserPlus2 />Ajouter</button>
+                            }
                         </div>
-                    :
-                        <button type='button' className='top-right-btn'><LuUserPlus2 />Ajouter</button>
-                    }
-                    <button type='button' className='contacts' onClick={()=>handleModals("contacts", true)}>Contacts</button>
-
-                    {/* Modals */}
-                    {paramsModal()}
-                    {contactsModal()}
-                    {logoutModal()}
-                    {avatarsModal()}
-
-                    <div className={loggedUser.id === user.id?'avatar img-hover':'avatar'} onClick={()=>handleAvatars()}>
-                        <img src={`http://localhost:8000/images/avatars/${user.avatar}`} />
-                        {loggedUser.id === user.id?
-                        <p className='hidden'>Changer d'avatar</p>
-                        :""}
+                    <div className='profile'>
+                        <div className={loggedUser.id === user.id?'avatar img-hover':'avatar'} onClick={()=>handleAvatars()}>
+                            <img src={`http://localhost:8000/images/avatars/${user.avatar}`} />
+                            {loggedUser.id === user.id?
+                            <p className='hidden'>Changer d'avatar</p>
+                            :""}
+                        </div>
+                        <div className='links'>
+                            {user.github?
+                            <Popover placement="right" title="" content="Copié !" trigger="click">
+                                <div className='github' onClick={() => {navigator.clipboard.writeText(user.github)}}>
+                                    <FaGithub size={25}/>
+                                    <p>{user.github}</p>
+                                </div>
+                            </Popover>
+                            :""}
+                            {user.discord?
+                            <Popover placement="right" title="" content="Copié !" trigger="click">
+                                <div className='discord' onClick={() => {navigator.clipboard.writeText(user.discord)}}>
+                                    <FaDiscord size={25} className='discord-icon' />
+                                    <p>{user.discord}</p>
+                                </div>
+                            </Popover>
+                            :""}
+                        </div>
+                        <button type='button' className='contacts' onClick={()=>handleModals("contacts", true)}>Contacts</button>
                     </div>
-                    <div className='links'>
-                        {user.github?
-                        <Popover placement="right" title="" content="Copié !" trigger="click">
-                            <div className='github' onClick={() => {navigator.clipboard.writeText(user.github)}}>
-                                <FaGithub size={25}/>
-                                <p>{user.github}</p>
+                    <div>         
+                        <div className='user-description'>
+                            <div id='user-name'>
+                                <h1>{user.name}</h1>
+                                <p className='date'>Membre depuis le : {date? format(date, "dd/MM/yyyy") : ""}</p>
                             </div>
-                        </Popover>
-                        :""}
-                        {user.discord?
-                        <Popover placement="right" title="" content="Copié !" trigger="click">
-                            <div className='discord' onClick={() => {navigator.clipboard.writeText(user.discord)}}>
-                                <FaDiscord size={25} className='discord-icon' />
-                                <p>{user.discord}</p>
-                            </div>
-                        </Popover>
-                        :""}
+                            {user.description? <p>{user.description}</p> : loggedUser.id === user.id ? <p onClick={()=>handleModals('params', true)}>Ajouter une description</p> : ""}
+                        </div>
+                        <div id='user-languages'>
+                            <h2>Langages connus :</h2>
+                            {languagesList?.length>0 ? 
+                                <div className='languagesList-profile'>{languagesList}</div> 
+                            : loggedUser.id === user.id ? 
+                                <p onClick={()=>handleModals('params', true)}>Ajouter des langages</p> 
+                            : 
+                                <p>L'utilisateur n'a indiqué aucun langage pour le moment.</p>
+                            }
+                        </div>
                     </div>
                 </div>
-                <div className='user-description'>
-                    <div id='user-name'>
-                        <h1>{user.name}</h1>
-                        <p>Membre depuis le : {date? format(date, "dd/MM/yyyy") : ""}</p>
+                {/* <div className='user-body'> */}
+               
+                    <div id='user-created'>
+                        <h2>Projets créés :</h2>
+                        {createdProjects?.length>0 ? 
+                        <div className='projectsList'>
+                            {createdProjects}
+                        </div>
+                        :
+                        <p>L'utilisateur n'a pas ecnore créé de projets.</p>
+                        }
                     </div>
-                    {user.description? <p>{user.description}</p> : loggedUser.id === user.id ? <p onClick={()=>handleModals('params', true)}>Ajouter une description</p> : ""}
-                </div>
-                <div id='user-language'>
-                    <h2>Langages connus</h2>
-                    {languagesList?.length>0 ? 
-                        <div className='languagesList-1'>{languagesList}</div> 
-                    : loggedUser.id === user.id ? 
-                        <p onClick={()=>handleModals('params', true)}>Ajouter des langages</p> 
-                    : 
-                        <p>L'utilisateur n'a indiqué aucun langage pour le moment</p>
-                    }
-                </div>
-                <div id='user-project'>
-                    <h2>Projets créés</h2>
-                    <div className='projectsList'>
-                        {createdProjects}
+                    <div id='user-projects'>
+                        <h2>Participation :</h2>
+                        {projectsList?.length>0 ? 
+                        <div className='projectsList'>
+                            {projectsList}
+                        </div>
+                        :
+                        <p>L'utilisateur n'a participé à aucun projet pour le moment.</p>
+                        }
                     </div>
-                </div>
-                <div id='user-project'>
-                    <h2>Participation :</h2>
-                    <div className='projectsList'>
-                        {projectsList}
-                    </div>
-                </div>
+                {/* </div> */}
             </div>                
             </Skeleton>
         </Layout>
