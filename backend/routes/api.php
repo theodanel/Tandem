@@ -63,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/project/{id}/delete', [ProjectController::class, "delete"]);
     Route::put('/project/{id}/step', [ProjectController::class, "nextStep"]);
     Route::put('/project/{id}/favorite', [ProjectController::class, "favorite"]);
+    Route::get('/projects/favorites/{id}', [ProjectController::class, "showFavorites"]);
     Route::put('/project/{id}/like', [ProjectController::class, "like"]);
     Route::post('/project/{id}/close', [ProjectController::class, "close"]);
     Route::put('/project/{id}/join', [ProjectController::class, "join"]);

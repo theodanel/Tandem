@@ -31,6 +31,7 @@ const UserPage = () => {
     const [updateUser, setUpdateUser] = useState({})
     const [allLanguages, setAllLanguages] = useState([]);
     const [userProjects, setUserProjects] = useState([]);
+    const [userFavorites, setUserFavorites] = useState([]);
     const [avatars, setAvatars] = useState([]);
     const [date, setDate] = useState("");
     const [loading, setLoading] = useState({
@@ -40,9 +41,9 @@ const UserPage = () => {
     const [modals, setModals] = useState({
         params:false,
         contacts:false,
-        languages:false,
         logout:false,
         avatars:false,
+        favorites:false,
     });
     const [checkedState, setCheckedState] = useState([]);
 
@@ -98,6 +99,10 @@ const UserPage = () => {
     //===========
     //API CALLS
     //===========
+
+    /**
+     * Récupère les données de l'utilisateur, ses projets, ses langages et ses favoris
+     */
     const getData = async () => {
         const resUser = await axios.get(`/api/user/${id}`).then(res => res.data.user);
         document.title = `${resUser.name}`;
@@ -118,9 +123,14 @@ const UserPage = () => {
             avatar_id: resUser.avatar_id
         })
         setDate(resUser.created_at);
+
+        const resFavorites = await axios.get(`/api/projects/favorites/${id}`, { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} )
+        setUserFavorites(resFavorites.data.projects)
     }
 
-
+    /**
+     * Récupère tous les langages
+     */
     const getLanguages = async() => {
         if(loading.languages){
             const resLanguages = await axios("/api/languages").then(res => res.data.languages);
@@ -137,9 +147,21 @@ const UserPage = () => {
         }
     }
 
+    /**
+     * Récupère tous les avatars
+     */
     const getAvatars = async()=>{
         const resAvatars = await axios.get("/api/avatars")
         setAvatars(resAvatars.data.avatars);  
+    }
+
+    /**
+     * Met à jour l'avatar de l'utilisateur
+     */
+    const updateAvatar = async()=>{
+        await axios.put(`/api/user/${user.id}/update/avatar`, {"avatar":updateUser.avatar_id} , { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} )
+        handleModals("avatars", false);
+        message.success("Avatar mis à jour")
     }
 
     const handleAvatars = () => {
@@ -147,12 +169,6 @@ const UserPage = () => {
             getAvatars();
             handleModals('avatars',true);
         }
-    }
-
-    const updateAvatar = async()=>{
-        await axios.put(`/api/user/${user.id}/update/avatar`, {"avatar":updateUser.avatar_id} , { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} )
-        handleModals("avatars", false);
-        message.success("Avatar mis à jour")
     }
 
     const handleForm = async (e)=>{
@@ -250,6 +266,29 @@ const UserPage = () => {
                 >
             </Project>
         );
+    })
+
+    /**
+     * Liste les projets favoris
+     */
+    const favoritesList = userFavorites.map(project => {
+        return (
+            <Project
+                key={project.id}
+                title={project.title}
+                name={project.name}
+                image={project.image}
+                status={project.status}
+                description={project.description}
+                profil={project.profil}
+                languages={project.languages}
+                creator_id={project.user_id}
+                collaborators={project.collaborators}
+                collaborators_max={project.collaborators_max}
+                id={project.id}
+                >
+            </Project>
+        )
     })
 
     /**
@@ -353,6 +392,16 @@ const UserPage = () => {
         )
     }
 
+    const favoritesModal = ()=>{
+        return(
+            <Modal title={`Favoris`} open={modals.favorites} onCancel={()=>handleModals("favorites", false)} footer={null} centered>
+                <div className='projectsList'>
+                    {favoritesList}
+                </div>
+            </Modal>
+        )
+    }
+
     return (
         <Layout>
             {/* Modals */}
@@ -360,6 +409,7 @@ const UserPage = () => {
             {contactsModal()}
             {logoutModal()}
             {avatarsModal()}
+            {favoritesModal()}
             
             <Skeleton  loading={loading.user} active>
             <div id='user'>
@@ -367,7 +417,7 @@ const UserPage = () => {
                         <FaArrowLeft size={25} className='top-left-btn' onClick={()=>navigate(-1)}/>
                             {loggedUser?.id === user.id ? 
                                 <div className='top-right-btn'>
-                                    <button type='button'  onClick={()=>handleModals("params", true)}>Favoris
+                                    <button type='button'  onClick={()=>handleModals("favorites", true)}>Favoris
                                     </button>
                                     <button type='button' onClick={()=>handleModals("params", true)}>Paramètres
                                     </button>
@@ -385,7 +435,7 @@ const UserPage = () => {
                         <div className='links'>
                             {user.github?
                             <Popover placement="right" title="" content="Copié !" trigger="click">
-                                <div className='github' onClick={() => {navigator.clipboard.writeText(user.github)}}>
+                                <div className='github' title='Copier' onClick={() => {navigator.clipboard.writeText(user.github)}}>
                                     <FaGithub size={25}/>
                                     <p>{user.github}</p>
                                 </div>
@@ -393,7 +443,7 @@ const UserPage = () => {
                             :""}
                             {user.discord?
                             <Popover placement="right" title="" content="Copié !" trigger="click">
-                                <div className='discord' onClick={() => {navigator.clipboard.writeText(user.discord)}}>
+                                <div className='discord' title='Copier' onClick={() => {navigator.clipboard.writeText(user.discord)}}>
                                     <FaDiscord size={25} className='discord-icon' />
                                     <p>{user.discord}</p>
                                 </div>
@@ -401,7 +451,9 @@ const UserPage = () => {
                             :""}
                         </div>
                         <div  className='contacts' >
+                            {loggedUser?.id === user.id ? "":
                             <button type='button' ><LuUserPlus2 />Ajouter</button>
+                            }
                             <button type='button'onClick={()=>handleModals("contacts", true)}>Contacts</button>
                         </div>
                     </div>

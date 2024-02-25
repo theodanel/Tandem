@@ -118,7 +118,7 @@
 }
 
 .date{
-    color: #8C8C8C;
+    color: #a5a5a5;
 }
 
 .ant-modal{
@@ -141,7 +141,7 @@
     position: absolute;
     right: 0; 
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: space-between;
     height: 100%;
 }
@@ -240,6 +240,7 @@
         flex-direction: row;
         justify-content: space-evenly;
         width: 100%;
+        height: fit-content;
     }
    
     .user-profile{

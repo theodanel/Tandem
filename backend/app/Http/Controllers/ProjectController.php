@@ -34,6 +34,23 @@ class ProjectController extends Controller
     }
 
     /**
+     * Affichage des projets favoris d'un utilisateur
+     */
+    public function showFavorites($id){
+        $projects = User::find($id)->favorites()->get();
+        foreach ($projects as $project) {
+            $creator = $project->creator()->first();
+            $languages = $project->languages()->get();
+            $project->creator = $creator;
+            $project->languages = $languages;
+        }
+        return response()->json([
+            'projects' => $projects,
+            "status" => 200,
+        ]);
+    }
+
+    /**
      * Affiche un seul projet
      */
     function show($id)
