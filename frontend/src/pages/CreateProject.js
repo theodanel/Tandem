@@ -67,8 +67,17 @@ const CreateProject = () => {
         setCheckedState(new Array(res.data.languages.length).fill(false))
     }
 
+    const getMessage =() =>{
+        return(
+            !user? 
+            message.warning("Pour créer un projet, veuillez vous connecter")
+        :""
+        )
+    }
+
     useEffect(() => {
         getLanguages();
+        getMessage();
     }, []);
 
     // Mise à jour du state project à chaque modification d'un champ du formulaire
@@ -167,7 +176,7 @@ const CreateProject = () => {
         <Fragment>
             <form onSubmit={(e) => saveProject(e)}>
                 <h1 className="title">Création de projet</h1>
-                {!user?  <Link to={'/login'}><Tag color="warning" icon={<ExclamationCircleOutlined />} className='alert'>Pour créer un projet, veuillez vous connecter</Tag></Link> :""}
+              
                 <div className='form-group'>
                     <div className='flex-col'>
                         <label htmlFor='title'>Nom du projet :</label>
@@ -175,7 +184,7 @@ const CreateProject = () => {
                         <b>{errors.title}</b>
                     </div>
 
-                    <div >
+                    <div className='flex' >
                         <label htmlFor="collaborators_max">Nombre de participants :</label>
                         <select id="collaborators_max" name="collaborators_max" value={project.collaborators_max} onChange={(e) => handleInput(e)} required >
                             <option value="">Choisir</option>
@@ -200,10 +209,10 @@ const CreateProject = () => {
                         <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.image} onChange={(e) => handleInput(e)}/>
 
                     </div>
-                    <div>
+                    <div className='flex'>
                         <label htmlFor="languages">Langages envisagés:</label>
                         {/* <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend> */}
-                        <button type='button' name='languages' onClick={()=>showModal1()}>Selectionner</button>
+                        <button type='button' className='btn-green' name='languages' onClick={()=>showModal1()}>Selectionner</button>
                         <b>{errors.languages}</b>
                         
                         <Modal title="Choisir des langages" open={isModal1Open} width="fit-content" onCancel={()=> handleCancel1()} footer={null} centered>
@@ -223,9 +232,9 @@ const CreateProject = () => {
                     {selectedLanguages}
                 </div>
                 {user ?
-                    <button type='submit'> Créer le projet</button>
+                    <button type='submit' className='btn-green-big'> Créer le projet</button>
                 :
-                    <button onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
+                    <button className='btn-orange-big' onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
                 }
                 <Modal title="Connexion requise" open={isModal2Open} width="fit-content" onCancel={()=>handleCancel2()} footer={null} centered>
                     <h3>Pour créer un projet, veuillez vous connecter</h3>

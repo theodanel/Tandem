@@ -6,6 +6,13 @@ import { Collapse, Modal, Popover, Skeleton, message } from "antd";
 import { format } from "date-fns";
 import { FaGithub, FaDiscord, FaArrowLeft } from "react-icons/fa";
 import { LuUserPlus2 } from "react-icons/lu";
+import { FaBookmark , FaGear, FaAddressBook } from "react-icons/fa6";
+import { FiLogOut } from "react-icons/fi";
+
+
+
+
+
 
 import Project from "../components/Project";
 import Layout from "../components/Layout";
@@ -260,9 +267,7 @@ const UserPage = () => {
   /**
    * Liste les projets créés par l'utilisateur
    */
-  const createdProjects = userProjects
-    .filter((project) => project.user_id == id)
-    .map((project) => {
+  const createdProjects = userProjects.filter((project) => project.user_id == id).map((project) => {
       return (
         <Project
           key={project.id}
@@ -518,22 +523,16 @@ const UserPage = () => {
           />
           {loggedUser?.id === user.id ? (
             <div className="top-right-btn">
-              <button
-                type="button"
-                onClick={() => handleModals("favorites", true)}
-              >
+              <button type="button" onClick={() => handleModals("favorites", true)} className="btn-yellow">
+                <FaBookmark/>
                 Favoris
               </button>
-              <button
-                type="button"
-                onClick={() => handleModals("params", true)}
-              >
+              <button type="button" onClick={() => handleModals("params", true)} className="btn-green" >
+                <FaGear/>
                 Paramètres
               </button>
-              <button
-                type="button"
-                onClick={() => handleModals("logout", true)}
-              >
+              <button type="button" onClick={() => handleModals("logout", true)} className="btn-red" >
+                <FiLogOut/>
                 Déconnexion
               </button>
             </div>
@@ -565,16 +564,8 @@ const UserPage = () => {
             <div className="links">
             <Skeleton loading={loading.user} active paragraph={false}>
               {user.github ? (
-                <Popover
-                  placement="right"
-                  title=""
-                  content="Copié !"
-                  trigger="click"
-                >
-                  <div
-                    className="github"
-                    title="Copier"
-                    onClick={() => {
+                <Popover placement="right" title="" content="Copié !" trigger="click">
+                  <div className="github" title="Copier" onClick={() => {
                       navigator.clipboard.writeText(user.github);
                     }}
                   >
@@ -613,15 +604,13 @@ const UserPage = () => {
               {loggedUser?.id === user.id ? (
                 ""
               ) : (
-                <button type="button">
+                <button type="button" className="btn-green">
                   <LuUserPlus2 />
                   Ajouter
                 </button>
               )}
-              <button
-                type="button"
-                onClick={() => handleModals("contacts", true)}
-              >
+              <button type="button" onClick={() => handleModals("contacts", true)} className="btn-orange" >
+                <FaAddressBook/>
                 Contacts
               </button>
             </div>

@@ -26,6 +26,8 @@ header {
     cursor: pointer;
     padding: 5px;
     margin-right: 5px;
+    border-bottom: solid 2px transparent;
+    transition: all 200ms;
   }
 }
 
@@ -106,6 +108,7 @@ ul {
       cursor: pointer;
     }
   }
+ 
 
   .show-nav {
     .all-item {
@@ -208,5 +211,10 @@ ul {
   }
   .separation{
     display: none;
+  }
+  header{
+    p:hover{
+      border-bottom: solid 2px white ;
+    }
   }
 }
