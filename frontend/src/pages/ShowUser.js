@@ -105,10 +105,12 @@ const UserPage = () => {
         const resProjects = await axios.get(`/api/projects/${id}`).then(res => res.data.projects);
         setUserProjects(resProjects);
 
+        const languagesID = resUser.languagesList.map(language => language.id)
+
         setUpdateUser({
             name: resUser.name,
             description: resUser.description,
-            languages: resUser.languagesList,
+            languages: languagesID,
             github: resUser.github,
             discord: resUser.discord,
             avatar_id: resUser.avatar_id
@@ -121,12 +123,13 @@ const UserPage = () => {
         if(loading.languages){
             const resLanguages = await axios("/api/languages").then(res => res.data.languages);
             setAllLanguages(resLanguages);
-            handleLoading("languages",false)
-            setCheckedState(new Array(resLanguages.length).fill(false))
-            checkedState.map((state,index)=>{
-                console.log('test');
-                if( index+1 === 2){
-                    setCheckedState(states => states[index]=true)
+            handleLoading("languages",false);
+            // remplissage conditionnel tu tableau d'etat checked pour la liste des langages
+            resLanguages.map(language=>{
+                if(updateUser.languages.find(userLanguage => userLanguage === language.id )){
+                    setCheckedState(checkedState => [...checkedState, true])
+                } else {
+                    setCheckedState(checkedState => [...checkedState, false])
                 }
             })
         }

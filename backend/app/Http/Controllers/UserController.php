@@ -54,7 +54,7 @@ class UserController extends Controller
                 $user->description = $request->input("description");
                 $user->github = $request->input("github");
                 $user->discord = $request->input("discord");
-                $user->languages()->attach($request->input("languages"));
+                $user->languages()->sync($request->input("languages"));
                 $user->save();
                 
                 return response()->json([
