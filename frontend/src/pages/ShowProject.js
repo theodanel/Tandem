@@ -1,8 +1,8 @@
 
 import axios from '../api/axios';
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Collapse, Modal, Skeleton, Steps } from "antd"
-import { useNavigate, useParams } from 'react-router-dom'
+import {  useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
 
 
@@ -23,6 +23,7 @@ const ShowProject = () => {
     const [newTitle, setNewTitle] = useState("");
     const [status, setStatus] = useState("");
     const [newDescription, setNewDescription] = useState("");
+    const [newLanguage, setNewLanguage] = useState([]);
     const [postComment, setPostComment] = useState([]);
     const [newCollaborators, setNewCollaborators] = useState("");
     const [loading, setLoading] = useState({
@@ -34,7 +35,6 @@ const ShowProject = () => {
 
     const [checkedState, setCheckedState] = useState([]);
 
-    const navigate = useNavigate();
 
     const token = useSelector(state => state.data.token);
 
@@ -56,7 +56,6 @@ const ShowProject = () => {
             // parcourt le tableau et ne change que le langage selectionné
             index === languageId - 1 ? !item : item
         );
-
 
 
 
@@ -88,7 +87,7 @@ const ShowProject = () => {
                 (res) => res.data.languages
             );
             setAllLanguages(resLanguages);
-            // remplissage conditionnel tu tableau d'etat checked pour la liste des langages
+            // remplissage conditionnel du tableau d'etat checked pour la liste des langages
             resLanguages.map((language) => {
                 if (
                     project.languages.find(
@@ -173,13 +172,14 @@ const ShowProject = () => {
 
     const update = async (e) => {
         e.preventDefault();
-        const res = await axios.put(`/api/project/${id}/update`, { newTitle, newDescription, newCollaborators }, { headers: { "Authorization": `Bearer ${token}` } });
+        const res = await axios.put(`/api/project/${id}/update`, { newTitle, newDescription, newCollaborators, newLanguage }, { headers: { "Authorization": `Bearer ${token}` } });
 
 
         if (res.data.status === 200) {
             setNewTitle("");
             setNewDescription("");
             setNewCollaborators(0);
+            setNewLanguage([]);
             setIsModalOpen(false);
             getProject();
             setErrors([]);
@@ -243,11 +243,16 @@ const ShowProject = () => {
     console.log(postComment);
 
 
-
+    let participants = []
+    for(let i=2; i<=10; i++){
+        participants.push(
+            <option key={i} value={i}>{i}</option>
+        )
+    }
 
     return (
         <Layout>
-
+            
 
             <div className='projectDetail'>
                 <div className='projectDetailPosition'>
@@ -257,6 +262,7 @@ const ShowProject = () => {
 
                     {/* <div>NOMBRE DE COLLABORATEURS: {project.collaborators}</div> */}
                     <div className='descriptionPosition'>
+                    
                         <div className='projectTitle'>
                             <div className='titleDecoration'>
                                 <h1 id='projectTitle'>{project.title}</h1>
@@ -267,7 +273,7 @@ const ShowProject = () => {
                                 <h5> {project.created_at ? format(project.created_at, "dd/MM/yyyy") : ""}</h5>
                             </div>
                         </div>
-
+                    
 
                         <p className='projectDescription'>{project.description}</p>
 
@@ -355,10 +361,17 @@ const ShowProject = () => {
 
             <Modal className='updateModal' title="Modifier" open={isModalOpen} onCancel={handleCancel} footer={null} centered >
                 <form onSubmit={(e) => update(e)}>
+                    <h3>Titre :</h3>
                     <input type='text' id='newTitle' name='newTitle' value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
                     <b>{errors.newTitle}</b>
 
+                    <h3>Description :</h3>
                     <input type='text' id='newDescription' name='newDescription' value={newDescription} onChange={(e) => setNewDescription(e.target.value)} />
+
+                    
+                        {/* <input type="number" id="collaborators_max" name="collaborators_max" min="1" max="20" value={project.collaborators_max} onChange={(e) => handleInput(e)} required /> */}
+                        
+               
                     <b>{errors.newDescription}</b>
 
                     <Collapse
@@ -381,6 +394,8 @@ const ShowProject = () => {
                     <button type="submit" className="btn-green center" />
                 </form>
             </Modal>
+
+         
 
         </Layout>
     )
