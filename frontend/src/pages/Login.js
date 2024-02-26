@@ -25,7 +25,7 @@ const Login = () => {
         // login({email, password});
         // await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/login', { email, password });
-        if(res.data.status === "success"){
+        if(res.data.status === 200){
             // swal({
             //     title: "Heureux de vous revoir !",
             //     text: res.data.message,
@@ -34,7 +34,7 @@ const Login = () => {
             // })
             message.success(`Bienvenue, ${res.data.user.name} !`)
             dispatch(addUser(res.data));
-            navigate('/');
+            navigate(-1);
         } else {
             message.error(res.data.message);
             setErrors(res.data.errors || []);
@@ -44,30 +44,30 @@ const Login = () => {
     // Redirection automatique si utilisateur déjà connecté
     useEffect(() => {
         if (token) {
-          navigate('/')
+          navigate(-1)
         }
       }, [])
 
     return (
         <Fragment>
             <form onSubmit={(e)=>handleLogin(e)}>
-                <h1>Connexion</h1>
+                <h1 className="title">Connexion</h1>
                 <div className='form-group'>
                     <div className='flex-col'>
                         <label htmlFor='email'>Email :</label>
                         <input type='email' name='email' value={email} placeholder='tandem@email.fr' onChange={(e)=> setEmail(e.target.value)} autoFocus required />
-                        <b>{errors.email}</b>
+                   
                     </div>
                     <div className='flex-col'>
                         <label htmlFor='password'>Mot de passe :</label>
                         <input type='password' name='password' value={password} placeholder='Mot de passe' onChange={(e)=> setPassword(e.target.value)} required />
-                        <b>{errors.password}</b>
+                      
                     </div>
                 </div>
-                <button type='submit'>Valider</button>
-                <div>
+                <button type='submit' className='btn-green-big'>Valider</button>
+                <div className='flex'>
                     <p>Pas encore de compte ?</p>
-                    <button onClick={() => navigate('/register')}>S'inscrire</button>
+                    <button type='button' className='btn-green' onClick={() => navigate('/register')}>S'inscrire</button>
                 </div>
             </form>
         </Fragment>

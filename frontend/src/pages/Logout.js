@@ -15,8 +15,8 @@ const Logout = () => {
     const user = useSelector(state => state.data.user);
 
     const logout = async () => {
-        const res = await axios.post('/api/logout', {user},{headers:{"Authorization":`Bearer ${token}`}})
-        if(res.data.status === "success"){
+        const res = await axios.post(`/api/logout/${user.id}`,{headers:{"Authorization":`Bearer ${token}`}})
+        if(res.data.status === 200){
             // swal({
             //     title: "Au revoir !",
             //     text: res.data.message,
@@ -30,7 +30,7 @@ const Logout = () => {
         } else {
             swal({
                 title: "Erreur",
-                text: "Problème de déconnexion",
+                text: res.data.message,
                 icon: "error",
                 button: "OK"
             });
@@ -39,7 +39,6 @@ const Logout = () => {
     }
 
     useEffect(()=>{
-        console.log("test");
         if(!token || !user){
             navigate('/');
         } else {

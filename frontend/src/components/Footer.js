@@ -3,7 +3,7 @@ import React from 'react'
 function Footer() {
   return (
     <footer>
-        <h1>Footer</h1>
+        <p>Tandem © - {new Date().getFullYear()}</p>
     </footer>
   )
 }

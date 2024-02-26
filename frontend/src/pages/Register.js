@@ -33,7 +33,7 @@ const Register = () => {
         e.preventDefault();
         // await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/register', { newUser });
-        if(res.data.status === "success"){
+        if(res.data.status === 200){
             swal({
                 title: "Bravo !",
                 text: res.data.message,
@@ -41,17 +41,23 @@ const Register = () => {
                 button: "OK"
             })
             dispatch(addUser(res.data));
-            navigate('/');
+            navigate(-1);
         } else {
             message.error(res.data.message);
             setErrors(res.data.errors || []);
         }
     }
 
+    // Pour empecher un message d'erreur car non-envoi du formulaire
+    const handleNavigate = (e) =>{
+        e.preventDefault();
+        navigate('/login');
+    }
+
     return (
         <Fragment>
             <form onSubmit={(e)=>handleLogin(e)}>
-                <h1>Inscription</h1>
+                <h1 className="title">Inscription</h1>
                 <div className='form-group'>
                     <div className='flex-col'>
                         <label htmlFor='name'>Choisissez un pseudo :</label>
@@ -75,10 +81,10 @@ const Register = () => {
                         <input type='password' name='password_confirmation' value={newUser.password_confirmation} placeholder='Confirmer le mot de passe' onChange={(e)=> handleChange(e)} required/>
                     </div>
                 </div>
-                <button type='submit'>Valider</button>
-                <div>
+                <button type='submit' className='btn-green-big'>Valider</button>
+                <div className='flex'>
                     <p>Déjà inscrit ?</p>
-                    <button onClick={() => navigate('/login')}>Se connecter</button>
+                    <button type='button' className='btn-green' onClick={(e) => handleNavigate(e)}>Se connecter</button>
                 </div>
             </form>
         </Fragment>

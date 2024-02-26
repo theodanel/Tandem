@@ -4,6 +4,7 @@ import Login from '../pages/Login.js';
 import Register from '../pages/Register.js';
 import '../stylesheets/Form.scss'
 import Layout from './Layout.js';
+import NotFound from '../pages/NotFound.js';
 
 const Form = ({content}) => {
     const formContent = () => {
@@ -14,6 +15,8 @@ const Form = ({content}) => {
                 return <Login/>;
             case 'register':
                 return <Register/>;
+            case 'notFound':
+                return <NotFound/>;
         }
     }
     return (

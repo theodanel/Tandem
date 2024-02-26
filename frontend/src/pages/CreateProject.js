@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, Tag, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import axios from '../api/axios';
 import swal from 'sweetalert';
 import { Link, useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout';
@@ -60,15 +60,24 @@ const CreateProject = () => {
 
     // Appel API pour la liste des langages
     const getLanguages = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
+        const res = await axios.get("/api/languages");
         // Remplissage du tableau langages
-        setLanguages(data.languages);
+        setLanguages(res.data.languages);
         // Remplissage du tableau checked en suivant le nombre de langages
-        setCheckedState(new Array(data.languages.length).fill(false))
+        setCheckedState(new Array(res.data.languages.length).fill(false))
+    }
+
+    const getMessage =() =>{
+        return(
+            !user? 
+            message.warning("Pour créer un projet, veuillez vous connecter")
+        :""
+        )
     }
 
     useEffect(() => {
         getLanguages();
+        getMessage();
     }, []);
 
     // Mise à jour du state project à chaque modification d'un champ du formulaire
@@ -108,6 +117,7 @@ const CreateProject = () => {
                 checked={checkedState[index]}
                 action={() => handleOnChange(language.id)}
                 image={language.logo}
+                type='checkbox'
             />
         );
     });
@@ -120,6 +130,7 @@ const CreateProject = () => {
             checked={checkedState[language.id-1]}
             action={() => handleOnChange(language.id)}
             image={language.logo}
+            type='checkbox'
         />
         )
     })
@@ -129,7 +140,7 @@ const CreateProject = () => {
         e.preventDefault();
 
         // Appel à l'API
-        const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, project, { headers: { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} });
+        const res = await axios.post(`/api/project/store`, project, { headers: { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} });
         
         if (res.data.status === 200) {
             swal({
@@ -144,7 +155,6 @@ const CreateProject = () => {
                 description: '',
                 languages: [],
             })
-            message.success(res.data.message)
             setErrors([]);
             navigate('/', project);
         } else {
@@ -164,8 +174,8 @@ const CreateProject = () => {
     return (
         <Fragment>
             <form onSubmit={(e) => saveProject(e)}>
-                <h1>Création de projet</h1>
-                {!user?  <Link to={'/login'}><Tag color="warning" icon={<ExclamationCircleOutlined />} className='alert'>Pour créer un projet, veuillez vous connecter</Tag></Link> :""}
+                <h1 className="title">Création de projet</h1>
+              
                 <div className='form-group'>
                     <div className='flex-col'>
                         <label htmlFor='title'>Nom du projet :</label>
@@ -173,7 +183,7 @@ const CreateProject = () => {
                         <b>{errors.title}</b>
                     </div>
 
-                    <div >
+                    <div className='flex' >
                         <label htmlFor="collaborators_max">Nombre de participants :</label>
                         <select id="collaborators_max" name="collaborators_max" value={project.collaborators_max} onChange={(e) => handleInput(e)} required >
                             <option value="">Choisir</option>
@@ -194,21 +204,21 @@ const CreateProject = () => {
 
                 <div className='form-group'>
                     <div>
-                        <label for="image">Image d'illustration :</label>
+                        <label htmlFor="image">Image d'illustration :</label>
                         <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.image} onChange={(e) => handleInput(e)}/>
 
                     </div>
-                    <div>
+                    <div className='flex'>
                         <label htmlFor="languages">Langages envisagés:</label>
                         {/* <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend> */}
-                        <button name='languages' onClick={()=>showModal1()}>Selectionner</button>
+                        <button type='button' className='btn-green' name='languages' onClick={()=>showModal1()}>Selectionner</button>
                         <b>{errors.languages}</b>
                         
                         <Modal title="Choisir des langages" open={isModal1Open} width="fit-content" onCancel={()=> handleCancel1()} footer={null} centered>
-                            <div className='languagesList'>
+                            <div className='languagesList-1'>
                                 {languagesList}
                             </div>
-                            <button onClick={()=>handleCancel1()}>Valider</button>
+                            <button className='btn-green center' onClick={()=>handleCancel1()}>Valider</button>
                         </Modal>
 
                       
@@ -221,15 +231,15 @@ const CreateProject = () => {
                     {selectedLanguages}
                 </div>
                 {user ?
-                    <button type='submit'> Créer le projet</button>
+                    <button type='submit' className='btn-green-big'> Créer le projet</button>
                 :
-                    <button onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
+                    <button className='btn-orange-big' onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
                 }
                 <Modal title="Connexion requise" open={isModal2Open} width="fit-content" onCancel={()=>handleCancel2()} footer={null} centered>
-                    <h3>Pour créer un projet, veuillez vous connecter</h3>
-                    <div>
-                        <button onClick={()=>navigate('/login')}>Connexion</button>
-                        <button  onClick={()=>navigate('/register')}>Inscription</button>
+                    <p>Pour créer un projet, veuillez vous connecter</p>
+                    <div className='flex center'>
+                        <button className='btn-green' onClick={()=>navigate('/login')}>Connexion</button>
+                        <button className='btn-green' onClick={()=>navigate('/register')}>Inscription</button>
                     </div>
                 </Modal>
 

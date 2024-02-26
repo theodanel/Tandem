@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    function index()
-    {
+
+    //Affiche les utilisateurs
+    function index(){
         $users = User::all();
         return response()->json([
             'users' => $users,
@@ -18,84 +19,76 @@ class UserController extends Controller
         ]);
     }
 
-    function show($id)
-    {
+
+    /**
+     * Affiche un utilisateur
+     */
+    function show($id){
         $user = User::findOrFail($id);
+        $user->languagesList = $user->languages()->get();
+        $user->avatar = $user->avatar()->first()->url;
         return response()->json([
             'user' => $user,
             "status" => 200,
         ]);
     }
 
-    public function showAuth()
-    {
-        return response()->json([
-            'user' => Auth::user()
-        ]);
-    }
-
-
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'pseudo' => "required|unique:users,pseudo|max:54",
-            "email" => "required|email|unique:users,email",
-            "password" => "required"
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages(),
-                "message" => "Erreur du formulaire."
+    /**
+     * Modifie un utilisateur
+     */
+    public function update(Request $request, $id){
+        if (auth()->user()->id == $id){
+            $validator = Validator::make($request->all(),[
+                'name' => "required|max:54|min:3|unique:users,name,".$id,
+                'description' => "max:500",
+                'discord' => "max:54",
+                "github" => "max:54",
             ]);
+            if($validator->fails()){
+                return response()->json([
+                    'status' => "error",
+                    'errors' => $validator->messages(),
+                    "message" => "Erreur du formulaire."
+                ]);
+            } else{
+                $user = User::findOrFail($id);
+                $user->name = $request->input("name");
+                $user->description = $request->input("description");
+                $user->github = $request->input("github");
+                $user->discord = $request->input("discord");
+                $user->languages()->sync($request->input("languages"));
+                $user->save();
+                
+                return response()->json([
+                    'status' => 200,
+                    "message" => "L'utilisateur a été modifié."
+                ]);
+            }
         } else {
-            $user = new User;
-            $user->pseudo = $request->input('pseudo');
-            $user->email = $request->input('email');
-            $user->password = $request->input("password");
-            $user->email_verified_at = now();
-
-            $user->save();
-
             return response()->json([
-                'status' => 200,
-                "message" => "L'utilisateur a été ajouté."
+                "status" => "error",
+                "message" => "Action impossible"
             ]);
         }
     }
 
 
-
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'newPseudo' => "required|unique:users,pseudo|max:54",
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages(),
-                "message" => "Erreur du formulaire."
-            ]);
-        } else {
+    /**
+     * Met à jour l'avatar d'un utilisateur
+     */
+    public function updateAvatar(Request $request, $id){
+        if (auth()->user()->id == $id){
             $user = User::findOrFail($id);
-            $user->pseudo = $request->input("newPseudo");
+            $user->avatar_id = $request->all()["avatar"];
             $user->save();
-
+        } else {
             return response()->json([
-                'status' => 200,
-                "message" => "L'utilisateur a été ajouté."
+                "status" => "error",
+                "message" => "Action impossible"
             ]);
         }
     }
 
-    public function delete($id)
-    {
-        User::destroy($id);
-        return response()->json([
-            'status' => 200,
-            "message" => "L'utilisateur a été supprimé."
-        ]);
-    }
 
     public function togglemany($id)
     {
@@ -107,6 +100,19 @@ class UserController extends Controller
             $user->contact()->sync([$user->id, $many->id]);
 
             return response()->json(['message' => 'Relation MAAAAAJ']);
+        }
+    }
+
+    /**
+     * Supprime un utilisateur
+     */
+    public function delete($id){
+        if (auth()->user()->id == $id){
+            User::destroy($id);
+            return response()->json([
+                'status' => 200,
+                "message" => "L'utilisateur a été supprimé."
+            ]);
         }
     }
 }

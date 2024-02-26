@@ -1,6 +1,10 @@
 <?php
+
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvatarController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -19,32 +23,30 @@ use PharIo\Manifest\AuthorElement;
 |
 */
 
-// API Project
-
-Route::get('/projects', [ProjectController::class, "index"]);
+// Projets
+Route::get('/projects/{id?}', [ProjectController::class, "index"]);
 Route::get('/project/{id}', [ProjectController::class, "show"]);
 
-//----------
-// API User
-
+// Utilisateurs
 Route::get('/users', [UserController::class, "index"]);
 Route::get('/user/{id}', [UserController::class, "show"]);
 Route::post('/users/contact/{id}', [UserController::class, "togglemany"]); 
 
-//------------- 
+// Langages
+Route::get('/languages', [LanguageController::class, "index"]);
+Route::get('/languages/project/{id}', [LanguageController::class, "projectLanguages"]);
+Route::get('/languages/user/{id}', [LanguageController::class, "userLanguages"]);
 
-Route::get('/projects_languages', [ProjectController::class, "index"]);
-Route::get('/project_languages/{id}', [ProjectController::class, "show"]);
-Route::put('/project_languages/{id}/update', [ProjectController::class, "update"]);
-Route::delete('/project_languages/{id}/delete', [ProjectController::class, "delete"]);
-Route::post('/projects_languages/store', [ProjectController::class, "store"]);
+// Avatars
+Route::get('/avatars', [AvatarController::class, "index"]);
+
+// Commentaires
+Route::get('/comments/{id}', [CommentController::class, 'show']);
 
 
-
+//Authentification
 Route::post('/login', [AuthController::class, "login"]);
 Route::post('/register', [AuthController::class, "register"]);
-
-Route::get('/languages', [LanguageController::class, "index"]);
 
 // Routes protégées par authentification
 Route::middleware('auth:sanctum')->group(function () {
@@ -54,11 +56,28 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::put('/user/{id}/update', [UserController::class, "update"]);
     Route::delete('/user/{id}/delete', [UserController::class, "delete"]);
-    Route::post('/logout', [AuthController::class, 'logout']);
-
+    Route::post('/logout/{id}', [AuthController::class, 'logout']);
+    Route::put('/user/{id}/update/avatar', [UserController::class, "updateAvatar"]);
+    
     // Gestion des projets
     Route::post('/project/store', [ProjectController::class, "store"]);
-    Route::put('/project/{id}/update', [ProjectController::class, "update"]);    
+    Route::put('/project/{id}/update', [ProjectController::class, "update"]);
     Route::delete('/project/{id}/delete', [ProjectController::class, "delete"]);
+    Route::put('/project/{id}/step', [ProjectController::class, "nextStep"]);
+    Route::put('/project/{id}/favorite', [ProjectController::class, "favorite"]);
+    Route::get('/projects/favorites/{id}', [ProjectController::class, "showFavorites"]);
+    Route::put('/project/{id}/like', [ProjectController::class, "like"]);
+    Route::post('/project/{id}/close', [ProjectController::class, "close"]);
+    Route::put('/project/{id}/join', [ProjectController::class, "join"]);
 
+    //Gestion des commentaires
+    Route::put('/comment/{id}/update', [CommentController::class, "update"]);
+    Route::delete('/comment/{id}/delete', [CommentController::class, "delete"]);
+    Route::post('/comment/{id}/store', [CommentController::class, "store"]);
+
+    //Gestion des notifications
+    Route::get('/notifications/{id}/sent', [NotificationController::class, "showSent"]);
+    Route::get('/notifications/{id}/received', [NotificationController::class, "showReceived"]);
+    Route::post('/notification/send', [NotificationController::class, "send"]);
+    Route::delete('/notification/{id}/delete', [NotificationController::class, "delete"]);
 });

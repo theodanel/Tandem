@@ -10,7 +10,7 @@ class Notification extends Model
     use HasFactory;
 
     /**
-     * Pour associer une notification à son expediteur via son ID (unique)
+     * Association de l'expediteur de la notification (unique)
      */
     public function sender()
     {
@@ -18,7 +18,7 @@ class Notification extends Model
     }
     
     /**
-     * Pour associer une notification à son destinataire via son ID (unique)
+     * Association du destinataire de la notification (unique)
      */
     public function receiver()
     {
@@ -26,7 +26,7 @@ class Notification extends Model
     }
 
     /**
-     * Pour associer une notification à son destinataire via son ID (unique)
+     * Association du projet concerné par la notification (facultatif, unique)
      */
     public function project()
     {

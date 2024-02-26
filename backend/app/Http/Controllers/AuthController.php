@@ -6,38 +6,53 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
     /**
      * Récupère les données de l'utilisateur connecté
+     *  
+     * @return object Données de l'utilisateur connecté
      */
-    public function user(Request $request)
+    public function user()
     {
-        return $request->user();
+        $user = User::find(auth()->user()->id);
+        $favorites = $user->favorites()->get(array('project_id'));
+        $likes = $user->likes()->get(array('project_id'));
+        $user->refresh();
+        $user->favorites = $favorites;
+        $user->likes = $likes;
+
+        return response()->json([
+            'user' => $user,
+        ]);
     }
 
     /**
      * Connecte un utilisateur enregistré
+     * 
+     * @param object $request Identifiants de l'utilisateur 
+     * @return response Réponse au format json
      */
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
         $validator =  Validator::make($credentials, [
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email' => 'required|exists:users,email|email',
+            'password' => 'required',
         ]);
  
         if($validator->fails()){
             return response()->json([
-                'errors' => $validator->messages(),
-                "message" => "Erreur du formulaire",
+                "message" => "Identifiants incorrects",
                 'status' => "error"
             ]);
         } else if (auth()->attempt($credentials)) { // test la connection avec les données de la requêtes
-            // $request->session()->regenerate();
+
             // connecte l'utilisateur
-            $user = auth()->user();
+            $user = User::find(auth()->user()->id);
+
 
             // le if sert juste à éviter un bug d'affichage de VSCode pour le $user->createToken()
             if ($user instanceof \App\Models\User) {
@@ -49,7 +64,7 @@ class AuthController extends Controller
                     'token' => $token,
                     'user' => $user,
                     'message' => "Bienvenue, $user->name !",
-                    'status' => 'success'
+                    'status' => 200
                 ])->cookie('jwt', $token);
             }
         } else {
@@ -61,15 +76,18 @@ class AuthController extends Controller
     }
 
     /**
-     * Enregistre un nouvel utilisteur.
+     * Enregistre un nouvel utilisteur
      */
     public function register(Request $request)
     {
         $credentials = $request->newUser;
         $validator =  Validator::make($credentials,[
-            'name' => 'required|unique:users,name',
+            'name' => 'required|unique:users,name|min:3|max:50',
             'email' => 'email|required|unique:users,email',
-            'password' => 'required|confirmed'
+            'password' => ['required','confirmed', Password::min(8)->mixedCase()
+            ->numbers()
+            ->symbols()
+            ->uncompromised()]
         ]);
 
         if($validator->fails()){
@@ -82,10 +100,9 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $credentials['name'],
                 'email' => $credentials['email'],
-                'password' => bcrypt($credentials['password'])
+                'password' => bcrypt($credentials['password']),
             ]);
 
-            // $request->session()->regenerate();
             // connecte l'utilisateur
             auth()->login($user);
 
@@ -97,7 +114,7 @@ class AuthController extends Controller
                 return response()->json([
                     'token' => $token,
                     'user' => $user,
-                    'status' => "success",
+                    'status' => 200,
                     'message' => "Bienvenue, $user->name !"
                 ], 201)->cookie('jwt', $token);
             }
@@ -105,14 +122,21 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    /**
+     * Déconnecte un utilisateur connecté
+     */
+    public function logout($id)
     {
-        // $request->session()->invalidate();
-
-
+        if($id == auth()->user()->id){
             return response()->json([
                 'message' => "Deconnexion réussie",
-                'status' => 'success'
+                'status' => 200
             ])->cookie('jwt', '');
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Deconnexion impossible',
+            ]);
+        }
     }
 }

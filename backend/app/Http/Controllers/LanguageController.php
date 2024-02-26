@@ -3,45 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Models\Language;
+use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class LanguageController extends Controller
 {
+    /**
+     * Affichage de tous les langages de la table
+     */
     function index() {
         $languages = Language::all();
         return response()->json([
             'languages' => $languages,
             "status" => 200,
         ]);
-    }
+    } 
 
-
-    public function store(Request $request){
-        $validator = Validator::make($request->all(), [
-            'name' => "required|unique:languages,name|max:50",
-            'category' => "required|min:2|max:20",
-            
+    /**
+     * Affichage des langages d'un projet
+     */
+    function projectLanguages($id) {
+        $languages = Project::find($id)->language()->get();
+        return response()->json([
+            'languages' => $languages,
+            "status" => 200,
         ]);
-        
-
-        if($validator->fails()){
-            return response()->json([
-                'errors' => $validator->messages(),
-                "message" => "Erreur dans le formulaire"
-            ]);
-        } else{
-            $language = new Language();
-            $language->name = $request->input('name');
-            $language->category = $request->input('category');;
-    
-            $language->save();
-
-            return response()-> json([
-                'status' => 200,
-                "message" => "Le projet a été ajouté."
-            ]);
-        }
     }
- 
+
+    /**
+     * Affichage des langages d'un utilisateur
+     */
+    function userLanguages($id) {
+        $languages = User::find($id)->language()->get();
+        return response()->json([
+            'languages' => $languages,
+            "status" => 200,
+        ]);
+    }
 }
