@@ -83,18 +83,24 @@ const Project = ({user, id }) => {
   }
 
   // Affichage de l'icone like selon si le projet est liké par l'utilisateur
-  const like = () => {
+  const like = (popularity) => {
       // if (user?.likes.find(like => like.project_id === id)){
       if (project.likes?.find(like => like.user_id === user?.id)){
         return (
           <Popover placement="left" content="Retirer le like">
-            <div className='likes full' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} /></div>
+            <div className='likes full' onClick={()=>handleAction("like")}>
+              <FaHeart className='action-icon'  />
+              <p>{popularity}</p>
+            </div>
           </Popover>
         )
       } else {
         return (
           <Popover placement="left" content="Liker le projet">
-            <div className='likes' onClick={()=>handleAction("like")}><FaRegHeart className='action-icon' size={25} /></div>
+            <div className='likes' onClick={()=>handleAction("like")}>
+              <FaRegHeart className='action-icon'  />
+              <p>{popularity}</p>
+            </div>
           </Popover>
         )
       }
@@ -122,7 +128,6 @@ const Project = ({user, id }) => {
 
       <div className='user-actions'>
         {favoris()}
-        {like()}
       </div>
 
       <div className='container'>
@@ -135,10 +140,13 @@ const Project = ({user, id }) => {
           <div>
             <div>
               <h3 className='project-title' onClick={() => navigate(`/project/${id}`)}>{project.title}</h3>
-              <div className='project-creator'>
-                <div onClick={()=>navigate(`/user/${project.creator?.id}`)}>
-                  <LuUser2 className='user-icon'/>
-                  <p>{project.creator?.name}</p>
+              <div className='flex'>
+                  {like(project.popularity)}
+                <div className='project-creator'>
+                  <div onClick={()=>navigate(`/user/${project.creator?.id}`)}>
+                    {<LuUser2 className='user-icon'/>}
+                    <p>{project.creator?.name}</p>
+                  </div>
                 </div>
               </div>
             </div>

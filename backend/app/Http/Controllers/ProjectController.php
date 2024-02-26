@@ -320,7 +320,11 @@ class ProjectController extends Controller
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
         $user->likes()->toggle($project);
-        $project->popularity = count($project->likes()->get());
+        if(in_array($id, $user->likes()->pluck('project_id')->all())){
+            $project->popularity += 1;
+        } else {
+            $project->popularity -= 1;
+        }
         $project->save();
 
         // retourne les informations du projet

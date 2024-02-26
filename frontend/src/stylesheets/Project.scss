@@ -75,20 +75,34 @@
         .favorites:hover {
           color: #FFC702;
         }
-        .likes:hover {
-          color: #FF0000;
-        }
         .full{
           &.favorites{
             color: #FFC702;
-          }
-          &.likes{
-            color: #FF0000;
           }
         }
       }
       &:hover .user-actions{
         opacity: 1;
+      }
+      .likes{
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        .action-icon{
+          transition: all 100ms;
+        }
+        &.full .action-icon{
+          color: #FF0000;
+        }
+        &:hover .action-icon{
+          transform: scale(1.1);
+        }
+        &:active .action-icon{
+          transform: scale(1);
+        }
+        &:hover{
+          cursor: pointer;
+        }
       }
     .project-body{
       padding: 1rem;
@@ -131,7 +145,7 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      height: 40%;
+      height: 20rem;
       img{
         transition: all 500ms;
         flex-shrink: 0;
@@ -174,6 +188,9 @@
 @media (min-width: v.$sm-breakpoint){
     .project{
         width: 100%;
+        .project-img{
+          height: 15rem;
+        }
         .img{
           width: 100%;
           img{
