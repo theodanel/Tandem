@@ -172,7 +172,11 @@ class ProjectController extends Controller
                 $project->title = $request->input("newTitle");
                 $project->description = $request->input("newDescription");
                 $project->collaborators_max = $request->input("newCollaborators");
+                $project->languages()->sync( $request->input("newLanguages"));
+
                 $project->save();
+
+                $project->languagesList = $project->languages()->get();
 
                 return response()->json([
                     'status' => 200,
@@ -187,6 +191,7 @@ class ProjectController extends Controller
             ]);
         }
     }
+    
 
     /**
      * Ajoute un collaborateur au projet
