@@ -4,14 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Collapse, Modal, Popover, Skeleton, message } from "antd";
 import { format } from "date-fns";
-import { FaGithub, FaDiscord, FaArrowLeft } from "react-icons/fa";
-import { LuUserPlus2 } from "react-icons/lu";
+import { FaGithub, FaDiscord, FaArrowLeft, FaUserPlus, FaUserMinus } from "react-icons/fa";
 import { FaBookmark , FaGear, FaAddressBook } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
-
-
-
-
 
 
 import Project from "../components/Project";
@@ -51,7 +46,7 @@ const UserPage = () => {
     logout: false,
     avatars: false,
     favorites: false,
-    connexion:false,
+    connexion: false,
   });
   const [checkedState, setCheckedState] = useState([]);
 
@@ -245,7 +240,7 @@ const UserPage = () => {
   }
 
   const toggleContacts = async()=>{
-    if(user){
+    if(loggedUser.id){
         axios.put(`/api/user/contact/${id}`, { "Content-Type": "application/json", Authorization: `Bearer ${token}` });
     } else {
         handleModals("connexion",true);
@@ -383,6 +378,7 @@ const UserPage = () => {
   const contactsList = userContacts.map((contact, index) =>{
     return(
         <User key={index}
+            id={contact.id}
             name={contact.name}    
             avatar={contact.avatar}
         />
@@ -460,6 +456,24 @@ const UserPage = () => {
       </form>
     );
   };
+
+  const contactButton = () => {
+    if(userContacts.find(contact => contact.id === loggedUser?.id)){
+        return (
+            <button type="button" className="btn-red" onClick={()=>toggleContacts()}>
+            <FaUserMinus />
+            Supprimer
+            </button>
+        ) 
+    } else {
+        return (
+            <button type="button" className="btn-green" onClick={()=>toggleContacts()}>
+            <FaUserPlus />
+            Ajouter
+            </button>
+        ) 
+    }
+  }
 
   //===========
   //MODALS
@@ -567,6 +581,7 @@ const UserPage = () => {
       {logoutModal()}
       {avatarsModal()}
       {favoritesModal()}
+      {connexionModal()}
 
       <div id="user">
         <div className="user-profile">
@@ -658,10 +673,7 @@ const UserPage = () => {
               {loggedUser?.id === user.id ? (
                 ""
               ) : (
-                <button type="button" className="btn-green" onClick={()=>toggleContacts()}>
-                  <LuUserPlus2 />
-                  Ajouter
-                </button>
+                contactButton()
               )}
               <button type="button" onClick={()=>handleModals("contacts", true)} className="btn-orange" >
                 <FaAddressBook/>
