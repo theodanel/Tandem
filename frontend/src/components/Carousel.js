@@ -10,7 +10,7 @@ import { LuUser2 } from 'react-icons/lu';
 const Carousel = ({ creator_id, collaborators, collaborators_max }) => {
     const [projects, setProjects] = useState([]);
     const navigate = useNavigate();
-    console.log()
+
     const getProjects = async () => {
         const data = await fetch("http://127.0.0.1:8000/api/projects").then((res) => res.json()
         );
@@ -37,10 +37,9 @@ const Carousel = ({ creator_id, collaborators, collaborators_max }) => {
         '100%': '#F47143'
     }
 
-    console.log(projects);
-    const projectscarouel = projects.slice(0, 1).map(project => {
+    const projectscarouel = projects.slice(0, 1).map((project, index) => {
         return (
-            <div className='project-carousel'>
+            <div className='project-carousel' key={index}>
                 <div className='contenair-carousel' onClick={() => navigate(`/project/${project.id}`)}>
                     <div className='container-carousel-img'>
                         <img src={project.image} alt="" id='project-img' />
@@ -72,8 +71,8 @@ const Carousel = ({ creator_id, collaborators, collaborators_max }) => {
 
         // Rapelle de l'import carousel d'antDesign renomer en AntdCarousel
         <AntdCarousel className='caroussel' autoplay>
-            {projects?.filter((element) => element.coeur).map((element) => (
-                <div style={contentStyle}>
+            {projects?.filter((element) => element.coeur).map((element, index) => (
+                <div style={contentStyle} key={index}>
                     {projectscarouel}
                 </div>
             ))}

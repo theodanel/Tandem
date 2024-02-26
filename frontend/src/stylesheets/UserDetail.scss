@@ -105,11 +105,13 @@
     display: grid;
     grid-template-columns:  repeat(6, 1fr);
     gap: 0.7rem 1rem;
+    margin-bottom: 1rem;
     .avatar{
         width: 8rem;
         padding: 1rem;
         &:hover, &:has(input:checked){
             background-color: v.$color-green;
+            cursor: pointer;
         }
         &:active{
             transform: scale(0.9);

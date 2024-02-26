@@ -26,6 +26,12 @@ class ProjectController extends Controller
             $languages = $project->languages()->get();
             $project->creator = $creator;
             $project->languages = $languages;
+
+            // retourne les likes et favoris
+            $favorites = $project->favorites()->get(array('user_id'));
+            $likes = $project->likes()->get(array('user_id'));
+            $project->favorites = $favorites;
+            $project->likes = $likes;
         }
         return response()->json([
             'projects' => $projects,
