@@ -20,6 +20,7 @@
     .checkbox{
         &:has(input:checked) .img{
             background-color: white;
+            box-shadow: 0 2px v.$color-green;
         }
         p{
             color: white;
@@ -76,7 +77,8 @@
         transform: scale(0.9);
     }
     &:has(input:checked) .img{
-        background-color: v.$orange-light;
+        background-color: v.$color-orange;
+        box-shadow: 0 2px v.$primary-color;
         img{
             opacity: 1;
             filter: drop-shadow(0px 0px 2px #0000004f);

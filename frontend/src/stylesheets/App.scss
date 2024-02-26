@@ -119,6 +119,6 @@ button{
 }
 
 .btn-red {
-  @include m.button(white, v.$color-red, v.$orange-light, v.$color-red-dark, 5rem, 1rem);
+  @include m.button(white, v.$color-red, v.$color-orange, v.$color-red-dark, 5rem, 1rem);
 }
 
