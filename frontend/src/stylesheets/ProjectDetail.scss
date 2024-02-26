@@ -79,6 +79,19 @@
 
 }
 
+.updateModal {
+    input {
+        margin-bottom: 3rem;
+    }
+}
+
+.updateLanguagesList {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.7rem 1rem;
+}
+
+
 .projectTitle {
     color: black;
     display: flex;
@@ -152,6 +165,7 @@
         flex-wrap: wrap;
         display: flex;
         justify-content: flex-end;
+        flex-direction: column;
 
 
         @media (min-width: v.$sm-breakpoint) {
