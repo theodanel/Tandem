@@ -37,7 +37,10 @@ class UserController extends Controller
     public function update(Request $request, $id){
         if (auth()->user()->id == $id){
             $validator = Validator::make($request->all(),[
-                'newPseudo' => "required|max:54|unique:users,pseudo,".$id,
+                'name' => "required|max:54|min:3|unique:users,name,".$id,
+                'description' => "max:500",
+                'discord' => "max:54",
+                "github" => "max:54",
             ]);
             if($validator->fails()){
                 return response()->json([
@@ -47,7 +50,11 @@ class UserController extends Controller
                 ]);
             } else{
                 $user = User::findOrFail($id);
-                $user->pseudo = $request->input("newPseudo");
+                $user->name = $request->input("name");
+                $user->description = $request->input("description");
+                $user->github = $request->input("github");
+                $user->discord = $request->input("discord");
+                $user->languages()->sync($request->input("languages"));
                 $user->save();
                 
                 return response()->json([
@@ -55,6 +62,23 @@ class UserController extends Controller
                     "message" => "L'utilisateur a été modifié."
                 ]);
             }
+        } else {
+            return response()->json([
+                "status" => "error",
+                "message" => "Action impossible"
+            ]);
+        }
+    }
+
+    /**
+     * Met à jour l'avatar d'un utilisateur
+     */
+    public function updateAvatar(Request $request, $id){
+        if (auth()->user()->id == $id){
+
+            $user = User::findOrFail($id);
+            $user->avatar_id = $request->all()["avatar"];
+            $user->save();
         } else {
             return response()->json([
                 "status" => "error",

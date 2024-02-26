@@ -34,7 +34,7 @@ const Login = () => {
             // })
             message.success(`Bienvenue, ${res.data.user.name} !`)
             dispatch(addUser(res.data));
-            navigate('/');
+            navigate(-1);
         } else {
             message.error(res.data.message);
             setErrors(res.data.errors || []);
@@ -44,7 +44,7 @@ const Login = () => {
     // Redirection automatique si utilisateur déjà connecté
     useEffect(() => {
         if (token) {
-          navigate('/')
+          navigate(-1)
         }
       }, [])
 
@@ -64,10 +64,10 @@ const Login = () => {
                       
                     </div>
                 </div>
-                <button type='submit'>Valider</button>
-                <div>
+                <button type='submit' className='btn-green-big'>Valider</button>
+                <div className='flex'>
                     <p>Pas encore de compte ?</p>
-                    <button type='button' onClick={() => navigate('/register')}>S'inscrire</button>
+                    <button type='button' className='btn-green' onClick={() => navigate('/register')}>S'inscrire</button>
                 </div>
             </form>
         </Fragment>

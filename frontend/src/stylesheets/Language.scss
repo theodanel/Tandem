@@ -21,6 +21,9 @@
         &:has(input:checked) .img{
             background-color: white;
         }
+        p{
+            color: white;
+        }
     }
 }
 
@@ -48,13 +51,14 @@
     .img{
         padding: 1rem;
         margin: 0 1rem;
-        border-radius: 5rem;
-        height: 6rem;
+        border-radius: 100%;
+        width: 5rem;
+        height: 5rem;
         overflow: hidden;
         transition: all 100ms;
     }
     img{
-        height: 100%;
+        width: 100%;
         opacity: 0.5;
     }
     p {
@@ -79,8 +83,12 @@
         }
     }
     &:has(input:checked) p, &:hover p{
-        font-weight: bold;
+        text-shadow: 0.5px 0.5px black, 
+        0px 0.5px black,
+        0.5px 0px black,
+      
     }
+   
 }
 
 @media (min-width: v.$xs-breakpoint) {

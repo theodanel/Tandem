@@ -14,9 +14,30 @@ class ProjectController extends Controller
     /**
      * Affichage de tous les projets
      */
-    function index()
+    function index($id = null)
     {
-        $projects = Project::all();
+        if($id){
+            $projects = User::find($id)->projects()->get();
+        } else {
+            $projects = Project::all();
+        }
+        foreach ($projects as $project) {
+            $creator = $project->creator()->first();
+            $languages = $project->languages()->get();
+            $project->creator = $creator;
+            $project->languages = $languages;
+        }
+        return response()->json([
+            'projects' => $projects,
+            "status" => 200,
+        ]);
+    }
+
+    /**
+     * Affichage des projets favoris d'un utilisateur
+     */
+    public function showFavorites($id){
+        $projects = User::find($id)->favorites()->get();
         foreach ($projects as $project) {
             $creator = $project->creator()->first();
             $languages = $project->languages()->get();
@@ -79,6 +100,8 @@ class ProjectController extends Controller
             "status" => 200,
         ]);
     }
+
+
 
     /**
      * Enregistre un nouveau projet

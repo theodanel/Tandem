@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\NotificationController;
@@ -23,7 +24,7 @@ use PharIo\Manifest\AuthorElement;
 */
 
 // Projets
-Route::get('/projects', [ProjectController::class, "index"]);
+Route::get('/projects/{id?}', [ProjectController::class, "index"]);
 Route::get('/project/{id}', [ProjectController::class, "show"]);
 
 // Utilisateurs
@@ -32,6 +33,11 @@ Route::get('/user/{id}', [UserController::class, "show"]);
 
 // Langages
 Route::get('/languages', [LanguageController::class, "index"]);
+Route::get('/languages/project/{id}', [LanguageController::class, "projectLanguages"]);
+Route::get('/languages/user/{id}', [LanguageController::class, "userLanguages"]);
+
+// Avatars
+Route::get('/avatars', [AvatarController::class, "index"]);
 
 // Commentaires
 Route::get('/comments/{id}', [CommentController::class, 'show']);
@@ -48,13 +54,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/{id}/update', [UserController::class, "update"]);
     Route::delete('/user/{id}/delete', [UserController::class, "delete"]);
     Route::post('/logout/{id}', [AuthController::class, 'logout']);
-
+    Route::put('/user/{id}/update/avatar', [UserController::class, "updateAvatar"]);
+    
     // Gestion des projets
     Route::post('/project/store', [ProjectController::class, "store"]);
     Route::put('/project/{id}/update', [ProjectController::class, "update"]);
     Route::delete('/project/{id}/delete', [ProjectController::class, "delete"]);
     Route::put('/project/{id}/step', [ProjectController::class, "nextStep"]);
     Route::put('/project/{id}/favorite', [ProjectController::class, "favorite"]);
+    Route::get('/projects/favorites/{id}', [ProjectController::class, "showFavorites"]);
     Route::put('/project/{id}/like', [ProjectController::class, "like"]);
     Route::post('/project/{id}/close', [ProjectController::class, "close"]);
     Route::put('/project/{id}/join', [ProjectController::class, "join"]);

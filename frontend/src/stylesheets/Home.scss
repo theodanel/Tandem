@@ -133,18 +133,14 @@
 
 .flex{
   display: flex;
+  gap: 1rem;
 }
 .search{
   width: 80%;
   margin: auto;
   justify-content: space-between;
 }
-.project{
-  img{
-  width: 100%;
-  height: 100%;
-}
-}
+
 .title-project{
   text-shadow: 5px 1px 0 v.$color-green;
   -webkit-text-stroke: 1px;
@@ -161,157 +157,6 @@
   gap: 4rem;
 }
 
-.project{
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.396);
-  position: relative;
-  border-radius: 1rem;
-  transition: all 500ms;
-  &:hover{
-    box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.575);
-  }
-  // &:hover .project-img img{
-  //   transform: scale(1.05);
-  // }
-  .container{
-    flex: 1;
-    border-radius: 1rem;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  .icon{
-    position: absolute;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    border-radius: 100%;
-    z-index: 1;
-    top: 2rem;
-    left: 2rem;
-    box-shadow: 0px 2px 3px 1px rgba(0, 0, 0, 0.396);
-    transition: all 200ms;
-    &:hover{
-      cursor: pointer;
-      transform: scale(1.1);
-    }
-    &:active{
-      transform: scale(1);
-    }
-  }
-  .nut{
-    background-color:  v.$color-green-dark;
-  }
-  .plant{
-    background-color:  v.$color-green;
-  }
-  .tree{
-    background-color:  v.$primary-color;
-  }
-  .user-actions{
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    right: 2rem;
-    top: 2rem;
-    opacity: 0;
-    transition: all ease-in-out 300ms;
-    .action-icon{
-      filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.396));
-      transition: all 200ms;
-      &:hover{
-        cursor: pointer;
-        transform: scale(1.1);
-      }
-      &:active{
-        transform: scale(1);
-      }
-    }
-    .favorites, .likes{
-      color: white;
-    }
-    .favorites:hover {
-      color: #FFC702;
-    }
-    .likes:hover {
-      color: #FF0000;
-    }
-    .full{
-      &.favorites{
-        color: #FFC702;
-      }
-      &.likes{
-        color: #FF0000;
-      }
-    }
-  }
-  &:hover .user-actions{
-    opacity: 1;
-  }
-
-
-  .project-body{
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1;
-    .project-title:hover{
-      cursor: pointer;
-    }
-    .project-creator{
-      width: 100%;     
-      display: flex;
-      justify-content: flex-end;
-      div{
-        display: flex;
-        gap: 0.5rem;
-        p, .user-icon{
-          width: fit-content;
-          text-decoration: underline;
-          color: #8C8C8C;
-          transition: all 200ms;
-        }
-        &:hover p, &:hover .user-icon{
-          color: v.$color-green-dark;
-          text-decoration-color: v.$color-green-dark;
-        }
-        &:hover{
-          cursor: pointer;
-        }
-      }
-    }
-    .description{
-      margin-top: 1rem;
-    }
-  }
-  .project-img {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    height: 40%;
-    img{
-      transition: all 500ms;
-      flex-shrink: 0;
-      min-width: 100%;
-      min-height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
-    &:hover{
-      cursor: pointer;
-    }
-  }
-
-  .bottom-row{
-    display: flex;
-    align-items: flex-end;
-    gap: 1rem;
-  }
-}
 
 .languagesList-3{
   display: grid;
@@ -360,19 +205,6 @@
     grid-template-columns:  repeat(2, 1fr);
     gap: 4rem;
     width: fit-content;
-    .project{
-      width: 100%;
-      .img{
-        width: 100%;
-        img{
-          width: 100%;
-        }
-      }
-    }
-    .icon{
-      top: -1.5rem;
-      left: -1.5rem;
-    }
   }
   .languagesList-3{
     grid-template-columns:  repeat(6, 1fr);
