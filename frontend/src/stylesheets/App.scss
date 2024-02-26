@@ -30,16 +30,53 @@ footer{
   font-weight: 100;
 }
 
+h1{
+  text-align: center;
+}
+
 .subtitle{
   font-family: 'Hittedal Sans', sans-serif;                                      
 }
 
 .title-green{
-  color: v.$color-green-dark;
+  // color: v.$color-green-dark;
+  color: white;
+  text-shadow: -1px -1px v.$color-green-dark,
+  -1px -0.5px v.$color-green-dark,
+  -0.5px 0px v.$color-green-dark,
+  -1px 0.5px v.$color-green-dark,
+  -0.5px 1px v.$color-green-dark,
+  0px 1.5px v.$color-green-dark,
+  0.5px 2px v.$color-green-dark,
+  1px 2.5px v.$color-green-dark,
+  1.5px 3px v.$color-green-dark,
+  -0.5px -1px v.$color-green-dark,
+  0px -0.5px v.$color-green-dark,
+  0.5px -1px v.$color-green-dark,
+  1px -0.5px v.$color-green-dark,
+  1.5px 0px v.$color-green-dark,
+  2px 0.5px v.$color-green-dark,
+  2.5px 1px v.$color-green-dark,
+  3px 1.5px v.$color-green-dark,
+  3px 3px v.$color-green-dark,
+
 }
 
 .title-orange{
-  color: v.$primary-color;
+  color: white;
+  text-shadow:  0.5px 0px v.$primary-color,
+  1px 0.5px v.$primary-color,
+  1.5px 1px v.$primary-color,
+  2px 1.5px v.$primary-color,
+  2.5px 2px v.$primary-color,
+  3px 2.5px v.$primary-color,
+  0px 0.5px v.$primary-color,
+  0.5px 1px v.$primary-color,
+  1px 1.5px v.$primary-color,
+  1.5px 2px v.$primary-color,
+  2px 2.5px v.$primary-color,
+  2.5px 3px v.$primary-color,
+  3px 3px v.$primary-color,
 }
 
 .center{

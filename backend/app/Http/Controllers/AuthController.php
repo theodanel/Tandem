@@ -17,7 +17,16 @@ class AuthController extends Controller
      */
     public function user()
     {
-        return auth()->user();
+        $user = User::find(auth()->user()->id);
+        $favorites = $user->favorites()->get(array('project_id'));
+        $likes = $user->likes()->get(array('project_id'));
+        $user->refresh();
+        $user->favorites = $favorites;
+        $user->likes = $likes;
+
+        return response()->json([
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -42,7 +51,8 @@ class AuthController extends Controller
         } else if (auth()->attempt($credentials)) { // test la connection avec les données de la requêtes
 
             // connecte l'utilisateur
-            $user = auth()->user();
+            $user = User::find(auth()->user()->id);
+
 
             // le if sert juste à éviter un bug d'affichage de VSCode pour le $user->createToken()
             if ($user instanceof \App\Models\User) {

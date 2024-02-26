@@ -38,26 +38,26 @@ function Header() {
       <ul className="all-item">
 
         {user ? (
-          <li className="item" onClick={() => changeRoute(`/user/${user.id}`)}>
+          <li className="item slideInDown-1" onClick={() => changeRoute(`/user/${user.id}`)}>
             <p className="item-p">{user.name}</p>
           </li>
         ) : (
-          <li className="item slideInDown-1"  onClick={() => changeRoute("/login")}>
+          <li className="item slideInDown-2"  onClick={() => changeRoute("/login")}>
             <p className="item-p">Connexion</p>
           </li>
         )}
-        <li className="item slideInDown-2" onClick={() => changeRoute("/create")}>
+        <li className="item slideInDown-3" onClick={() => changeRoute("/create")}>
           <p className="item-p">Créer un projet</p>
         </li>
 
-        <li className="item slideInDown-3" >
+        <li className="item slideInDown-4" >
           <p className="item-p">Recherche</p>
         </li>
-        {user ? 
-        <li className="item slideInDown-4" >
+        {/* {user ? 
+        <li className="item slideInDown-5" >
           <p className="item-p">Notifications</p>
         </li>
-        : ''}
+        : ''} */}
       </ul>
       <button className="separation" onClick={()=>handleShowTiret()}>
         <span className="tiret"></span>

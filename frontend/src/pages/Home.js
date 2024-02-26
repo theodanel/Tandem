@@ -8,12 +8,15 @@ import SearchBar from "../components/SearchBar";
 import axios from "../api/axios.js";
 import { Skeleton } from "antd";
 import SearchsBar from "../components/SearchsBar.js";
+import { useSelector } from "react-redux";
+import CountUp from "react-countup";
 
 const Home = () => {
   useEffect(() => {
     document.title = `Tandem`;
   }, []);
 
+  const user = useSelector(state => state.data.user);
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [users, setUsers] = useState([]);
@@ -29,7 +32,7 @@ const Home = () => {
 
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [projects]);
 
   const projectsList = projects.slice(0, 8).map((project) => {
     return (
@@ -44,6 +47,9 @@ const Home = () => {
         collaborators={project.collaborators}
         collaborators_max={project.collaborators_max}
         id={project.id}
+        likes ={project.likes}
+        favorites={project.favorites}
+        user={user}
       ></Project>
     );
   });
@@ -61,6 +67,7 @@ const Home = () => {
         collaborators={project.collaborators}
         collaborators_max={project.collaborators_max}
         id={project.id}
+        user={user}
       ></Project>
     );
   });
@@ -85,16 +92,16 @@ const Home = () => {
               </div>
               <div className="hero-stats">
                 <div className="hero-stat">
-                  <h3>Nombre de projets en cours</h3>
-                  <p id="home-ProjetsEnCours">{projectsCount}</p>
+                  <h3>Collaborateurs</h3>
+                  <p id="home-NumberSub"><CountUp end={usersCount}/></p>
                 </div>
                 <div className="hero-stat">
-                  <h3>Nombre d'abonnés</h3>
-                  <p id="home-NumberSub">{usersCount}</p>
+                  <h3>Projets en cours</h3>
+                  <p id="home-ProjetsEnCours"><CountUp end={projectsCount} /></p>
                 </div>
                 <div className="hero-stat">
-                  <h3>Nombre de projets terminés</h3>
-                  <p id="home-ProjectsClose">{projectsCompleted}</p>
+                  <h3>Projets terminés</h3>
+                  <p id="home-ProjectsClose"><CountUp end={projectsCompleted}/></p>
                 </div>
               </div>
             </div>
