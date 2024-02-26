@@ -38,6 +38,7 @@ const UserPage = () => {
   const [allLanguages, setAllLanguages] = useState([]);
   const [userProjects, setUserProjects] = useState([]);
   const [userFavorites, setUserFavorites] = useState([]);
+  const [userContacts, setUserContacts] = useState([]);
   const [avatars, setAvatars] = useState([]);
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState({
@@ -50,6 +51,7 @@ const UserPage = () => {
     logout: false,
     avatars: false,
     favorites: false,
+    connexion:false,
   });
   const [checkedState, setCheckedState] = useState([]);
 
@@ -237,9 +239,23 @@ const UserPage = () => {
     }
   };
 
+  const getContacts = async () =>{
+    const resContacts = await axios.get(`/api/user/contacts/${id}`);
+    setUserContacts(resContacts.data.contacts);
+  }
+
+  const toggleContacts = async()=>{
+    if(user){
+        axios.put(`/api/user/contact/${id}`, { "Content-Type": "application/json", Authorization: `Bearer ${token}` });
+    } else {
+        handleModals("connexion",true);
+    }
+  }
+
   useEffect(() => {
     getData();
-  }, [id, modals.avatars, modals.params]);
+    getContacts();
+  }, [id, modals.avatars, modals.params, modals.contacts]);
 
   //===========
   //LISTS RENDERS
@@ -364,6 +380,15 @@ const UserPage = () => {
     );
   });
 
+  const contactsList = userContacts.map((contact, index) =>{
+    return(
+        <User key={index}
+            name={contact.name}    
+            avatar={contact.avatar}
+        />
+    )
+  })
+
   /**
    * Formulaire de mise à jour utilisateur
    */
@@ -461,7 +486,11 @@ const UserPage = () => {
         onCancel={() => handleModals("contacts", false)}
         footer={null}
         centered
-      ></Modal>
+      >
+        <div>
+            {contactsList}
+        </div>
+      </Modal>
     );
   };
 
@@ -517,6 +546,18 @@ const UserPage = () => {
       </Modal>
     );
   };
+
+  const connexionModal = () => {
+    return(
+        <Modal title="Connexion requise" open={modals.connexion} onCancel={()=>handleModals("connexion",false)} footer={null} centered >
+            <h3>Veuillez vous connecter pour réaliser cette action</h3>
+            <div className='center flex'>
+            <button type='button' onClick={() => navigate('/login')} className='btn-green' >Me connecter</button>
+            <button type='button' onClick={() => handleModals("connexion",false)} className='btn-red' >Non merci</button>
+            </div>
+        </Modal>
+    )
+  }
 
   return (
     <Layout>
@@ -617,12 +658,12 @@ const UserPage = () => {
               {loggedUser?.id === user.id ? (
                 ""
               ) : (
-                <button type="button" className="btn-green">
+                <button type="button" className="btn-green" onClick={()=>toggleContacts()}>
                   <LuUserPlus2 />
                   Ajouter
                 </button>
               )}
-              <button type="button" onClick={() => handleModals("contacts", true)} className="btn-orange" >
+              <button type="button" onClick={()=>handleModals("contacts", true)} className="btn-orange" >
                 <FaAddressBook/>
                 Contacts
               </button>

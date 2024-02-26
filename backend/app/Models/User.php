@@ -85,6 +85,12 @@ class User extends Authenticatable
     }
 
 
+    public function contacts()
+    {
+        return $this->belongsToMany(User::class, 'user_contact', 'receiver_id', 'sender_id' );
+    }
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -116,8 +122,5 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function contact()
-    {
-        return $this->belongsToMany(User::class, 'user_contact');
-    }
+ 
 }

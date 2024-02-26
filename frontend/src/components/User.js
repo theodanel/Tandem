@@ -1,10 +1,12 @@
 import React from 'react'
 
-const User = ({ name , email }) => {
+const User = ({ name , avatar }) => {
   return (
     <div>
-        <span>{name}</span>
-        <p>{email}</p>
+        <div>
+            <img src={`http://localhost:8000/images/avatars/${avatar}`} />
+        </div>
+        <p>{name}</p>
     </div>
   )
 }

@@ -8,10 +8,12 @@ import { LuUser2, LuUsers2, LuNut } from "react-icons/lu";
 import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
 import { FaHeart , FaRegHeart } from "react-icons/fa";
 import "../stylesheets/Project.scss";
+import { useSelector } from 'react-redux';
 
 
 
 const Project = ({user, title, image, status , languages , creator_id , description, id, collaborators, collaborators_max, likes, favorites }) => {
+  const token = useSelector(state => state.data.token);
   const [creator, setCreator] = useState({});
   const navigate = useNavigate();
 
@@ -99,7 +101,8 @@ const Project = ({user, title, image, status , languages , creator_id , descript
   // Ajoute/Enlève un like/favori si l'utilisateur est connecté, sinon ouvre une modale
   const handleAction = async(action) => {
     if(user){
-      axios.put(`/api/project/${id}/${action}`);
+      axios.put(`/api/project/${id}/${action}`, 
+      { "Content-Type": "application/json", Authorization: `Bearer ${token}` });
     } else {
       setIsModalOpen(true);
     }

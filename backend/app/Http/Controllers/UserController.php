@@ -90,17 +90,28 @@ class UserController extends Controller
     }
 
 
-    public function togglemany($id)
+    public function toggleContact($id)
     {
-        $user = User::find(auth()->user()->id); // commente la ligne pour crée un id dans httpie avec un id en user et sans auth
-        $many = User::find($id);
-        if (!$many) {
-            return response()->json(['message' => 'Utilisateur pas trouvééééééé']);
+        $user1 = User::find(auth()->user()->id);
+        $user2 = User::find($id);
+        if (!$user2) {
+            return response()->json(['message' => 'Utilisateur pas trouvé']);
         } else {
-            $user->contact()->sync([$user->id, $many->id]);
+            $user1->contacts()->toggle($user2);
+            $user2->contacts()->toggle($user1);
 
-            return response()->json(['message' => 'Relation MAAAAAJ']);
+            return response()->json(['message' => 'Relation mise à jour']);
         }
+    }
+
+    public function showContacts($id){
+        $user = User::find($id);
+        $contacts = $user->contacts()->get();
+        foreach($contacts as $contact){
+            $avatar = $contact->avatar()->first()->url;
+            $contact->avatar = $avatar;
+        }
+        return response()->json(['contacts' => $contacts]);
     }
 
     /**
