@@ -29,15 +29,16 @@ Route::get('/project/{id}', [ProjectController::class, "show"]);
 
 Route::get('/users', [UserController::class, "index"]);
 Route::get('/user/{id}', [UserController::class, "show"]);
-//Route::post('/users/store', [UserController::class, "store"]);
+Route::post('/users/contact/{id}', [UserController::class, "togglemany"]); 
 
-//-------------
+//------------- 
 
 Route::get('/projects_languages', [ProjectController::class, "index"]);
 Route::get('/project_languages/{id}', [ProjectController::class, "show"]);
 Route::put('/project_languages/{id}/update', [ProjectController::class, "update"]);
 Route::delete('/project_languages/{id}/delete', [ProjectController::class, "delete"]);
 Route::post('/projects_languages/store', [ProjectController::class, "store"]);
+
 
 
 Route::post('/login', [AuthController::class, "login"]);
@@ -47,8 +48,9 @@ Route::get('/languages', [LanguageController::class, "index"]);
 
 // Routes protégées par authentification
 Route::middleware('auth:sanctum')->group(function () {
-    
+
     // Gestion de l'utilisateur
+    
     Route::get('/user', [AuthController::class, 'user']);
     Route::put('/user/{id}/update', [UserController::class, "update"]);
     Route::delete('/user/{id}/delete', [UserController::class, "delete"]);
