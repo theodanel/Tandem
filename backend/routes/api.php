@@ -30,6 +30,7 @@ Route::get('/project/{id}', [ProjectController::class, "show"]);
 // Utilisateurs
 Route::get('/users', [UserController::class, "index"]);
 Route::get('/user/{id}', [UserController::class, "show"]);
+Route::post('/users/contact/{id}', [UserController::class, "togglemany"]); 
 
 // Langages
 Route::get('/languages', [LanguageController::class, "index"]);
@@ -42,6 +43,7 @@ Route::get('/avatars', [AvatarController::class, "index"]);
 // Commentaires
 Route::get('/comments/{id}', [CommentController::class, 'show']);
 
+
 //Authentification
 Route::post('/login', [AuthController::class, "login"]);
 Route::post('/register', [AuthController::class, "register"]);
@@ -50,6 +52,7 @@ Route::post('/register', [AuthController::class, "register"]);
 Route::middleware('auth:sanctum')->group(function () {
 
     // Gestion de l'utilisateur
+    
     Route::get('/user', [AuthController::class, 'user']);
     Route::put('/user/{id}/update', [UserController::class, "update"]);
     Route::delete('/user/{id}/delete', [UserController::class, "delete"]);

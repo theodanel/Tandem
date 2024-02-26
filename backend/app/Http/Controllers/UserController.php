@@ -9,14 +9,16 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
     //Affiche les utilisateurs
     function index(){
         $users = User::all();
         return response()->json([
-            'users'=> $users,
-            "status"=> 200,
-        ]) ;
+            'users' => $users,
+            "status" => 200,
+        ]);
     }
+
 
     /**
      * Affiche un utilisateur
@@ -26,9 +28,9 @@ class UserController extends Controller
         $user->languagesList = $user->languages()->get();
         $user->avatar = $user->avatar()->first()->url;
         return response()->json([
-            'user'=> $user,
-            "status"=> 200,
-        ]) ;
+            'user' => $user,
+            "status" => 200,
+        ]);
     }
 
     /**
@@ -70,12 +72,12 @@ class UserController extends Controller
         }
     }
 
+
     /**
      * Met à jour l'avatar d'un utilisateur
      */
     public function updateAvatar(Request $request, $id){
         if (auth()->user()->id == $id){
-
             $user = User::findOrFail($id);
             $user->avatar_id = $request->all()["avatar"];
             $user->save();
@@ -84,6 +86,20 @@ class UserController extends Controller
                 "status" => "error",
                 "message" => "Action impossible"
             ]);
+        }
+    }
+
+
+    public function togglemany($id)
+    {
+        $user = User::find(auth()->user()->id); // commente la ligne pour crée un id dans httpie avec un id en user et sans auth
+        $many = User::find($id);
+        if (!$many) {
+            return response()->json(['message' => 'Utilisateur pas trouvééééééé']);
+        } else {
+            $user->contact()->sync([$user->id, $many->id]);
+
+            return response()->json(['message' => 'Relation MAAAAAJ']);
         }
     }
 
