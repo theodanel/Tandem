@@ -12,10 +12,9 @@ const Carousel = ({ creator_id, collaborators, collaborators_max }) => {
     const navigate = useNavigate();
 
     const getProjects = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/projects").then((res) => res.json()
-        );
-
-        setProjects(data.projects);
+        const res = await axios.get("/api/projects/coeur/all");
+        console.log(res);
+        setProjects(res.data.projects);
     };
 
     useEffect(() => {
@@ -37,9 +36,11 @@ const Carousel = ({ creator_id, collaborators, collaborators_max }) => {
         '100%': '#F47143'
     }
 
-    const projectscarouel = projects.slice(0, 1).map((project, index) => {
-        return (
-            <div className='project-carousel' key={index}>
+    return (
+        // Rapelle de l'import carousel d'antDesign renomer en AntdCarousel
+        <AntdCarousel className='caroussel' autoplay>
+            {projects?.map((project, index) => (
+                <div className='project-carousel' key={index}>
                 <div className='contenair-carousel' onClick={() => navigate(`/project/${project.id}`)}>
                     <div className='container-carousel-img'>
                         <img src={project.image} alt="" id='project-img' />
@@ -64,17 +65,6 @@ const Carousel = ({ creator_id, collaborators, collaborators_max }) => {
                     </div>
                 </div>
             </div>
-        );
-    });
-
-    return (
-
-        // Rapelle de l'import carousel d'antDesign renomer en AntdCarousel
-        <AntdCarousel className='caroussel' autoplay>
-            {projects?.filter((element) => element.coeur).map((element, index) => (
-                <div style={contentStyle} key={index}>
-                    {projectscarouel}
-                </div>
             ))}
         </AntdCarousel>
     );

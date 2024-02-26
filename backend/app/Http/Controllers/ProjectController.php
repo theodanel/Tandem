@@ -40,6 +40,30 @@ class ProjectController extends Controller
     }
 
     /**
+     * 
+     */
+    function showCoeurs()
+    {
+        $projects = Project::all()->where("coeur", true);
+        foreach ($projects as $project) {
+            $creator = $project->creator()->first();
+            $languages = $project->languages()->get();
+            $project->creator = $creator;
+            $project->languages = $languages;
+
+            // retourne les likes et favoris
+            $favorites = $project->favorites()->get(array('user_id'));
+            $likes = $project->likes()->get(array('user_id'));
+            $project->favorites = $favorites;
+            $project->likes = $likes;
+        }
+        return response()->json([
+            'projects' => $projects,
+            "status" => 200,
+        ]);
+    }
+
+    /**
      * Affichage des projets favoris d'un utilisateur
      */
     public function showFavorites($id){
@@ -107,7 +131,31 @@ class ProjectController extends Controller
         ]);
     }
 
+    /**
+     * Affiche un projet avec informations minimum
+     */
+    public function showMini($id){
+        $project = Project::findOrFail($id);
 
+        //Attribution du créateur
+        $creator = $project->creator()->first();
+        $project->creator = $creator;
+
+        //Attribution des langages
+        $languages = $project->languages()->get();
+        $project->languages = $languages;
+
+        // retourne les likes et favoris
+        $favorites = $project->favorites()->get(array('user_id'));
+        $likes = $project->likes()->get(array('user_id'));
+        $project->favorites = $favorites;
+        $project->likes = $likes;
+
+        return response()->json([
+            'project' => $project,
+            "status" => 200,
+        ]);
+    }
 
     /**
      * Enregistre un nouveau projet
@@ -249,6 +297,18 @@ class ProjectController extends Controller
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
         $user->favorites()->toggle($project);
+
+        // retourne les informations du projet
+        $creator = $project->creator()->first();
+        $languages = $project->languages()->get();
+        $project->creator = $creator;
+        $project->languages = $languages;
+        $project->favorites = $project->favorites()->get(array('user_id'));
+        $project->likes = $project->likes()->get(array('user_id'));
+        return response()->json([
+            'status' => 200,
+            'project' => $project
+        ]);
     }
 
     /**
@@ -262,6 +322,19 @@ class ProjectController extends Controller
         $user->likes()->toggle($project);
         $project->popularity = count($project->likes()->get());
         $project->save();
+
+        // retourne les informations du projet
+        $creator = $project->creator()->first();
+        $languages = $project->languages()->get();
+        $project->creator = $creator;
+        $project->languages = $languages;
+        $project->favorites = $project->favorites()->get(array('user_id'));
+        $project->likes = $project->likes()->get(array('user_id'));
+        return response()->json([
+            'status' => 200,
+            'project' => $project
+        ]);
+
     }
 
     /**

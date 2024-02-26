@@ -207,6 +207,7 @@ const UserPage = () => {
   const handleForm = async (e) => {
     e.preventDefault();
     if(loggedUser?.id == id ){
+        console.log(updateUser);
         const update = await axios.put(`/api/user/${id}/update`, updateUser, {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

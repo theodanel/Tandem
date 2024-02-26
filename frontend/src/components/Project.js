@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios';
 import Language from './Language';
-import { Modal, Popover, Progress } from 'antd';
+import { Modal, Popover, Progress, Skeleton } from 'antd';
 import { PiPlantLight, PiTreeLight } from "react-icons/pi";
 import { LuUser2, LuUsers2, LuNut } from "react-icons/lu";
 import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
@@ -12,26 +12,29 @@ import { useSelector } from 'react-redux';
 
 
 
-const Project = ({user, title, image, status , languages , creator_id , description, id, collaborators, collaborators_max, likes, favorites }) => {
+const Project = ({user, id }) => {
   const token = useSelector(state => state.data.token);
-  const [creator, setCreator] = useState({});
+  const [project, setProject] = useState({});
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Modale en cas de non-connexion pour les Likes/Favoris
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Récupère les données du créateur du projet
-  const getCreator = async ()=>{
-    const res = await axios.get(`/api/user/${creator_id}`);
-    setCreator(res.data.user)
+  const getProject = async() =>{
+    const res = await axios.get(`/api/project/${id}/mini`);
+    setProject(res.data.project);
+    setLoading(false);
   }
+
+
   useEffect(()=>{
-    getCreator();
+    getProject();
   },[]);
 
 
   // Affichage de la liste des langages du projet
-  const languagesList = languages.map((language, index)=>{
+  const languagesList = project.languages?.map((language, index)=>{
     return(
       <Language key={index} name={language.name} action={null} checked={null} image={language.logo} />
     )
@@ -47,7 +50,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
 
   // Affichage des différentes icones selon l'avancement du projet
   const icon = () =>{
-    switch(status){
+    switch(project.status){
       case("created"):
         return <Popover placement="right" content="Le projet n'a pas démarré !">
           <div className='icon nut' onClick={() => navigate(`/project/${id}`)} ><LuNut size={40} color='white'/></div>
@@ -64,7 +67,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
   // Affichage de l'icone Favoris selon si le projet est un favori de l'utilisateur
   const favoris = () =>{
     // if (user?.favorites.find(favorite => favorite.project_id === id)){
-    if (favorites?.find(favorite => favorite.user_id === user?.id)){
+    if (project.favorites?.find(favorite => favorite.user_id === user?.id)){
       return (
         <Popover placement="left" content="Retirer des favoris">
           <div className='favorites full' onClick={()=>handleAction("favorite")} ><IoBookmark className='action-icon' size={25} /></div>
@@ -82,7 +85,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
   // Affichage de l'icone like selon si le projet est liké par l'utilisateur
   const like = () => {
       // if (user?.likes.find(like => like.project_id === id)){
-      if (likes?.find(like => like.user_id === user?.id)){
+      if (project.likes?.find(like => like.user_id === user?.id)){
         return (
           <Popover placement="left" content="Retirer le like">
             <div className='likes full' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} /></div>
@@ -101,8 +104,9 @@ const Project = ({user, title, image, status , languages , creator_id , descript
   // Ajoute/Enlève un like/favori si l'utilisateur est connecté, sinon ouvre une modale
   const handleAction = async(action) => {
     if(user){
-      axios.put(`/api/project/${id}/${action}`, 
+      const res = await axios.put(`/api/project/${id}/${action}`, 
       { "Content-Type": "application/json", Authorization: `Bearer ${token}` });
+      setProject(res.data.project);
     } else {
       setIsModalOpen(true);
     }
@@ -110,6 +114,9 @@ const Project = ({user, title, image, status , languages , creator_id , descript
 
   return (
     <div className='project'>
+    <Skeleton active loading={loading}>
+
+   
 
       {icon()}
 
@@ -121,21 +128,21 @@ const Project = ({user, title, image, status , languages , creator_id , descript
       <div className='container'>
 
         <div className='project-img'>
-          <img onClick={() => navigate(`/project/${id}`)} src={image} alt=""/>
+          <img onClick={() => navigate(`/project/${id}`)} src={project.image} alt=""/>
         </div>
 
         <div className='project-body'>
           <div>
             <div>
-              <h3 className='project-title' onClick={() => navigate(`/project/${id}`)}>{title}</h3>
+              <h3 className='project-title' onClick={() => navigate(`/project/${id}`)}>{project.title}</h3>
               <div className='project-creator'>
-                <div onClick={()=>navigate(`/user/${creator_id}`)}>
+                <div onClick={()=>navigate(`/user/${project.creator?.id}`)}>
                   <LuUser2 className='user-icon'/>
-                  <p>{creator.name}</p>
+                  <p>{project.creator?.name}</p>
                 </div>
               </div>
             </div>
-            <p className='description' >{description.length>150?`${description.substring(0, 150)}...`: description}</p>
+            <p className='description' >{project.description?.length>150?`${project.description.substring(0, 150)}...`: project.description}</p>
           </div>
 
           <div className='bottom-row'>
@@ -143,10 +150,10 @@ const Project = ({user, title, image, status , languages , creator_id , descript
               {languagesList}
             </div>
             {/* {status !== "completed" ? */}
-            <Popover placement="left" content={collaborators === collaborators_max ? "Equipe complète" : ` ${collaborators_max - collaborators} place(s) restante(s)`}>
+            <Popover placement="left" content={project.collaborators === project.collaborators_max ? "Equipe complète" : ` ${project.collaborators_max - project.collaborators} place(s) restante(s)`}>
               <div className='progress'>
-              <LuUsers2 size={30} color={collaborators === collaborators_max ? '#F47143' : '#2EC458'} />
-                <Progress className={collaborators === collaborators_max ? 'orange' : 'green'} type='circle' percent={(collaborators/collaborators_max)*100} size="small" format={(percent) => `${collaborators}/${collaborators_max}`} strokeColor={collaborators === collaborators_max ? '#F47143' : colors} />
+              <LuUsers2 size={30} color={project.collaborators === project.collaborators_max ? '#F47143' : '#2EC458'} />
+                <Progress className={project.collaborators === project.collaborators_max ? 'orange' : 'green'} type='circle' percent={(project.collaborators/project.collaborators_max)*100} size="small" format={(percent) => `${project.collaborators}/${project.collaborators_max}`} strokeColor={project.collaborators === project.collaborators_max ? '#F47143' : colors} />
               </div>
             </Popover>
             {/* : ""} */}
@@ -161,6 +168,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
           <button type='button' onClick={() => setIsModalOpen(false)} className='btn-red' >Non merci</button>
         </div>
       </Modal>
+    </Skeleton>
     </div>
   )
 }

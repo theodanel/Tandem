@@ -25,12 +25,13 @@ use PharIo\Manifest\AuthorElement;
 
 // Projets
 Route::get('/projects/{id?}', [ProjectController::class, "index"]);
+Route::get('/projects/coeur/all', [ProjectController::class, "showCoeurs"]);
 Route::get('/project/{id}', [ProjectController::class, "show"]);
+Route::get('/project/{id}/mini', [ProjectController::class, "showMini"]);
 
 // Utilisateurs
 Route::get('/users', [UserController::class, "index"]);
 Route::get('/user/{id}', [UserController::class, "show"]);
-Route::get('/user/contacts/{id}', [UserController::class, "showContacts"]); 
 
 // Langages
 Route::get('/languages', [LanguageController::class, "index"]);

@@ -25,54 +25,39 @@ const Home = () => {
 
   const getProjects = async () => {
     const res = await axios.get("/api/projects");
-    const resUsers = await axios.get("/api/users");
     setProjects(res.data.projects);
-    setUsers(resUsers.data.users);
     setLoading(false);
   };
 
+  const getUsers = async () =>{
+    const resUsers = await axios.get("/api/users");
+    setUsers(resUsers.data.users);
+  }
 
 
-
-  const projectsList = projects.slice(0, 8).map((project) => {
+  const projectsList = [...projects].map((project) => {
     return (
       <Project
         key={project.id}
-        title={project.title}
-        image={project.image}
-        description={project.description}
-        status={project.status}
-        languages={project.languages}
-        creator_id={project.user_id}
-        collaborators={project.collaborators}
-        collaborators_max={project.collaborators_max}
-        id={project.id}
-        likes ={project.likes}
-        favorites={project.favorites}
-        user={user}
-      ></Project>
-    );
-  });
-
-  const recommendationsList = projects.slice(2, 6).map((project) => {
-    return (
-      <Project
-        key={project.id}
-        title={project.title}
-        image={project.image}
-        description={project.description}
-        status={project.status}
-        languages={project.languages}
-        creator_id={project.user_id}
-        collaborators={project.collaborators}
-        collaborators_max={project.collaborators_max}
         id={project.id}
         user={user}
       ></Project>
     );
   });
+
+  const recommendationsList = [...projects].sort((a, b) => b.popularity - a.popularity).splice(0,5).map((project) => {
+    return (
+      <Project
+        key={project.id}
+        id={project.id}
+        user={user}
+      ></Project>
+    );
+  });
+
 
   useEffect(() => {
+    getUsers();
     getProjects();
   }, []);
 
