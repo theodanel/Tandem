@@ -21,6 +21,7 @@ const Home = () => {
   const [projects, setProjects] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [render, setRender] = useState(false);
 
   const getProjects = async () => {
     const res = await axios.get("/api/projects");
@@ -30,9 +31,8 @@ const Home = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    getProjects();
-  }, [projects]);
+
+
 
   const projectsList = projects.slice(0, 8).map((project) => {
     return (
@@ -71,6 +71,10 @@ const Home = () => {
       ></Project>
     );
   });
+
+  useEffect(() => {
+    getProjects();
+  }, []);
 
   const projectsCount = projects.length;
   const usersCount = users.length;
@@ -123,7 +127,7 @@ const Home = () => {
         <section>
           <h2 className="subtitle title-green">Projets</h2>
           <Skeleton loading={loading} active>
-            <div className="projectsList">{projectsList}</div>
+            <div className="projectsList" >{projectsList}</div>
           </Skeleton>
         </section>
 
@@ -139,7 +143,6 @@ const Home = () => {
           <Skeleton loading={loading} active>
             <div className="projectsList">{recommendationsList}</div>
           </Skeleton>
-          <p>En voir plus</p>
         </section>
       </div>
     </Layout>

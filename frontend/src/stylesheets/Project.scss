@@ -12,9 +12,6 @@
     &:hover{
       box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.575);
     }
-    &:hover .project-img img{
-      transform: scale(1.05);
-    }
     .container{
       flex: 1;
       border-radius: 1rem;
@@ -52,7 +49,47 @@
     .tree{
       background-color:  v.$primary-color;
       box-shadow: 0px 2px 0px 1px rgb(198, 82, 39);
-    }
+    }.user-actions{
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        right: 2rem;
+        top: 2rem;
+        opacity: 0;
+        transition: all ease-in-out 300ms;
+        .action-icon{
+          filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.396));
+          transition: all 200ms;
+          &:hover{
+            cursor: pointer;
+            transform: scale(1.1);
+          }
+          &:active{
+            transform: scale(1);
+          }
+        }
+        .favorites, .likes{
+          color: white;
+        }
+        .favorites:hover {
+          color: #FFC702;
+        }
+        .likes:hover {
+          color: #FF0000;
+        }
+        .full{
+          &.favorites{
+            color: #FFC702;
+          }
+          &.likes{
+            color: #FF0000;
+          }
+        }
+      }
+      &:hover .user-actions{
+        opacity: 1;
+      }
     .project-body{
       padding: 1rem;
       display: flex;
@@ -66,15 +103,22 @@
         width: 100%;     
         display: flex;
         justify-content: flex-end;
-        p{
-          width: fit-content;
-          text-decoration: underline;
-          color: #8C8C8C;
-          transition: all 200ms;
-          &:hover{
-            cursor: pointer;
+        div{
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          p, .user-icon{
+            width: fit-content;
+            text-decoration: underline;
+            color: #8C8C8C;
+            transition: all 200ms;
+          }
+          &:hover p, &:hover .user-icon{
             color: v.$color-green-dark;
             text-decoration-color: v.$color-green-dark;
+          }
+          &:hover{
+            cursor: pointer;
           }
         }
       }

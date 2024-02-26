@@ -15,9 +15,9 @@ const SearchsBar = () => {
             <div className="search">
                 <input
                     id="outlined-basic"
-                    onChange={inputHandler}
+                    onChange={()=>inputHandler()}
                     variant="outlined"
-                    fullWidth
+                    // fullWidth
                     label="Search"
                 />
             </div>

@@ -28,7 +28,7 @@ const UserPage = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const loggedUser = useSelector((state) => state.data.user) || {};
-  const token = useSelector((state) => state.data.token) || {};
+  const token = useSelector((state) => state.data.token) || null;
 
   //===========
   //STATE
@@ -141,12 +141,14 @@ const UserPage = () => {
       avatar_id: resUser.avatar_id,
     });
     setDate(resUser.created_at);
-
-    const resFavorites = await axios.get(`/api/projects/favorites/${id}`, {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    });
-    setUserFavorites(resFavorites.data.projects);
+    if(loggedUser?.id == id ){
+        console.log("test");
+        const resFavorites = await axios.get(`/api/projects/favorites/${id}`, {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        });
+        setUserFavorites(resFavorites.data.projects);
+    }
   };
 
   /**
@@ -186,17 +188,20 @@ const UserPage = () => {
    * Met à jour l'avatar de l'utilisateur
    */
   const updateAvatar = async () => {
-    await axios.put(
-      `/api/user/${user.id}/update/avatar`,
-      { avatar: updateUser.avatar_id },
-      { "Content-Type": "application/json", Authorization: `Bearer ${token}` }
-    );
-    handleModals("avatars", false);
-    message.success("Avatar mis à jour");
+    if(loggedUser?.id == id ){
+
+        await axios.put(
+            `/api/user/${user.id}/update/avatar`,
+            { avatar: updateUser.avatar_id },
+            { "Content-Type": "application/json", Authorization: `Bearer ${token}` }
+            );
+            handleModals("avatars", false);
+            message.success("Avatar mis à jour");
+        }
   };
 
   const handleAvatars = () => {
-    if (loggedUser.id === user.id) {
+    if (loggedUser?.id === user.id) {
       getAvatars();
       handleModals("avatars", true);
     }
@@ -204,28 +209,32 @@ const UserPage = () => {
 
   const handleForm = async (e) => {
     e.preventDefault();
-    const update = await axios.put(`/api/user/${id}/update`, updateUser, {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    });
-    if (update.data.status === 200) {
-      handleModals("params", false);
-      message.success("Profil mis à jour");
-    } else {
-      message.error("Erreur");
+    if(loggedUser?.id == id ){
+        const update = await axios.put(`/api/user/${id}/update`, updateUser, {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        });
+        if (update.data.status === 200) {
+            handleModals("params", false);
+            message.success("Profil mis à jour");
+        } else {
+            message.error("Erreur");
+        }
     }
   };
 
   const handleLogout = async () => {
-    const res = await axios.post(`/api/logout/${user.id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (res.data.status === 200) {
-      message.success(`Déconnexion réussie`);
-
-      dispatch(removeUser(res.data));
+      if(loggedUser?.id == id ){
+        const res = await axios.post(`/api/logout/${user.id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.data.status === 200) {
+            message.success(`Déconnexion réussie`);
+            
+            dispatch(removeUser(res.data));
+        }
+        navigate("/");
     }
-    navigate("/");
   };
 
   useEffect(() => {

@@ -55,12 +55,13 @@
       border-radius: 100%;
       background-color: v.$color-green;
       box-shadow: 0px 2px v.$color-green-dark;
+      transition: background-color 200ms, box-shadow 200ms
     }
     
     &.slick-active button::after {
+      translate: 0 2px;
       background-color: v.$primary-color ;
       box-shadow: inset 0px 3px rgba(0, 0, 0, 0.5),
-      0px 2px v.$primary-color;
     }
     
     // button:hover::after{
@@ -69,6 +70,7 @@
     //   inset 0px 3px v.$color-gpastel;
     // }
     button:active::after{
+      translate: 0 2px;
       background-color: v.$color-green ;
       box-shadow: inset 0px 3px v.$color-green-dark,
       0px 2px v.$color-green;

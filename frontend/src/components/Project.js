@@ -27,6 +27,7 @@ const Project = ({user, title, image, status , languages , creator_id , descript
     getCreator();
   },[]);
 
+
   // Affichage de la liste des langages du projet
   const languagesList = languages.map((language, index)=>{
     return(
@@ -152,8 +153,10 @@ const Project = ({user, title, image, status , languages , creator_id , descript
 
       <Modal title="Connexion requise" open={isModalOpen} onCancel={()=>setIsModalOpen(false)} footer={null} centered >
         <h3>Veuillez vous connecter pour réaliser cette action</h3>
-        <button type='button' onClick={() => navigate('/login')} >Me connecter</button>
-        <button type='button' onClick={() => setIsModalOpen(false)}>Non merci</button>
+        <div className='center flex'>
+          <button type='button' onClick={() => navigate('/login')} className='btn-green' >Me connecter</button>
+          <button type='button' onClick={() => setIsModalOpen(false)} className='btn-red' >Non merci</button>
+        </div>
       </Modal>
     </div>
   )

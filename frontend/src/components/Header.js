@@ -24,7 +24,7 @@ function Header() {
    */
   useEffect(()=>{
     setUser(JSON.parse(localStorage.getItem("user")) || null)
-  })
+  }, [])
 
   const navigate = useNavigate();
 
