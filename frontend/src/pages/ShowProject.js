@@ -205,11 +205,11 @@ const ShowProject = () => {
 
                                     },
                                     {
-                                        description: <button style={{'backgroundColor': status != 'ongoing'  ? '#77dd79a9' : '#77DD79' }} onClick={() => showModalSteps()} name='completed' className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight className='stepsIcons'/>,
+                                        description: <button style={{'backgroundColor': status !== 'ongoing'  ? '#77dd79a9' : '#77DD79' }} onClick={() => showModalSteps()} name='completed' className='stepTwo'>Projet en cours</button>, icon: <PiPlantLight className='stepsIcons'/>,
 
                                     },
                                     {
-                                        description: <button style={{'backgroundColor': status != 'completed' ?'#f47243b4' : '#f47243'}} className='stepThree'>Projet terminé</button>, icon: <PiTreeLight className='stepsIcons'/>,
+                                        description: <button style={{'backgroundColor': status !== 'completed' ?'#f47243b4' : '#f47243'}} className='stepThree'>Projet terminé</button>, icon: <PiTreeLight className='stepsIcons'/>,
 
                                     },
                                 ]}
@@ -239,7 +239,7 @@ const ShowProject = () => {
                     <div id='collaborators'>
                         <h3>Laisser un commentaire</h3>
                         <div className='addComment'>
-                            <input onChange={(e)=> handleChange(e)} type="textarea" placeholder='Lorem ipsum dolor' />
+                            <textarea onChange={(e)=> handleChange(e)} className="textarea" placeholder='Lorem ipsum dolor' />
                             <button type='button'  className="commentButton" onClick={() => postComments()}>Poster</button>
                         </div>
                         <hr className='languagesDecoration'></hr>
