@@ -501,7 +501,7 @@ const UserPage = () => {
         footer={null}
         centered
       >
-        <div>
+        <div className="usersList">
             {contactsList}
         </div>
       </Modal>
