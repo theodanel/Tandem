@@ -81,10 +81,10 @@ const Register = () => {
                         <input type='password' name='password_confirmation' value={newUser.password_confirmation} placeholder='Confirmer le mot de passe' onChange={(e)=> handleChange(e)} required/>
                     </div>
                 </div>
-                <button type='submit' className='btn-green-big'>Valider</button>
+                <button type='submit' className='btn-green-big' aria-label='Valider' title='Valider'>Valider</button>
                 <div className='flex'>
                     <p>Déjà inscrit ?</p>
-                    <button type='button' className='btn-green' onClick={(e) => handleNavigate(e)}>Se connecter</button>
+                    <button type='button' aria-label='Se connecter' title='Se connecter' className='btn-green' onClick={(e) => handleNavigate(e)}>Se connecter</button>
                 </div>
             </form>
         </Fragment>

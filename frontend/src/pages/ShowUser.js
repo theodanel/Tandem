@@ -437,22 +437,12 @@ const UserPage = () => {
             />
           </div>
         </div>
-        <Collapse
-          onChange={() => {
-            getLanguages();
-          }}
-          items={[
-            {
-              label: "Langages",
-              children: (
+        <Collapse onChange={() => { getLanguages(); }} items={[ {label: "Langages", children: (
                 <Skeleton loading={loading.languages} active>
                   <div className="languagesList-3">{allLanguagesList}</div>
                 </Skeleton>
-              ),
-            },
-          ]}
-        />
-        <button type="submit"className="btn-green center" >Valider</button>
+              )}]} />
+        <button type="submit"className="btn-green center" aria-label="Valider" title="Valider" >Valider</button>
       </form>
     );
   };
@@ -460,14 +450,14 @@ const UserPage = () => {
   const contactButton = () => {
     if(userContacts.find(contact => contact.id === loggedUser?.id)){
         return (
-            <button type="button" className="btn-red" onClick={()=>toggleContacts()}>
+            <button type="button" aria-label="Supprimer le contact" title="Supprimer le contact" className="btn-red" onClick={()=>toggleContacts()}>
             <FaUserMinus />
             Supprimer
             </button>
         ) 
     } else {
         return (
-            <button type="button" className="btn-green" onClick={()=>toggleContacts()}>
+            <button type="button" aria-label="Ajouter aux contacts" title="Ajouter aux contacts" className="btn-green" onClick={()=>toggleContacts()}>
             <FaUserPlus />
             Ajouter
             </button>
@@ -519,10 +509,10 @@ const UserPage = () => {
       >
         <p>Voulez-vous vous déconnecter ?</p>
         <div className="flex center">
-            <button type="button" className="btn-red" onClick={() => handleLogout()}>
+            <button type="button" className="btn-red" aria-label="Oui" title="Oui" onClick={() => handleLogout()}>
             Oui
             </button>
-            <button type="button" className="btn-green" onClick={() => handleModals("logout", false)}>
+            <button type="button" className="btn-green" aria-label="Non" title="Non" onClick={() => handleModals("logout", false)}>
             Non
             </button>
         </div>
@@ -540,7 +530,7 @@ const UserPage = () => {
         centered
       >
         <div className="avatarsList">{avatarsList}</div>
-        <button type="button" className="center btn-green" onClick={() => updateAvatar()}>
+        <button type="button" className="center btn-green" aria-label="Valider" title="Valider" onClick={() => updateAvatar()}>
           Valider
         </button>
       </Modal>
@@ -566,8 +556,8 @@ const UserPage = () => {
         <Modal title="Connexion requise" open={modals.connexion} onCancel={()=>handleModals("connexion",false)} footer={null} centered >
             <h3>Veuillez vous connecter pour réaliser cette action</h3>
             <div className='center flex'>
-            <button type='button' onClick={() => navigate('/login')} className='btn-green' >Me connecter</button>
-            <button type='button' onClick={() => handleModals("connexion",false)} className='btn-red' >Non merci</button>
+            <button type='button' aria-label="Se connecter" title="Se connecter" onClick={() => navigate('/login')} className='btn-green' >Me connecter</button>
+            <button type='button' aria-label="Non" title="Non" onClick={() => handleModals("connexion",false)} className='btn-red' >Non merci</button>
             </div>
         </Modal>
     )
@@ -592,15 +582,15 @@ const UserPage = () => {
           />
           {loggedUser?.id == id ? (
             <div className="top-right-btn">
-              <button type="button" onClick={() => handleModals("favorites", true)} className="btn-yellow">
+              <button type="button" aria-label='Favoris' title='Favoris' onClick={() => handleModals("favorites", true)} className="btn-yellow">
                 <FaBookmark/>
                 Favoris
               </button>
-              <button type="button" onClick={() => handleModals("params", true)} className="btn-green" >
+              <button type="button" aria-label='Paramètres' title='Paramètres' onClick={() => handleModals("params", true)} className="btn-green" >
                 <FaGear/>
                 Paramètres
               </button>
-              <button type="button" onClick={() => handleModals("logout", true)} className="btn-red" >
+              <button type="button" aria-label='Déconnexion' title='Déconnexion' onClick={() => handleModals("logout", true)} className="btn-red" >
                 <FiLogOut/>
                 Déconnexion
               </button>
@@ -609,19 +599,12 @@ const UserPage = () => {
             ""
           )}
           <div className="profile">
-            <div
-              className={
-                loggedUser?.id === user.id ? "avatar img-hover" : "avatar"
-              }
-              onClick={() => handleAvatars()}
-            >
+            <div className={loggedUser?.id === user.id ? "avatar img-hover" : "avatar"}  onClick={() => handleAvatars()} aria-label={loggedUser?.id === user.id ? "Changer d'avatar" : "Avatar"} title={loggedUser?.id === user.id ? "Changer d'avatar" : "Avatar"} >
               {loading.user ? (
                 <Skeleton.Avatar active size={100} />
               ) : (
                 <Fragment>
-                  <img
-                    src={`http://localhost:8000/images/avatars/${user.avatar}`}
-                  />
+                  <img src={`http://localhost:8000/images/avatars/${user.avatar}`} alt="" />
                   {loggedUser.id === user.id ? (
                     <p className="hidden">Changer d'avatar</p>
                   ) : (
@@ -634,10 +617,7 @@ const UserPage = () => {
             <Skeleton loading={loading.user} active paragraph={false}>
               {user.github ? (
                 <Popover placement="right" title="" content="Copié !" trigger="click">
-                  <div className="github" title="Copier" onClick={() => {
-                      navigator.clipboard.writeText(user.github);
-                    }}
-                  >
+                  <div className="github" aria-label="Copier le pseudo" title="Copier le pseudo" onClick={() => {navigator.clipboard.writeText(user.github);}} >
                     <FaGithub size={25} />
                     <p>{user.github}</p>
                   </div>
@@ -646,19 +626,8 @@ const UserPage = () => {
                 ""
               )}
               {user.discord ? (
-                <Popover
-                  placement="right"
-                  title=""
-                  content="Copié !"
-                  trigger="click"
-                >
-                  <div
-                    className="discord"
-                    title="Copier"
-                    onClick={() => {
-                      navigator.clipboard.writeText(user.discord);
-                    }}
-                  >
+                <Popover placement="right" title="" content="Copié !" trigger="click" >
+                  <div className="discord" aria-label="Copier le pseudo" title="Copier le pseudo" onClick={() => { navigator.clipboard.writeText(user.discord); }} >
                     <FaDiscord size={25} className="discord-icon" />
                     <p>{user.discord}</p>
                   </div>
@@ -670,11 +639,7 @@ const UserPage = () => {
             </Skeleton>
             </div>
             <div className="contacts">
-              {loggedUser?.id === user.id ? (
-                ""
-              ) : (
-                contactButton()
-              )}
+              {loggedUser?.id === user.id ? ( "" ) : ( contactButton() )}
               <button type="button" onClick={()=>handleModals("contacts", true)} className="btn-orange" >
                 <FaAddressBook/>
                 Contacts

@@ -7,7 +7,7 @@ const User = ({ name , avatar, id }) => {
   return (
     <div className='user-display user-green' onClick={()=>navigate(`/user/${id}`)}>
         <div className='img'>
-            <img src={`http://localhost:8000/images/avatars/${avatar}`} />
+            <img src={`http://localhost:8000/images/avatars/${avatar}`} alt='' />
         </div>
         <p>{name}</p>
     </div>
