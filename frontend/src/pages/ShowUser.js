@@ -497,7 +497,7 @@ const UserPage = () => {
         centered
       >
         <div className="avatarsList">{avatarsList}</div>
-        <button type="button" onClick={() => updateAvatar()}>
+        <button type="button" className="center btn-green" onClick={() => updateAvatar()}>
           Valider
         </button>
       </Modal>
@@ -534,7 +534,7 @@ const UserPage = () => {
             className="top-left-btn"
             onClick={() => navigate(-1)}
           />
-          {loggedUser?.id === user.id ? (
+          {loggedUser?.id == id ? (
             <div className="top-right-btn">
               <button type="button" onClick={() => handleModals("favorites", true)} className="btn-yellow">
                 <FaBookmark/>
