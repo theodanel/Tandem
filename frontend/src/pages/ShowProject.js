@@ -1,16 +1,17 @@
 import axios from '../api/axios';
 import React, { Fragment, useEffect, useState } from 'react'
-import { Collapse, Modal, Skeleton, Steps, message } from "antd"
+import { Collapse, Modal, Popover, Progress, Skeleton, Steps, message } from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
 
 
 import Language from '../components/Language.js';
 import { PiTreeLight, PiPlantLight } from "react-icons/pi";
-import { LuNut } from "react-icons/lu";
+import { LuNut, LuUsers2 } from "react-icons/lu";
 import { format } from "date-fns";
 import { FaEdit } from "react-icons/fa";
-
+import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
+import { FaHeart , FaRegHeart } from "react-icons/fa";
 
 
 import "../stylesheets/ProjectDetail.scss"
@@ -53,6 +54,7 @@ const ShowProject = () => {
     const [modals, setModals] = useState({
         steps: false,
         update: false,
+        connexion: false,
     })
 
     const handleModals = (name, status) => {
@@ -115,6 +117,13 @@ const ShowProject = () => {
         }
     };
 
+    /**
+     * Rejoindre/quitte un projet
+     */
+    const joinProject = async() => {
+        await axios.put(`/api/project/${id}/join`, { headers: { "Authorization": `Bearer ${token}` } })
+        getProject();
+    }
 
     /**
      * Récupère tous les langages
@@ -248,11 +257,11 @@ const ShowProject = () => {
     });
 
     /**
-     * Boutons de progression du projet
+     * Boutons de progression du projet (coté créateur)
      */
     const stepOne = () => {
         return(
-            <button name='created' className='btn-green active'> <LuNut size={25} className='stepsIcons'/>Projet créé</button>
+            <button name='created' className='btn-green active'> <LuNut size={40} className='stepsIcons'/>Projet créé</button>
         )
     }
 
@@ -260,20 +269,20 @@ const ShowProject = () => {
         if(project.user_id === loggedUser?.id){
             if(project.status === "created"){
                 return (
-                    <button onClick={() => handleModals("steps", true)} name='ongoing' className='btn-green'><PiPlantLight size={25} className='stepsIcons'/>Démarrer le projet</button>
+                    <button onClick={() => handleModals("steps", true)} name='ongoing' className='btn-green'><PiPlantLight size={40} className='stepsIcons'/>Démarrer le projet</button>
                 )
             } else {
                 return (
-                    <button name='ongoing' className='btn-green active'><PiPlantLight size={25} className='stepsIcons'/>Projet démarré</button>
+                    <button name='ongoing' className='btn-green active'><PiPlantLight size={40} className='stepsIcons'/>Projet démarré</button>
                 )
             }
         } else if(project.status === "created"){
             return (
-                <button name='ongoing' className='btn-green inactive'><PiPlantLight size={25} className='stepsIcons'/>Projet démarré</button>
+                <button name='ongoing' className='btn-green inactive'><PiPlantLight size={40} className='stepsIcons'/>Projet démarré</button>
             )
         } else{
             return (
-                <button name='ongoing' className='btn-green active'><PiPlantLight size={25} className='stepsIcons'/>Projet démarré</button>
+                <button name='ongoing' className='btn-green active'><PiPlantLight size={40} className='stepsIcons'/>Projet démarré</button>
             )
         }
     }
@@ -282,44 +291,129 @@ const ShowProject = () => {
         if(project.user_id === loggedUser?.id){
             if(project.status === "created"){
                 return (
-                    <button className='btn-orange inactive'><PiTreeLight size={25} className='stepsIcons'/>Terminer le projet</button>
+                    <button className='btn-orange inactive'><PiTreeLight size={40} className='stepsIcons'/>Terminer le projet</button>
                 )
             } else if (project.status === "ongoing") {
                 return (
-                    <button className='btn-orange' onClick={() => handleModals("steps", true)}><PiTreeLight size={25} className='stepsIcons'/>Terminer le projet</button>
+                    <button className='btn-orange' onClick={() => handleModals("steps", true)}><PiTreeLight size={40} className='stepsIcons'/>Terminer le projet</button>
                 )
             } else {
                 return (
-                    <button className='btn-orange active'><PiTreeLight size={25} className='stepsIcons'/>Projet terminé !</button>
+                    <button className='btn-orange active'><PiTreeLight size={40} className='stepsIcons'/>Projet terminé !</button>
                 )
             }
         } else if(project.status !== "completed"){
             return(
-                <button className='btn-orange inactive'><PiTreeLight size={25} className='stepsIcons'/>Projet terminé !</button>
+                <button className='btn-orange inactive'><PiTreeLight size={40} className='stepsIcons'/>Projet terminé !</button>
             )
         } else{
             return(
-                <button onClick={() => handleModals("steps", true)} name='completed' className='btn-orange active'><PiTreeLight size={25} className='stepsIcons'/>Projet terminé !</button>
+                <button onClick={() => handleModals("steps", true)} name='completed' className='btn-orange active'><PiTreeLight size={40} className='stepsIcons'/>Projet terminé !</button>
             )
         }
     }
 
+    /**
+     * Statut du projet (coté collaborateur)
+     */
     const statusIcon = () => {
         if (project.status === "ongoing"){
             return(
-                <button name='ongoing' className='btn-green active'><PiPlantLight size={25} className='stepsIcons'/>Le projet est en cours</button>
+                <button name='ongoing' className='btn-green active'><PiPlantLight size={40} className='stepsIcons'/>Le projet est en cours</button>
             )
         } else if (project.status === "completed") {
             return(
-                <button onClick={() => handleModals("steps", true)} name='completed' className='btn-orange active'><PiTreeLight size={25} className='stepsIcons'/>Le projet est terminé !</button>
+                <button onClick={() => handleModals("steps", true)} name='completed' className='btn-orange active'><PiTreeLight size={40} className='stepsIcons'/>Le projet est terminé !</button>
             )
         } else{
             return(
-                <button name='created' className='btn-green active'> <LuNut size={25} className='stepsIcons'/>Le projet n'a pas encore démarré</button>
+                <button name='created' className='btn-green active'> <LuNut size={40} className='stepsIcons'/>Le projet n'a pas encore démarré</button>
             )
         }
     }
 
+
+    const colors = {
+        '0%': '#2EC458',
+        '50%': '#ADDDB2',
+        // '60%': '#FFD7B4',
+        '100%': '#F47143'
+      }
+
+    /**
+     * Compteur de collaborateurs sur le projet
+     */
+    const collaboratorsCounter =() => {
+        return(
+            <Popover placement="left" content={project.collaborators === project.collaborators_max ? "Equipe complète" : ` ${project.collaborators_max - project.collaborators} place(s) restante(s)`}>
+            <div className='progress'>
+            <LuUsers2 size={30} color="white" />
+              <Progress className='white' type='circle' percent={(project.collaborators/project.collaborators_max)*100} size="small" format={(percent) => `${project.collaborators}/${project.collaborators_max}`} strokeColor={'white'} />
+            </div>
+          </Popover>
+        )
+    }
+
+    /**
+     * Bouton pour rejoindre le projet
+     */
+    const joinButton = () => {
+        if(project.collaboratorsList?.find(collaborator => collaborator.id === loggedUser?.id)){
+            return(
+                <button className='btn-orange-big' onClick={()=>joinProject()}>{collaboratorsCounter()}Se retirer du projet</button>
+            )
+        } else if(project.status === "created" || project.status === "ongoing" ){
+            if(project.collaborators < project.collaborators_max){
+                return(
+                    <button className='btn-green-big' onClick={()=>joinProject()}>{collaboratorsCounter()}Rejoindre le projet</button>
+                )
+            } else{
+                return(
+                    <button className='btn-orange-big active'>{collaboratorsCounter()}Equipe complete</button>
+                )
+            }
+        }
+    }
+
+ 
+     // Affichage de l'icone Favoris selon si le projet est un favori de l'utilisateur
+    const favoris = () =>{
+    // if (user?.favorites.find(favorite => favorite.project_id === id)){
+    if (project.favorites?.find(favorite => favorite.user_id === loggedUser?.id)){
+      return (
+          <button type='button' className='btn-yellow-white favorites full' onClick={()=>handleAction("favorite")} ><IoBookmark className='action-icon' size={25} />Retirer des favoris</button>
+      )
+    } else {
+      return (
+          <button type='button' className='btn-yellow favorites' onClick={()=>handleAction("favorite")}><IoBookmarkOutline className='action-icon' size={25} />Ajouter aux favoris</button>
+      )
+    }
+  }
+
+  // Affichage de l'icone like selon si le projet est liké par l'utilisateur
+  const like = () => {
+      // if (user?.likes.find(like => like.project_id === id)){
+      if (project.likes?.find(like => like.user_id === loggedUser?.id)){
+        return (
+            <button type='button' className='btn-red-white likes full' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} />Unliker le projet</button>
+        )
+      } else {
+        return (
+            <button type='button' className='btn-red likes' onClick={()=>handleAction("like")}><FaRegHeart className='action-icon' size={25} />Liker le projet</button>
+        )
+      }
+  }
+
+
+  // Ajoute/Enlève un like/favori si l'utilisateur est connecté, sinon ouvre une modale
+  const handleAction = async(action) => {
+    if(loggedUser){
+      await axios.put(`/api/project/${id}/${action}`);
+    } else {
+      handleModals("connexion",true);
+    }
+    getProject()
+  }
 
     ////////////
     //MODALS
@@ -382,6 +476,19 @@ const ShowProject = () => {
         )
     }
 
+    /**
+     * Modale de connexion
+     */
+    const connexionModal = () =>{
+        <Modal title="Connexion requise" open={modals.connexion} onCancel={()=>handleModals("connexion",false)} footer={null} centered >
+            <h3>Veuillez vous connecter pour réaliser cette action</h3>
+            <div className='center flex'>
+            <button type='button' onClick={() => navigate('/login')} className='btn-green' >Me connecter</button>
+            <button type='button' onClick={() => handleModals("connexion",false)} className='btn-red' >Non merci</button>
+            </div>
+        </Modal>
+    }
+
 
     return (
         <Layout>
@@ -389,6 +496,7 @@ const ShowProject = () => {
             {/* Modals */}
             {updateModal()}
             {stepsModal()}
+            {connexionModal()}
 
             
             <div className='projectDetail'>
@@ -453,7 +561,16 @@ const ShowProject = () => {
                         </Fragment>
         
                            :
-                           statusIcon()
+                           <div className='userActions'>
+                                <div className='joinProject'>
+                                    {statusIcon()}
+                                    {joinButton()}
+                                </div>
+                                <div className='actions'>
+                                    {like()}
+                                    {favoris()}
+                                </div>
+                            </div>
                            }
                     </div>
                 </div>

@@ -169,6 +169,12 @@
             font-size: 2rem;
         }
     }
+    .white{
+        .ant-progress-text{
+            color: white;
+            font-size: 2rem;
+        } 
+    }
 }
 
 @media (min-width: v.$sm-breakpoint){

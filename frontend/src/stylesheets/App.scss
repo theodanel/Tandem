@@ -125,6 +125,28 @@ button{
   @include m.button(white, v.$color-yellow, v.$color-yellow-light, v.$color-orange, 5rem, 1rem);
 }
 
+.btn-yellow-white {
+  @include m.button(v.$color-yellow, white, v.$color-yellow-light, v.$color-yellow, 5rem, 1rem);
+  &:hover{
+    color: white;
+    box-shadow: 0 3px v.$color-yellow;
+  }
+  &:active{
+    box-shadow: none;
+  }
+}
+
+.btn-red-white {
+  @include m.button(v.$color-red, white, v.$color-orange, v.$color-red, 5rem, 1rem);
+  &:hover{
+    color: white;
+    box-shadow: 0 3px v.$color-red;
+  }
+  &:active{
+    box-shadow: none;
+  }
+}
+
 .btn-red {
   @include m.button(white, v.$color-red, v.$color-orange, v.$color-red-dark, 5rem, 1rem);
 }

@@ -9,6 +9,8 @@
     font-weight: bold;
     display: flex;
     align-items: center;
+    width: fit-content;
+    transition: all 100ms;
     
     &:hover{
         cursor: pointer;
