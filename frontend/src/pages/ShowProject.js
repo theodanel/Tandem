@@ -9,6 +9,8 @@ import Language from '../components/Language.js';
 import { PiTreeLight, PiPlantLight } from "react-icons/pi";
 import { LuNut } from "react-icons/lu";
 import { format } from "date-fns";
+import { FaEdit } from "react-icons/fa";
+
 
 
 import "../stylesheets/ProjectDetail.scss"
@@ -17,6 +19,7 @@ import { useSelector } from 'react-redux';
 
 const ShowProject = () => {
     const { id } = useParams();
+    const loggedUser = useSelector(state=> state.data.user);
     const token = useSelector(state => state.data.token);
     const navigate = useNavigate();
 
@@ -26,7 +29,6 @@ const ShowProject = () => {
     const [status, setStatus] = useState("");
     const [allLanguages, setAllLanguages] = useState([]);
     const [postComment, setPostComment] = useState([]);
-    const [newLanguages, setNewLanguages] = useState([]);
     const [checkedState, setCheckedState] = useState([]);
 
     /**
@@ -138,7 +140,6 @@ const ShowProject = () => {
      */
     const update = async (e) => {
         e.preventDefault();
-        const updatedLanguages = [...project.languages, ...newLanguages];
         const res = await axios.put(`/api/project/${id}/update`, updateProject, { headers: { "Authorization": `Bearer ${token}` } });
         
         if (res.data.status === 200) {
@@ -159,10 +160,6 @@ const ShowProject = () => {
     //     setStatus(project.status)
     //     setPostComment(project.comments)
     // }, [project])
-
-
-    console.log(newLanguages);
-
 
 
     /**
@@ -249,10 +246,137 @@ const ShowProject = () => {
         );
     });
 
+    const stepOne = () => {
+        return(
+            <button name='created' className='btn-green active'> <LuNut size={25} className='stepsIcons'/>Projet créé</button>
+        )
+    }
+
+    const stepTwo = () => {
+        if(project.user_id === loggedUser?.id){
+            if(project.status === "created"){
+                return (
+                    <button onClick={() => handleModals("steps", true)} name='ongoing' className='btn-green'><PiPlantLight size={25} className='stepsIcons'/>Démarrer le projet</button>
+                )
+            } else {
+                return (
+                    <button name='ongoing' className='btn-green active'><PiPlantLight size={25} className='stepsIcons'/>Projet démarré</button>
+                )
+            }
+        } else if(project.status === "created"){
+            return (
+                <button name='ongoing' className='btn-green inactive'><PiPlantLight size={25} className='stepsIcons'/>Projet démarré</button>
+            )
+        } else{
+            return (
+                <button name='ongoing' className='btn-green active'><PiPlantLight size={25} className='stepsIcons'/>Projet démarré</button>
+            )
+        }
+    }
+
+    const stepThree = () => {
+        if(project.user_id === loggedUser?.id){
+            if(project.status === "created"){
+                return (
+                    <button className='btn-orange inactive'><PiTreeLight size={25} className='stepsIcons'/>Terminer le projet</button>
+                )
+            } else if (project.status === "ongoing") {
+                return (
+                    <button className='btn-orange' onClick={() => handleModals("steps", true)}><PiTreeLight size={25} className='stepsIcons'/>Terminer le projet</button>
+                )
+            } else {
+                return (
+                    <button className='btn-orange active'><PiTreeLight size={25} className='stepsIcons'/>Projet terminé !</button>
+                )
+            }
+        } else if(project.status !== "completed"){
+            return(
+                <button className='btn-orange inactive'><PiTreeLight size={25} className='stepsIcons'/>Projet terminé !</button>
+            )
+        } else{
+            return(
+                <button onClick={() => handleModals("steps", true)} name='ongoing' className='btn-orange active'><PiTreeLight size={25} className='stepsIcons'/>Projet terminé !</button>
+            )
+        }
+    }
+
+
+    ////////////
+    //MODALS
+    ////////////
+
+    /**
+     * Modale fu formulaire de modifiaction
+     */
+    const updateModal = () => {
+        return(
+            <Modal className='updateModal' title="Modifier" open={modals.update} onCancel={()=>handleModals("update", false)} footer={null} centered >
+            <form onSubmit={(e)=>update(e)}>
+                <div>
+                    <label htmlFor='title'>Titre :</label>
+                    <input type='text' id='title' name='title' value={updateProject.title} onChange={(e) => handleUpdate(e)} />
+                    <strong>{errors.title}</strong>
+                </div>
+
+                <div>
+                    <label htmlFor='description'>Description :</label>
+                    <input type='text' id='description' name='description' value={updateProject.description} onChange={(e) => handleUpdate(e)} />
+                    <strong>{errors.description}</strong>
+                </div>
+
+                <div>
+                    <label>Nombre de collaborateurs max :</label>
+                    <select id="collaborators_max" name="collaborators_max" min="1" max="20" value={updateProject?.collaborators_max || ""} onChange={(e) => handleUpdate(e)} required>
+                        {participants}
+                    </select>
+                    <strong>{errors.collaborators_max}</strong>
+                </div>
+
+                
+
+                <Collapse
+                    onChange={() => {
+                        getLanguages();
+                    }}
+                    items={[
+                        {
+                            label: "Langages",
+                            children: (
+                                <div className="updateLanguagesList">{allLanguagesList}</div>
+                            ),
+                        },
+                    ]}
+                />
+
+                <button type="submit" className="btn-green center">Valider</button>
+            </form>
+        </Modal>
+        )
+    }
+
+    /**
+     * Modale de progression du projet
+     */
+    const stepsModal = () => {
+        return(
+            <Modal title="" open={modals.steps} onCancel={()=>handleModals("steps", false)} footer={null} centered >
+                <h3>Etes vous sur de vouloir passer à l'étape suivante ? </h3>
+                <button type='button' onClick={() => (changeStatus(), handleModals("steps",false))} name='ongoing' className='stepOne'>Oui</button>
+                <button type='button' onClick={() => handleModals("steps",false)} name='closeModal' className='closeModal'>Non</button>
+
+            </Modal>
+        )
+    }
+
+
     return (
         <Layout>
 
+            {/* Modals */}
+            {updateModal()}
+            {stepsModal()}
 
+            
             <div className='projectDetail'>
                 <div className='projectDetailPosition'>
                     <div className='imagePosition'>
@@ -260,7 +384,6 @@ const ShowProject = () => {
                     </div>
 
                     <div className='descriptionPosition'>
-
                         <div className='projectTitle'>
                             <div className='titleDecoration'>
                                 <h1 id='projectTitle'>{project.title}</h1>
@@ -272,12 +395,8 @@ const ShowProject = () => {
                             </div>
                         </div>
 
-
                         <p className='projectDescription'>{project.description}</p>
-
-                        <div className='updateButton'>
-                            <button onClick={() => handleModals("update",true)}>Modifier</button>
-                        </div>
+                   
 
                         <div className='languagesList'>
                             <h3>Langages utilisés :</h3>
@@ -294,15 +413,37 @@ const ShowProject = () => {
                             )}
                             <hr className='languagesDecoration'></hr>
                         </div>
+
+                        <button className='btn-orange' onClick={() => handleModals("update",true)}>
+                            <FaEdit />
+                            Modifier
+                        </button>
+
+                        <Steps 
+                                className='projectSteps'
+                                size="small"
+                                current={project.status === "created" ? 1 : project.status === "ongoing" ? 2 : 3 }
+                                id="Steps"
+                                items={[
+                                    {
+                                        title: stepOne(),
+                                    },
+                                    {
+                                        title: stepTwo(),
+                                    },
+                                    {
+                                        title: stepThree(),
+
+                                    },
+                                ]}
+                            />
+
                     </div>
-
-
-
                 </div>
 
                 <div className='collabList'>
                     <div id='collaborators'>
-                        <h3>Collaborateurs</h3>
+                        <h3>Collaborateurs ({project.collaborators}/{project.collaborators_max})</h3>
                         <hr className='languagesDecoration'></hr>
                         <ul>
                             <li>{collaboratorsList}</li>
@@ -310,8 +451,6 @@ const ShowProject = () => {
 
                     </div>
                 </div>
-
-
 
                 <div className='collabList'>
                     <div id='collaborators'>
@@ -326,60 +465,8 @@ const ShowProject = () => {
                         {comments}
                     </div>
                 </div>
-
             </div>
-
-
-
-            <Modal title="" open={modals.steps} onCancel={()=>handleModals("steps", false)} footer={null} centered >
-                <h3>Etes vous sur de vouloir passer à l'étape suivante ? </h3>
-                <button type='button' onClick={() => (changeStatus(), handleModals("steps",false))} name='ongoing' className='stepOne'>Oui</button>
-                <button type='button' onClick={() => handleModals("steps",false)} name='closeModal' className='closeModal'>Non</button>
-
-            </Modal>
-
-
-            <Modal className='updateModal' title="Modifier" open={modals.update} onCancel={()=>handleModals("update", false)} footer={null} centered >
-                <form onSubmit={(e)=>update(e)}>
-                    <div>
-                        <label htmlFor='title'>Titre :</label>
-                        <input type='text' id='title' name='title' value={updateProject.title} onChange={(e) => handleUpdate(e)} />
-                        <strong>{errors.newTitle}</strong>
-                    </div>
-
-                    <div>
-                        <label htmlFor='description'>Description :</label>
-                        <input type='text' id='description' name='description' value={updateProject.description} onChange={(e) => handleUpdate(e)} />
-                    </div>
-
-                    <div>
-                        <label>Nombre de collaborateurs max :</label>
-                        <select id="collaborators_max" name="collaborators_max" min="1" max="20" value={updateProject.collaborators_max} onChange={(e) => handleUpdate(e)} required>
-                            {participants}
-                        </select>
-                    </div>
-
-                    <strong>{errors.newDescription}</strong>
-
-                    <Collapse
-                        onChange={() => {
-                            getLanguages();
-                        }}
-                        items={[
-                            {
-                                label: "Langages",
-                                children: (
-                                    <div className="updateLanguagesList">{allLanguagesList}</div>
-                                ),
-                            },
-                        ]}
-                    />
-
-                    <button type="submit" className="btn-green center">Valider</button>
-                </form>
-            </Modal>
-
-
+    
 
         </Layout>
     )

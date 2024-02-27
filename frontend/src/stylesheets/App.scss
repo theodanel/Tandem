@@ -109,6 +109,12 @@ button{
   @include m.button(white, v.$color-orange, v.$orange-light, v.$primary-color, 5rem, 3rem);
   font-family: "Lobster Two", sans-serif;
   font-size: 2.5rem;
+}
+
+.btn-orange-big-forbidden {
+  @include m.button(white, v.$color-orange, v.$orange-light, v.$primary-color, 5rem, 3rem);
+  font-family: "Lobster Two", sans-serif;
+  font-size: 2.5rem;
   &:hover{
     cursor: not-allowed
   }

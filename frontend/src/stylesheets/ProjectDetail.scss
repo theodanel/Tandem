@@ -6,7 +6,7 @@
     width: 100%;
     flex-direction: column;
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 100%;
         margin-top: 5rem;
     }
@@ -14,21 +14,18 @@
 }
 
 .imagePosition {
-    width: 100%;
+    height: 40rem;
     display: flex;
     justify-content: center;
  
-
     @media (min-width: v.$sm-breakpoint) {
         width: 100%;
-        height: 50vh;
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 50%;
         display: flex;
         justify-content: center;
-        height: 100%;
     }
 }
 
@@ -44,14 +41,14 @@
         display: flex;
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 50%;
     }
 
 }
 
 .projectDetailPosition {
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         display: flex;
     }
 }
@@ -69,12 +66,11 @@
 }
 
 .imageSize {
+    object-fit: cover;
     width: 100%;
-    height: 100%;
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 90%;
-        height: 70vh;
 
     }
 
@@ -108,7 +104,7 @@
         width: 100%;
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         display: flex;
         flex-direction: row;
 
@@ -133,7 +129,7 @@
         width: 90%;
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 70%;
 
 
@@ -164,7 +160,7 @@
         }
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 40%;
         flex-wrap: wrap;
         display: flex;
@@ -214,7 +210,7 @@
         margin-right: 10vw;
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         height: 5vh;
         align-items: flex-end;
         justify-content: end;
@@ -244,7 +240,7 @@
           
         }
 
-        @media (min-width: v.$xl-breakpoint) {
+        @media (min-width: v.$lg-breakpoint) {
             width: 20%;
             height: 6rem;
             background-color: #F47143;
@@ -281,7 +277,7 @@
             width: 15rem;
         }
 
-        @media (min-width: v.$xl-breakpoint) {
+        @media (min-width: v.$lg-breakpoint) {
             height: 5rem;
             width: 3vw;
         }
@@ -351,102 +347,108 @@
 
 
 #Steps {
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         display: flex;
         width: 90%;
         flex-direction: row;
     }
 }
 
+.invactive{
+    translate: 0 2px;
+    box-shadow: none;
+    opacity: 0.5;
+    color: rgba(0, 0, 0, 0.5);
+    &:hover{
+        box-shadow: none;
+        cursor: not-allowed;
+    }
+}
+
+.active{
+    translate: 0 2px;
+    box-shadow: none;
+    &:hover{
+        box-shadow: none;
+        cursor: auto;
+    }
+}
+
 .projectSteps {
-    width: 90%;
     display: flex;
     margin-bottom: 4rem;
     flex-direction: column;
     align-items: center;
-    height: 20rem;
+ 
 
-    @media (min-width: v.$sm-breakpoint) {
+    // button {
+    //     width: 100%;
+    //     background-color: #77DD79;
+    //     color: white;
+    //     font-weight: bold;
+    //     height: 3.5rem;
+    //     border-radius: 10px;
+    //     border: none;
+    //     box-shadow: 0 3px #c7c7c7;
+    //     cursor: pointer;
 
-        height: 25rem;
-    }
-
-    
-    @media (min-width: v.$sm-breakpoint) {
-
-        height: 20rem;
-    }
-
-
-
-    button {
-        width: 100%;
-        background-color: #77DD79;
-        color: white;
-        font-weight: bold;
-        height: 3.5rem;
-        border-radius: 10px;
-        border: none;
-        box-shadow: 0 3px #c7c7c7;
-        cursor: pointer;
-
-    }
+    // }
 
 
-    button:active {
-        box-shadow: 0 3px #666;
-        transform: translateY(2px);
-    }
+    // button:active {
+    //     box-shadow: 0 3px #666;
+    //     transform: translateY(2px);
+    // }
 
-    .stepOne {
-        background-color: #77dd79a9;
-        width: 50vw;
+    // .stepOne {
+    //     background-color: #77dd79a9;
+    //     width: 50vw;
 
-        @media (min-width: v.$sm-breakpoint) {
-            width: 80vw;
-            height: 4vh;
-        }
+    //     @media (min-width: v.$sm-breakpoint) {
+    //         width: 80vw;
+    //         height: 4vh;
+    //     }
 
-        @media (min-width: v.$xl-breakpoint) {
-            width: 12vw;
-            height: 6vh;
-        }
-    }
+    //     @media (min-width: v.$lg-breakpoint) {
+    //         width: 12vw;
+    //         height: 6vh;
+    //     }
+    // }
 
-    .stepTwo {
-        background-color: #77DD79;
-        width: 50vw;
+    // .stepTwo {
+    //     background-color: #77DD79;
+    //     width: 50vw;
 
-        @media (min-width: v.$sm-breakpoint) {
-            width: 80vw;
-            height: 4vh;
-        }
+    //     @media (min-width: v.$sm-breakpoint) {
+    //         width: 80vw;
+    //         height: 4vh;
+    //     }
 
-        @media (min-width: v.$xl-breakpoint) {
-            width: 12vw;
-            height: 6vh;
-        }
-    }
+    //     @media (min-width: v.$lg-breakpoint) {
+    //         width: 12vw;
+    //         height: 6vh;
+    //     }
+    // }
 
-    .stepThree {
-        background-color: #f47243b4;
-        width: 50vw;
+    // .stepThree {
+    //     background-color: #f47243b4;
+    //     width: 50vw;
 
-        @media (min-width: v.$sm-breakpoint) {
-            width: 80vw;
-            height: 4vh;
-        }
+    //     @media (min-width: v.$sm-breakpoint) {
+    //         width: 80vw;
+    //         height: 4vh;
+    //     }
 
-        @media (min-width: v.$xl-breakpoint) {
-            width: 12vw;
-            height: 6vh;
-        }
-    }
+    //     @media (min-width: v.$lg-breakpoint) {
+    //         width: 12vw;
+    //         height: 6vh;
+    //     }
+    // }
 }
 
-.stepsIcons{
-    color: blue;
-}
+// .stepsIcons{
+//      color: blue;
+// }
 
 .ModalText {
     color: black;
@@ -462,7 +464,7 @@
 
 
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         margin-top: 5rem;
     }
 
@@ -483,7 +485,7 @@
     width: 90%;
 
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 95%;
     }
 
@@ -494,7 +496,7 @@
             font-size: 2.5rem;
         }
 
-        @media (min-width: v.$xl-breakpoint) {
+        @media (min-width: v.$lg-breakpoint) {
             font-size: 2.5rem;
         }
     }
@@ -520,7 +522,7 @@
         }
 
 
-        @media (min-width: v.$xl-breakpoint) {
+        @media (min-width: v.$lg-breakpoint) {
           justify-content: flex-start;
           
 
@@ -565,7 +567,7 @@
     }
 
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         height: 15vh;
         width: 10%;
         border-radius: 40px;
