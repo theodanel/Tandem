@@ -5,43 +5,48 @@ import Layout from "../components/Layout";
 import Project from "../components/Project";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
+//Utilisation d'axios pour faire des appels à l'API
 import axios from "../api/axios.js";
 import { Skeleton } from "antd";
 import SearchsBar from "../components/SearchsBar.js";
 import { useSelector } from "react-redux";
 import CountUp from "react-countup";
 
+
 const Home = () => {
+
   useEffect(() => {
     document.title = `Tandem`;
   }, []);
 
+  // Récupération de l'utilisateur depuis le state global avec useSelector
   const user = useSelector(state => state.data.user);
   const navigate = useNavigate();
+  // States permettant de stocker les états pour les projets, les utilisateurs, etc
   const [projects, setProjects] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [render, setRender] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
+  const [filter, setFilter] = useState(null);
 
-
-
+  // Récupération des projets depuis l'API projects
   const getProjects = async () => {
     const res = await axios.get("/api/projects");
     setProjects(res.data.projects);
     setLoading(false);
   };
 
-
+  // Idem pour les utilisateurs
   const getUsers = async () => {
     const resUsers = await axios.get("/api/users");
     setUsers(resUsers.data.users);
-  }
+  };
 
-
-  const projectsList = [...projects].map((project) => {
-    return (
+  // Création d'une liste de projets à partir des projets récupérés au dessus
+  const projectsList = [...projects].map((project) => { // Le ...projects permettant de créer une copie de la liste plutôt que de travailler directement avec la liste d'origine.
+    return ( // Récupération des projets en les retournant sous forme d'un élément React
       <Project
         key={project.id}
         id={project.id}
@@ -50,6 +55,7 @@ const Home = () => {
     );
   });
 
+  // Création d'une liste de recommandations basées sur la popularité des projets
   const recommendationsList = [...projects].sort((a, b) => b.popularity - a.popularity).splice(0, 5).map((project) => {
     return (
       <Project
@@ -60,29 +66,47 @@ const Home = () => {
     );
   });
 
-
+  // Appel des fonctions pour obtenir les données au chargement du composant
   useEffect(() => {
     getUsers();
     getProjects();
   }, []);
 
+  // Affichage des stats en dessous header
   const projectsCount = projects.length;
   const usersCount = users.length;
   const projectsCompleted = projects.filter(
     (project) => project.status === "completed"
   ).length;
 
-
+  // Mise à jour des projets en fonction du terme de recherche
   const updateProjects = (searchTerm) => {
-    setSearchTerm(searchTerm); 
+    setSearchTerm(searchTerm);
+  };
 
-   
-    const filtered = projects.filter(project => {
-      return project.title.toLowerCase().includes(searchTerm.toLowerCase());
-    });
+  // Filtrage des projets en fonction de leur statut
+  const filterProjectsByStatus = (status) => {
+    if (filter === status) {
+      // Si le filtre sélectionné est déjà appliqué retour à la liste complète des projets
+      setFilter(null);
+    } else {
+      // Sinon le filtre affiche les projets en question
+      setFilter(status);
+    }
+  };
 
-    setFilteredProjects(filtered); 
-  }
+  // Filtrage des projets en fonction du terme de recherche et du filtre de statut ( combinaison des deux filtres)
+  useEffect(() => { // Exécution du UseEffect après chaque rendu où les dépendances "projects", "searchTerm" et "filter" ont été changés
+    const filtered = projects.filter(project =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchTerm.toLowerCase())
+    ).filter(project =>
+      filter === null || project.status === filter
+    );
+
+    setFilteredProjects(filtered);
+  }, [projects, searchTerm, filter]);
+
 
 
   return (
@@ -118,11 +142,12 @@ const Home = () => {
         <section className="flex search">
           <div>
 
-            <div>
-              <SearchsBar searchTerm={searchTerm} onChange={updateProjects} />
+            <SearchsBar searchTerm={searchTerm} onChange={updateProjects} />
+            <div className="filter-buttons">
+              <button onClick={() => filterProjectsByStatus("created")}>Créés</button>
+              <button onClick={() => filterProjectsByStatus("ongoing")}>En cours</button>
+              <button onClick={() => filterProjectsByStatus("completed")}>Terminés</button>
             </div>
-
-            <p>Filtre x3 </p>
           </div>
           <div className="hidden-sm">
             <button id="home-button" className="btn-green-big" aria-label="Créer un projet" title="Créer un projet" onClick={() => navigate("/create")}>
@@ -134,13 +159,35 @@ const Home = () => {
         <section>
           <h2 className="subtitle title-green">Projets</h2>
           <Skeleton loading={loading} active>
-            <div className="projectsList" >{filteredProjects.length > 0 ? filteredProjects.map(project => (
-              <Project
-                key={project.id}
-                id={project.id}
-                user={user}
-              ></Project>
-            )) : projectsList}</div>
+            <div className="projectsList">
+              {searchTerm === "" ? (
+                filter !== null ? (
+                  projects
+                    .filter(project => project.status === filter)
+                    .map(project => (
+                      <Project
+                        key={project.id}
+                        id={project.id}
+                        user={user}
+                      />
+                    ))
+                ) : (
+                  projectsList
+                )
+              ) : (
+                filteredProjects.length > 0 ? (
+                  filteredProjects.map(project => (
+                    <Project
+                      key={project.id}
+                      id={project.id}
+                      user={user}
+                    />
+                  ))
+                ) : (
+                  <p>Aucun projet ne correspond à votre recherche.</p>
+                )
+              )}
+            </div>
           </Skeleton>
         </section>
 
