@@ -11,6 +11,12 @@
         margin-top: 5rem;
     }
 
+    h3, h1{
+        width: 100%;
+        margin-bottom: 1rem;
+        border-bottom: solid 2px v.$color-green-dark;
+    }
+    
 }
 
 .imagePosition {
@@ -53,16 +59,26 @@
     }
 }
 
-.titleDecoration {
+.userActions{
+    margin: 2rem auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
     width: 100%;
-    margin-bottom: 1rem;
-
-    hr {
-        background-color: #77DD79;
-        height: 0.3rem;
-        width: 100%;
+    .joinProject{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
     }
-
+    .actions{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
 }
 
 .imageSize {
@@ -111,10 +127,6 @@
     }
 }
 
-#projectTitle {
-    width: 90%;
-
-}
 
 .titleDecoration {
     width: 100%;
@@ -137,10 +149,11 @@
 }
 
 .creator {
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     text-align: end;
+    align-items: center;
 
 
     h4 {
@@ -153,7 +166,7 @@
     }
 
     @media (min-width: v.$sm-breakpoint) {
-
+        width: 90%;
 
         h4 {
             font-size: 2rem;
@@ -189,10 +202,11 @@
 
 .projectDescription {
     margin-bottom: 4rem;
-    width: 90%;
+    width: 100%;
 
     @media (min-width: v.$sm-breakpoint) {
         font-size: 2rem;
+        width: 90%;
     }
 }
 
@@ -299,16 +313,22 @@
 }
 
 .languagesList {
+    margin: auto;
     display: flex;
     width: 90%;
     flex-direction: column;
 
 
-    h3 {
-        @media (min-width: v.$sm-breakpoint) {
+    @media (min-width: v.$sm-breakpoint) {
+       
+        h3 {
             font-size: 2.5rem;
         }
     }
+    @media (min-width: v.$lg-breakpoint) {
+        width: 95%;
+    }
+
 }
 
 .startProject {
@@ -317,32 +337,7 @@
     justify-content: center;
     margin-bottom: 4rem;
 
-    button {
-        width: 60%;
-        background-color: #77DD79;
-        color: white;
-        font-weight: bold;
-        height: 4rem;
-        border-radius: 10px;
-        border: none;
-        box-shadow: 0 5px #c7c7c7;
-        cursor: pointer;
 
-        @media (min-width: v.$sm-breakpoint) {
-            width: 100%;
-        }
-
-    }
-
-    button:hover {
-        background-color: #53a554
-    }
-
-    button:active {
-        background-color: #2a642b;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
-    }
 }
 
 
@@ -376,6 +371,34 @@
     }
 }
 
+.statusInfo{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    div{
+        height: fit-content;
+        display: flex;
+        color: white;
+        border-radius: 100%;
+        padding: 0.7rem;
+    }
+    &.green{
+        color: v.$color-green-dark;
+        div{
+            background-color: v.$color-green-dark;
+        }
+    }
+    &.orange{
+        color: v.$primary-color;
+        div{
+            background-color: v.$primary-color;
+        }
+    }
+}
+
+
 .projectSteps {
     display: flex;
     flex-direction: column;
@@ -386,74 +409,9 @@
     align-items: center;
  }
 
-    // button {
-    //     width: 100%;
-    //     background-color: #77DD79;
-    //     color: white;
-    //     font-weight: bold;
-    //     height: 3.5rem;
-    //     border-radius: 10px;
-    //     border: none;
-    //     box-shadow: 0 3px #c7c7c7;
-    //     cursor: pointer;
-
-    // }
-
-
-    // button:active {
-    //     box-shadow: 0 3px #666;
-    //     transform: translateY(2px);
-    // }
-
-    // .stepOne {
-    //     background-color: #77dd79a9;
-    //     width: 50vw;
-
-    //     @media (min-width: v.$sm-breakpoint) {
-    //         width: 80vw;
-    //         height: 4vh;
-    //     }
-
-    //     @media (min-width: v.$lg-breakpoint) {
-    //         width: 12vw;
-    //         height: 6vh;
-    //     }
-    // }
-
-    // .stepTwo {
-    //     background-color: #77DD79;
-    //     width: 50vw;
-
-    //     @media (min-width: v.$sm-breakpoint) {
-    //         width: 80vw;
-    //         height: 4vh;
-    //     }
-
-    //     @media (min-width: v.$lg-breakpoint) {
-    //         width: 12vw;
-    //         height: 6vh;
-    //     }
-    // }
-
-    // .stepThree {
-    //     background-color: #f47243b4;
-    //     width: 50vw;
-
-    //     @media (min-width: v.$sm-breakpoint) {
-    //         width: 80vw;
-    //         height: 4vh;
-    //     }
-
-    //     @media (min-width: v.$lg-breakpoint) {
-    //         width: 12vw;
-    //         height: 6vh;
-    //     }
-    // }
+  
 }
 
-// .stepsIcons{
-//      color: blue;
-// }
 
 .ModalText {
     color: black;
@@ -473,17 +431,6 @@
         margin-top: 5rem;
     }
 
-    hr {
-        background-color: #77DD79;
-        height: 0.3rem;
-        width: 100%;
-
-        @media (min-width: v.$sm-breakpoint) {
-            height: 0.5rem;
-        }
-
-        
-    }
 }
 
 #collaborators {
@@ -580,26 +527,6 @@
     }
 
 }
-
-.userActions{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 100%;
-    .joinProject{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-    }
-    .actions{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-    }
-}
-
 
 
 .addComment {

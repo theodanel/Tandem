@@ -123,6 +123,11 @@ const ShowProject = () => {
     const joinProject = async() => {
         await axios.put(`/api/project/${id}/join`, { headers: { "Authorization": `Bearer ${token}` } })
         getProject();
+        if(project.collaboratorsList.find(collaborator => collaborator.id === loggedUser?.id)){
+            message.warning("Vous avez quitté le projet :(")
+        } else {
+            message.success("Vous avez rejoint le projet !")
+        }
     }
 
     /**
@@ -276,7 +281,7 @@ const ShowProject = () => {
                     <button name='ongoing' className='btn-green active'><PiPlantLight size={40} className='stepsIcons'/>Projet démarré</button>
                 )
             }
-        } else if(project.status === "created"){
+        } else if(project.status === "ongoing"){
             return (
                 <button name='ongoing' className='btn-green inactive'><PiPlantLight size={40} className='stepsIcons'/>Projet démarré</button>
             )
@@ -319,15 +324,25 @@ const ShowProject = () => {
     const statusIcon = () => {
         if (project.status === "ongoing"){
             return(
-                <button name='ongoing' className='btn-green active'><PiPlantLight size={40} className='stepsIcons'/>Le projet est en cours</button>
+                <div className='statusInfo green'>
+                    <div><PiPlantLight size={40} className='stepsIcons'/></div>
+                    <p name='ongoing' >Le projet est en cours</p>
+                </div>
             )
         } else if (project.status === "completed") {
             return(
-                <button onClick={() => handleModals("steps", true)} name='completed' className='btn-orange active'><PiTreeLight size={40} className='stepsIcons'/>Le projet est terminé !</button>
+                <div className='statusInfo orange'>
+                    <div><PiTreeLight size={40} className='stepsIcons'/></div>
+                    <p name='completed'>Le projet est terminé !</p>
+                </div>
+                
             )
         } else{
             return(
-                <button name='created' className='btn-green active'> <LuNut size={40} className='stepsIcons'/>Le projet n'a pas encore démarré</button>
+                <div className='statusInfo green'>
+                    <LuNut size={40} className='stepsIcons'/>
+                    <p name='created'>Le projet n'a pas encore démarré</p>
+                </div>
             )
         }
     }
@@ -509,7 +524,6 @@ const ShowProject = () => {
                         <div className='projectTitle'>
                             <div className='titleDecoration'>
                                 <h1 id='projectTitle'>{project.title}</h1>
-                                <hr className='titleDecoration'></hr>
                             </div>
                             <div className='creator'>
                                 <h4 onClick={()=>navigate(`/user/${project.user_id}`)} >{project.creator?.name}</h4>
@@ -519,23 +533,6 @@ const ShowProject = () => {
 
                         <p className='projectDescription'>{project.description}</p>
                    
-
-                        <div className='languagesList'>
-                            <h3>Langages utilisés :</h3>
-                            {project.languages && (
-                                <legend name="languages" id="languages" value={project.languages} required>
-                                    {project.languages.map(lang => (
-                                        <Language
-                                            key={lang.id}
-                                            name={lang.name}
-                                            image={lang.logo}
-                                        />
-                                    ))}
-                                </legend>
-                            )}
-                            <hr className='languagesDecoration'></hr>
-                        </div>
-
                         {project.user_id === loggedUser?.id ?
                         <Fragment>
 
@@ -573,12 +570,27 @@ const ShowProject = () => {
                             </div>
                            }
                     </div>
+
                 </div>
+
+                <div className='languagesList'>
+                            <h3>Langages utilisés :</h3>
+                            {project.languages && (
+                                <legend name="languages" id="languages" value={project.languages} required>
+                                    {project.languages.map(lang => (
+                                        <Language
+                                            key={lang.id}
+                                            name={lang.name}
+                                            image={lang.logo}
+                                        />
+                                    ))}
+                                </legend>
+                            )}
+                        </div>
 
                 <div className='collabList'>
                     <div id='collaborators'>
                         <h3>Collaborateurs ({project.collaborators}/{project.collaborators_max})</h3>
-                        <hr className='languagesDecoration'></hr>
                         <ul>
                             <li>{collaboratorsList}</li>
                         </ul>
@@ -591,10 +603,9 @@ const ShowProject = () => {
                         <h3>Laisser un commentaire</h3>
                         <form className='addComment' onSubmit={(e) => postNewComment(e)}>
                             <textarea onChange={(e) => handleComment(e)} placeholder='Votre commentaire' name='comment' id='comment' value={postComment.comment} minLength="3" maxLength="500" required />
-                            <button type='submit' className="btn-green" >Poster</button>
+                            <button type='submit' className="btn-green-big" >Poster</button>
                         </form>
                         <strong>{errors.comment}</strong>
-                        <hr className='languagesDecoration'></hr>
 
                         <h3>Commentaires</h3>
                         {comments}
