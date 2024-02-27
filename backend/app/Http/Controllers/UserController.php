@@ -27,6 +27,11 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->languagesList = $user->languages()->get();
         $user->avatar = $user->avatar()->first()->url;
+        $user->contacts = $user->contacts()->get();
+        foreach($user->contacts as $contact){
+            $avatar = $contact->avatar()->first()->url;
+            $contact->avatar = $avatar;
+        }
         return response()->json([
             'user' => $user,
             "status" => 200,
@@ -58,9 +63,13 @@ class UserController extends Controller
                 $user->discord = $request->input("discord");
                 $user->languages()->sync($request->input("languages"));
                 $user->save();
+
+                $user->languagesList = $user->languages()->get();
+                $user->avatar = $user->avatar()->first()->url;
                 
                 return response()->json([
                     'status' => 200,
+                    'user' => $user,
                     "message" => "L'utilisateur a été modifié."
                 ]);
             }
@@ -100,19 +109,22 @@ class UserController extends Controller
             $user1->contacts()->toggle($user2);
             $user2->contacts()->toggle($user1);
 
-            return response()->json(['message' => 'Relation mise à jour']);
+            $user2->languagesList = $user2->languages()->get();
+            $user2->avatar = $user2->avatar()->first()->url;
+            $user2->contacts = $user2->contacts()->get();
+            foreach($user2->contacts as $contact){
+                $avatar = $contact->avatar()->first()->url;
+                $contact->avatar = $avatar;
+            }
+
+            return response()->json([
+                'message' => 'Relation mise à jour',
+                'user' => $user2,
+                'status' => 200,
+            ]);
         }
     }
 
-    public function showContacts($id){
-        $user = User::find($id);
-        $contacts = $user->contacts()->get();
-        foreach($contacts as $contact){
-            $avatar = $contact->avatar()->first()->url;
-            $contact->avatar = $avatar;
-        }
-        return response()->json(['contacts' => $contacts]);
-    }
 
     /**
      * Supprime un utilisateur

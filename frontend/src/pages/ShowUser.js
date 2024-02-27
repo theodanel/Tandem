@@ -33,9 +33,9 @@ const UserPage = () => {
   const [allLanguages, setAllLanguages] = useState([]);
   const [userProjects, setUserProjects] = useState([]);
   const [userFavorites, setUserFavorites] = useState([]);
-  const [userContacts, setUserContacts] = useState([]);
   const [avatars, setAvatars] = useState([]);
   const [date, setDate] = useState("");
+  const [render, setRender] = useState(false);
   const [loading, setLoading] = useState({
     user: true,
     languages: true,
@@ -207,6 +207,7 @@ const UserPage = () => {
   const handleForm = async (e) => {
     e.preventDefault();
     if(loggedUser?.id == id ){
+        console.log(updateUser);
         const update = await axios.put(`/api/user/${id}/update`, updateUser, {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -234,14 +235,12 @@ const UserPage = () => {
     }
   };
 
-  const getContacts = async () =>{
-    const resContacts = await axios.get(`/api/user/contacts/${id}`);
-    setUserContacts(resContacts.data.contacts);
-  }
 
   const toggleContacts = async()=>{
     if(loggedUser.id){
-        axios.put(`/api/user/contact/${id}`, { "Content-Type": "application/json", Authorization: `Bearer ${token}` });
+        const resUser = await axios.put(`/api/user/contact/${id}`, { "Content-Type": "application/json", Authorization: `Bearer ${token}` });
+        setUser(resUser.data.user);
+        setRender(!render);
     } else {
         handleModals("connexion",true);
     }
@@ -249,8 +248,7 @@ const UserPage = () => {
 
   useEffect(() => {
     getData();
-    getContacts();
-  }, [id, modals.avatars, modals.params, modals.contacts]);
+  }, [id, modals.avatars, modals.params, modals.contacts, render]);
 
   //===========
   //LISTS RENDERS
@@ -375,7 +373,7 @@ const UserPage = () => {
     );
   });
 
-  const contactsList = userContacts.map((contact, index) =>{
+  const contactsList = user.contacts?.map((contact, index) =>{
     return(
         <User key={index}
             id={contact.id}
@@ -448,7 +446,7 @@ const UserPage = () => {
   };
 
   const contactButton = () => {
-    if(userContacts.find(contact => contact.id === loggedUser?.id)){
+    if(user.contacts?.find(contact => contact.id === loggedUser?.id)){
         return (
             <button type="button" aria-label="Supprimer le contact" title="Supprimer le contact" className="btn-red" onClick={()=>toggleContacts()}>
             <FaUserMinus />

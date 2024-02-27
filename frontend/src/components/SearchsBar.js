@@ -1,30 +1,26 @@
-// Source : https://dev.to/salehmubashar/search-bar-in-react-js-545l
-import { React, useState } from "react";
+import React, { useState } from "react";
 import "../stylesheets/SearchBar.scss";
 
-const SearchsBar = () => {
-    const [inputText, setInputText] = useState("");
-    let inputHandler = (e) => {
-        //Convertie le text en minuscule
-        var lowerCase = e.target.value.toLowerCase();
-        setInputText(lowerCase);
-    };
+const SearchsBar = ({ onChange }) => {
+  const [searchTerm, setSearchTerm] = useState(""); 
 
-    return (
-        <div className="main">
-            <div className="search">
-                <input
-                    id="outlined-basic"
-                    onChange={()=>inputHandler()}
-                    variant="outlined"
-                    // fullWidth
-                    label="Search"
-                />
-            </div>
-            {/* <List input={inputText} /> */}
-        </div>
-    );
-}
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value); 
+    onChange(value);
+  };
 
+  return (
+    <div className="search-bar">
+      <input
+        type="text"
+        id="search"
+        onChange={handleChange} 
+        placeholder="Chercher un projet..."
+        value={searchTerm} 
+      />
+    </div>
+  );
+};
 
 export default SearchsBar;
