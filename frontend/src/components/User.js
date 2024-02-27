@@ -1,10 +1,15 @@
 import React from 'react'
+import "../stylesheets/UserIcon.scss"
+import { useNavigate } from 'react-router'
 
-const User = ({ name , email }) => {
+const User = ({ name , avatar, id }) => {
+  const navigate = useNavigate()
   return (
-    <div>
-        <span>{name}</span>
-        <p>{email}</p>
+    <div className='user-display user-green' onClick={()=>navigate(`/user/${id}`)}>
+        <div className='img'>
+            <img src={`http://localhost:8000/images/avatars/${avatar}`} alt='' />
+        </div>
+        <p>{name}</p>
     </div>
   )
 }

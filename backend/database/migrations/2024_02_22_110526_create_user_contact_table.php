@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_contact', function (Blueprint $table) {
-            $table->foreignId('user_id_1')->constrained(table: 'users', column: 'id')->cascadeOnDelete();
-            $table->foreignId('user_id_2')->constrained(table: 'users', column: 'id')->cascadeOnDelete();
-            $table->primary(["user_id_1", "user_id_2"]);
+            $table->id();
+            $table->foreignId('sender_id')->constrained(table: 'users', column: 'id')->cascadeOnDelete();
+            $table->foreignId('receiver_id')->constrained(table: 'users', column: 'id')->cascadeOnDelete();
             $table->timestamps();
         }); 
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_user');
+        Schema::dropIfExists('user_contact');
     }
 };

@@ -30,7 +30,7 @@ Route::get('/project/{id}', [ProjectController::class, "show"]);
 // Utilisateurs
 Route::get('/users', [UserController::class, "index"]);
 Route::get('/user/{id}', [UserController::class, "show"]);
-Route::post('/users/contact/{id}', [UserController::class, "togglemany"]); 
+Route::get('/user/contacts/{id}', [UserController::class, "showContacts"]); 
 
 // Langages
 Route::get('/languages', [LanguageController::class, "index"]);
@@ -58,6 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user/{id}/delete', [UserController::class, "delete"]);
     Route::post('/logout/{id}', [AuthController::class, 'logout']);
     Route::put('/user/{id}/update/avatar', [UserController::class, "updateAvatar"]);
+    Route::put('/user/contact/{id}', [UserController::class, "toggleContact"]); 
     
     // Gestion des projets
     Route::post('/project/store', [ProjectController::class, "store"]);

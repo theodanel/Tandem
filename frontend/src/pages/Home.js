@@ -90,7 +90,7 @@ const Home = () => {
             <div className="hero-content">
               <h1 className="title">Faites germer vos projets</h1>
               <div className="hidden-md">
-                <button id="home-button" onClick={() => navigate("/create")}>
+                <button id="home-button" className="btn-green-big" aria-label="Créer un projet" title="Créer un projet" onClick={() => navigate("/create")}>
                   Créer un projet
                 </button>
               </div>
@@ -118,7 +118,7 @@ const Home = () => {
             <p>Filtre x3 </p>
           </div>
           <div className="hidden-sm">
-            <button id="home-button" onClick={() => navigate("/create")}>
+            <button id="home-button" className="btn-green-big" aria-label="Créer un projet" title="Créer un projet" onClick={() => navigate("/create")}>
               Créer un projet
             </button>
           </div>
@@ -139,7 +139,7 @@ const Home = () => {
         </section>
 
         <section>
-          <h2 className="subtitle title-green">Recommandations</h2>
+          <h2 className="subtitle title-green">Tendances</h2>
           <Skeleton loading={loading} active>
             <div className="projectsList">{recommendationsList}</div>
           </Skeleton>

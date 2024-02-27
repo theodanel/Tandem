@@ -64,10 +64,10 @@ const Login = () => {
                       
                     </div>
                 </div>
-                <button type='submit' className='btn-green-big'>Valider</button>
+                <button type='submit' className='btn-green-big' aria-label="Valider" title="Valider">Valider</button>
                 <div className='flex'>
                     <p>Pas encore de compte ?</p>
-                    <button type='button' className='btn-green' onClick={() => navigate('/register')}>S'inscrire</button>
+                    <button type='button' className='btn-green' aria-label="S'inscrire" title="S'inscrire" onClick={() => navigate('/register')}>S'inscrire</button>
                 </div>
             </form>
         </Fragment>
