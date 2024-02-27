@@ -35,15 +35,16 @@ class CommentController extends Controller
      * @param int $comment_id ID du commentaire auquel celui-ci répond (facultatif)
      */
     public function store(Request $request, $project_id, $comment_id = null){
-        // $validator = Validator::make($request, "min:3|max:1000");
-        // if($validator->fails()){
-        //     return response()->json([
-        //         'errors' => $validator->messages(),
-        //         'status' => "error"
-        //     ]);
-        // } else {
-            $content = $request->all();
-
+        $content = $request->all();
+        $validator = Validator::make($content, [
+            "comment" => "min:3|max:500"
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'errors' => $validator->messages(),
+                'status' => "error"
+            ]);
+        } else {
             $comment = new Comment();
             $comment->content = $content["comment"];
             $comment->user_id = auth()->user()->id;
@@ -63,7 +64,7 @@ class CommentController extends Controller
                 'status' => 200
             ]);
         }
-    // }
+    }
 
     /**
      * Mise à jour d'un commentaire

@@ -1,6 +1,6 @@
 import axios from '../api/axios';
-import React, { useEffect, useState } from 'react'
-import { Collapse, Modal, Skeleton, Steps } from "antd"
+import React, { Fragment, useEffect, useState } from 'react'
+import { Collapse, Modal, Skeleton, Steps, message } from "antd"
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
 
@@ -16,6 +16,7 @@ import { FaEdit } from "react-icons/fa";
 import "../stylesheets/ProjectDetail.scss"
 
 import { useSelector } from 'react-redux';
+import Comment from '../components/Comment.js';
 
 const ShowProject = () => {
     const { id } = useParams();
@@ -147,6 +148,7 @@ const ShowProject = () => {
             handleModals("update", false)
             getProject({});
             setErrors([]);
+            message.success("Commentaire ajouté !")
         } else {
             setErrors(res.data.errors);
         }
@@ -156,24 +158,20 @@ const ShowProject = () => {
         getProject();
     }, [id])
 
-    // useEffect(() => {
-    //     setStatus(project.status)
-    //     setPostComment(project.comments)
-    // }, [project])
-
 
     /**
      * Change le statut du projet
      */
     const changeStatus = async (statusType) => {
         const res = await axios.put(`api/project/${id}/step`, { status: statusType }, { headers: { "Authorization": `Bearer ${token}` } })
-
-        setStatus(project.status)
+        setStatus(project.status);
+        getProject();
+        message.success("Le projet a été mis à jour !")
     }
 
 
 
-    const handleChange = (e) => {
+    const handleComment = (e) => {
         setPostComment({
             ...postComment,
             [e.target.name]: e.target.value
@@ -184,15 +182,16 @@ const ShowProject = () => {
     /**
      * Ajoute un commentaire au projet
      */
-    const postComments = async () => {
-        const res = await axios.post(`/api/comment/${id}/store`, { comment: postComment.comments }, { headers: { "Authorization": `Bearer ${token}` } });
-
-
+    const postNewComment = async (e) => {
+        e.preventDefault();
+        const res = await axios.post(`/api/comment/${id}/store`, { comment: postComment.comment }, { headers: { "Authorization": `Bearer ${token}` } });
         if (res.data.status === 200) {
-            setPostComment(project.comments)
+            setPostComment({comment : ""})
+            message.success("Commentaire ajouté !")
         } else {
             setErrors(res.data.errors);
         }
+        getProject();
 
     }
 
@@ -240,12 +239,17 @@ const ShowProject = () => {
      */
     const comments = project.comments?.map((comment) => {
         return (
-            <div key={comment.id}>
-                <p>{comment.content}</p>
-            </div>
+            <Comment key={comment.id} 
+                user={comment.user}
+                date={comment.created_at}
+                content={comment.content}
+            />
         );
     });
 
+    /**
+     * Boutons de progression du projet
+     */
     const stepOne = () => {
         return(
             <button name='created' className='btn-green active'> <LuNut size={25} className='stepsIcons'/>Projet créé</button>
@@ -295,7 +299,23 @@ const ShowProject = () => {
             )
         } else{
             return(
-                <button onClick={() => handleModals("steps", true)} name='ongoing' className='btn-orange active'><PiTreeLight size={25} className='stepsIcons'/>Projet terminé !</button>
+                <button onClick={() => handleModals("steps", true)} name='completed' className='btn-orange active'><PiTreeLight size={25} className='stepsIcons'/>Projet terminé !</button>
+            )
+        }
+    }
+
+    const statusIcon = () => {
+        if (project.status === "ongoing"){
+            return(
+                <button name='ongoing' className='btn-green active'><PiPlantLight size={25} className='stepsIcons'/>Le projet est en cours</button>
+            )
+        } else if (project.status === "completed") {
+            return(
+                <button onClick={() => handleModals("steps", true)} name='completed' className='btn-orange active'><PiTreeLight size={25} className='stepsIcons'/>Le projet est terminé !</button>
+            )
+        } else{
+            return(
+                <button name='created' className='btn-green active'> <LuNut size={25} className='stepsIcons'/>Le projet n'a pas encore démarré</button>
             )
         }
     }
@@ -332,21 +352,13 @@ const ShowProject = () => {
                     <strong>{errors.collaborators_max}</strong>
                 </div>
 
-                
-
-                <Collapse
-                    onChange={() => {
-                        getLanguages();
-                    }}
-                    items={[
+                <Collapse  onChange={() => {getLanguages();}} items={[
                         {
                             label: "Langages",
                             children: (
                                 <div className="updateLanguagesList">{allLanguagesList}</div>
-                            ),
-                        },
-                    ]}
-                />
+                            )
+                        }]} />
 
                 <button type="submit" className="btn-green center">Valider</button>
             </form>
@@ -360,9 +372,11 @@ const ShowProject = () => {
     const stepsModal = () => {
         return(
             <Modal title="" open={modals.steps} onCancel={()=>handleModals("steps", false)} footer={null} centered >
-                <h3>Etes vous sur de vouloir passer à l'étape suivante ? </h3>
-                <button type='button' onClick={() => (changeStatus(), handleModals("steps",false))} name='ongoing' className='stepOne'>Oui</button>
-                <button type='button' onClick={() => handleModals("steps",false)} name='closeModal' className='closeModal'>Non</button>
+                <h3>Etes vous sûr de vouloir passer à l'étape suivante ? </h3>
+                <div className='flex center'>
+                    <button type='button' onClick={() => (changeStatus(), handleModals("steps",false))} name='ongoing' className='btn-green'>Oui</button>
+                    <button type='button' onClick={() => handleModals("steps",false)} name='closeModal' className='btn-red'>Non</button>
+                </div>
 
             </Modal>
         )
@@ -414,17 +428,16 @@ const ShowProject = () => {
                             <hr className='languagesDecoration'></hr>
                         </div>
 
+                        {project.user_id === loggedUser?.id ?
+                        <Fragment>
+
                         <button className='btn-orange' onClick={() => handleModals("update",true)}>
                             <FaEdit />
                             Modifier
                         </button>
 
-                        <Steps 
-                                className='projectSteps'
-                                size="small"
-                                current={project.status === "created" ? 1 : project.status === "ongoing" ? 2 : 3 }
-                                id="Steps"
-                                items={[
+                        
+                        <Steps  className='projectSteps' size="small" current={project.status === "created" ? 1 : project.status === "ongoing" ? 2 : 3 } id="Steps" items={[
                                     {
                                         title: stepOne(),
                                     },
@@ -435,9 +448,13 @@ const ShowProject = () => {
                                         title: stepThree(),
 
                                     },
-                                ]}
-                            />
-
+                                ]}/>
+                                
+                        </Fragment>
+        
+                           :
+                           statusIcon()
+                           }
                     </div>
                 </div>
 
@@ -455,10 +472,11 @@ const ShowProject = () => {
                 <div className='collabList'>
                     <div id='collaborators'>
                         <h3>Laisser un commentaire</h3>
-                        <div className='addComment'>
-                            <textarea onChange={(e) => handleChange(e)} placeholder='Lorem ipsum dolor' name='comments' id='comments' />
-                            <button type='button' className="commentButton" onClick={() => postComments()}>Poster</button>
-                        </div>
+                        <form className='addComment' onSubmit={(e) => postNewComment(e)}>
+                            <textarea onChange={(e) => handleComment(e)} placeholder='Votre commentaire' name='comment' id='comment' value={postComment.comment} minLength="3" maxLength="500" required />
+                            <button type='submit' className="btn-green" >Poster</button>
+                        </form>
+                        <strong>{errors.comment}</strong>
                         <hr className='languagesDecoration'></hr>
 
                         <h3>Commentaires</h3>

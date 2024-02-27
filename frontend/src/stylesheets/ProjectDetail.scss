@@ -354,11 +354,12 @@
     }
 }
 
-.invactive{
+.inactive{
     translate: 0 2px;
     box-shadow: none;
     opacity: 0.5;
     color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
     &:hover{
         box-shadow: none;
         cursor: not-allowed;
@@ -368,6 +369,7 @@
 .active{
     translate: 0 2px;
     box-shadow: none;
+    pointer-events: none;
     &:hover{
         box-shadow: none;
         cursor: auto;
@@ -376,10 +378,13 @@
 
 .projectSteps {
     display: flex;
-    margin-bottom: 4rem;
     flex-direction: column;
     align-items: center;
- 
+ .ant-steps-item-container{
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+ }
 
     // button {
     //     width: 100%;
@@ -577,19 +582,30 @@
 }
 
 .addComment {
-    width: 100%;
+    width: fit-content;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
     margin-bottom: 3rem;
     margin-top: 1rem;
-}
-
-.commentButton {
-    width: 20%;
-    background-color: #77DD79;
-    color: white;
-    font-weight: bold;
-    height: 3.5rem;
-    border-radius: 10px;
-    border: none;
+    margin: 1rem auto 3rem auto;
+    border-radius: 1rem;
+    border: solid 1px v.$color-gpastel;
+    &:has(textarea:focus){
+        outline: solid 1px v.$color-green;
+    }
+    textarea{
+        resize: none;
+        max-width: 70vw;
+        min-width: 70vw;
+        border: none;
+        &:focus{
+            outline: none
+        }
+    }
+    button{
+        height: fit-content;
+        padding: 1rem ;
+    }
 }
