@@ -1,7 +1,7 @@
 import axios from '../api/axios';
 import React, { useEffect, useState } from 'react'
 import { Collapse, Modal, Skeleton, Steps } from "antd"
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout';
 
 
@@ -17,56 +17,105 @@ import { useSelector } from 'react-redux';
 
 const ShowProject = () => {
     const { id } = useParams();
+    const token = useSelector(state => state.data.token);
+    const navigate = useNavigate();
+
     const [errors, setErrors] = useState([]);
     const [project, setProject] = useState({});
-    const [newTitle, setNewTitle] = useState("");
+    const [updateProject, setUpdateProject] = useState({});
     const [status, setStatus] = useState("");
-    const [newDescription, setNewDescription] = useState("");
-    const [newLanguages, setNewLanguages] = useState([]);
-    const [postComment, setPostComment] = useState([]);
-    const [newCollaborators, setNewCollaborators] = useState("");
-    const [loading, setLoading] = useState({
-        user: true,
-        languages: true,
-    });
     const [allLanguages, setAllLanguages] = useState([]);
-
-
+    const [postComment, setPostComment] = useState([]);
+    const [newLanguages, setNewLanguages] = useState([]);
     const [checkedState, setCheckedState] = useState([]);
 
+    /**
+     * Mise à jour du state updateProject
+     */
+    const handleUpdate = (e) => {
+        setUpdateProject({
+            ...updateProject,
+            [e.target.name]: e.target.value,
+          });
+    }
 
-    const token = useSelector(state => state.data.token);
+    /**
+     * Gestion des skeleton antdesign
+     */
+    const [loading, setLoading] = useState(true);
 
+    /**
+     * Gestion des modales Antdesign
+     */
+    const [modals, setModals] = useState({
+        steps: false,
+        update: false,
+    })
+
+    const handleModals = (name, status) => {
+        setModals({
+            ...modals,
+            [name] : status
+        })
+    }
+
+
+    /**
+     * Récupère le projet
+     */
     const getProject = async () => {
         const res = await axios.get(`/api/project/${id}`);
-        setProject(res.data.project);
         document.title = `${res.data.project.title}`;
+        setProject(res.data.project);
+
+        const languagesID = res.data.project.languages.map((language) => language.id);
+
+        setUpdateProject({
+            title : res.data.project.title,
+            description : res.data.project.description,
+            languages : languagesID,
+            collaborators_max : res.data.project.collaborators_max,
+        });
+
         setLoading(false);
     };
 
 
-
-    // Ajout / suppression d'un langage selon son état checked
+    /**
+     *  Ajout / suppression d'un langage selon son état checked
+     */
     const handleLanguage = (languageId) => {
-        // Vérifier si le langage est déjà sélectionné
-        const isLanguageSelected = newLanguages.includes(languageId);
-    
-        // Si le langage est déjà sélectionné, le supprimer de newLanguages
-        if (isLanguageSelected) {
-            setNewLanguages(newLanguages.filter(id => id !== languageId));
-        } else {
-            // Sinon, l'ajouter à newLanguages
-            setNewLanguages([...newLanguages, languageId]);
-        }
-    
-        // Mettre à jour l'état checked pour le langage actuel
+       
         const updatedCheckedState = checkedState.map((item, index) =>
+            // parcourt le tableau et ne change que le langage selectionné
             index === languageId - 1 ? !item : item
         );
+
+        // Mise à jour du tableau checked avec cette nouvelle donnée
         setCheckedState(updatedCheckedState);
+
+        // 2 actions possible selon l'état checked :
+        if (updatedCheckedState[languageId - 1]) {
+            // si checked : true
+            // Ajout de l'id du langage dans le tableau project.languages
+            setUpdateProject({
+            ...updateProject,
+            languages: [...updateProject.languages, languageId],
+            });
+        } else {
+            // si checked : false
+            // Filtre le tableau project.languages pour retirer l'id du langage
+            setUpdateProject({
+            ...updateProject,
+            languages: [...updateProject.languages.filter((id) => id !== languageId)],
+            });
+        }
     };
 
 
+    /**
+     * Récupère tous les langages
+     */
     const getLanguages = async () => {
         const resLanguages = await axios("/api/languages").then(
             (res) => res.data.languages
@@ -84,18 +133,17 @@ const ShowProject = () => {
         setProject(resProjects.data.projects);
     };
 
- 
+    /**
+     * Met à jour les données du projet
+     */
     const update = async (e) => {
         e.preventDefault();
         const updatedLanguages = [...project.languages, ...newLanguages];
-        const res = await axios.put(`/api/project/${id}/update`, { newTitle, newDescription, newCollaborators, languages: updatedLanguages }, { headers: { "Authorization": `Bearer ${token}` } });
+        const res = await axios.put(`/api/project/${id}/update`, updateProject, { headers: { "Authorization": `Bearer ${token}` } });
         
         if (res.data.status === 200) {
-            setNewTitle("");
-            setNewDescription("");
-            setNewCollaborators(0);
-            setNewLanguages([]);
-            setIsModalOpen(false);
+     
+            handleModals("update", false)
             getProject({});
             setErrors([]);
         } else {
@@ -107,60 +155,24 @@ const ShowProject = () => {
         getProject();
     }, [id])
 
-    useEffect(() => {
-        setNewTitle(project.title)
-        setNewDescription(project.description)
-        setNewCollaborators(project.collaborators)
-        setNewLanguages(project.languages)
-        setStatus(project.status)
-        setPostComment(project.comments)
-    }, [project])
+    // useEffect(() => {
+    //     setStatus(project.status)
+    //     setPostComment(project.comments)
+    // }, [project])
 
 
     console.log(newLanguages);
 
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
 
-
-    const [isModalStepsOpen, setIsModalStepsOpen] = useState(false);
-    const showModalSteps = () => {
-        setIsModalStepsOpen(true);
-    };
-    const handleCancel2 = () => {
-        setIsModalStepsOpen(false);
-    };
-
-
+    /**
+     * Change le statut du projet
+     */
     const changeStatus = async (statusType) => {
         const res = await axios.put(`api/project/${id}/step`, { status: statusType }, { headers: { "Authorization": `Bearer ${token}` } })
 
         setStatus(project.status)
     }
-
-    // Permet d'afficher la liste des collaborateurs faisant partie d'un projet
-    const collaboratorsList = project.collaboratorsList?.map((collaborator) => {
-        return (
-            <div className='collaboratorCard' key={collaborator.id}>
-                <img src={`http://localhost:8000/images/avatars/${collaborator.avatar.url}`} />
-                <h5>{collaborator.name}</h5>
-            </div>
-        );
-    });
-
-    const comments = project.comments?.map((comment) => {
-        return (
-            <div key={comment.id}>
-                <p>{comment.content}</p>
-            </div>
-        );
-    });
 
 
 
@@ -172,6 +184,9 @@ const ShowProject = () => {
     }
 
 
+    /**
+     * Ajoute un commentaire au projet
+     */
     const postComments = async () => {
         const res = await axios.post(`/api/comment/${id}/store`, { comment: postComment.comments }, { headers: { "Authorization": `Bearer ${token}` } });
 
@@ -184,9 +199,10 @@ const ShowProject = () => {
 
     }
 
-    console.log(postComment);
 
-
+    /**
+     * Génère les options pour 2 à 10 participants au projet
+     */
     let participants = []
     for (let i = 2; i <= 10; i++) {
         participants.push(
@@ -194,6 +210,9 @@ const ShowProject = () => {
         )
     }
 
+    /**
+     * Liste des langages
+     */
     const allLanguagesList = allLanguages.map((language, index) => (
         <Language
             key={language.id}
@@ -202,8 +221,33 @@ const ShowProject = () => {
             action={() => handleLanguage(language.id)}
             image={language.logo}
             type="checkbox"
+
         />
     ));
+
+
+    /**
+     * Affiche la liste des collaborateurs du projet
+     */
+    const collaboratorsList = project.collaboratorsList?.map((collaborator) => {
+        return (
+            <div className='collaboratorCard' key={collaborator.id}>
+                <img src={`http://localhost:8000/images/avatars/${collaborator.avatar.url}`} />
+                <h5>{collaborator.name}</h5>
+            </div>
+        );
+    });
+
+    /**
+     * Affiche les commentaires du projet
+     */
+    const comments = project.comments?.map((comment) => {
+        return (
+            <div key={comment.id}>
+                <p>{comment.content}</p>
+            </div>
+        );
+    });
 
     return (
         <Layout>
@@ -223,7 +267,7 @@ const ShowProject = () => {
                                 <hr className='titleDecoration'></hr>
                             </div>
                             <div className='creator'>
-                                <h4 >{project.creator?.name}</h4>
+                                <h4 onClick={()=>navigate(`/user/${project.user_id}`)} >{project.creator?.name}</h4>
                                 <h5> {project.created_at ? format(project.created_at, "dd/MM/yyyy") : ""}</h5>
                             </div>
                         </div>
@@ -232,7 +276,7 @@ const ShowProject = () => {
                         <p className='projectDescription'>{project.description}</p>
 
                         <div className='updateButton'>
-                            <button onClick={() => showModal()}>Modifier</button>
+                            <button onClick={() => handleModals("update",true)}>Modifier</button>
                         </div>
 
                         <div className='languagesList'>
@@ -287,26 +331,35 @@ const ShowProject = () => {
 
 
 
-            <Modal title="" open={isModalStepsOpen} onCancel={handleCancel2} footer={null} centered >
+            <Modal title="" open={modals.steps} onCancel={()=>handleModals("steps", false)} footer={null} centered >
                 <h3>Etes vous sur de vouloir passer à l'étape suivante ? </h3>
-                <button type='button' onClick={() => (changeStatus(), setIsModalStepsOpen(false))} name='ongoing' className='stepOne'>Oui</button>
-                <button type='button' onClick={() => setIsModalStepsOpen(false)} name='closeModal' className='closeModal'>Non</button>
+                <button type='button' onClick={() => (changeStatus(), handleModals("steps",false))} name='ongoing' className='stepOne'>Oui</button>
+                <button type='button' onClick={() => handleModals("steps",false)} name='closeModal' className='closeModal'>Non</button>
 
             </Modal>
 
 
-            <Modal className='updateModal' title="Modifier" open={isModalOpen} onCancel={handleCancel} footer={null} centered >
-                <form onSubmit={update}>
-                    <h3>Titre :</h3>
-                    <input type='text' id='newTitle' name='newTitle' value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
-                    <b>{errors.newTitle}</b>
+            <Modal className='updateModal' title="Modifier" open={modals.update} onCancel={()=>handleModals("update", false)} footer={null} centered >
+                <form onSubmit={(e)=>update(e)}>
+                    <div>
+                        <label htmlFor='title'>Titre :</label>
+                        <input type='text' id='title' name='title' value={updateProject.title} onChange={(e) => handleUpdate(e)} />
+                        <strong>{errors.newTitle}</strong>
+                    </div>
 
-                    <h3>Description :</h3>
-                    <input type='text' id='newDescription' name='newDescription' value={newDescription} onChange={(e) => setNewDescription(e.target.value)} />
+                    <div>
+                        <label htmlFor='description'>Description :</label>
+                        <input type='text' id='description' name='description' value={updateProject.description} onChange={(e) => handleUpdate(e)} />
+                    </div>
 
-                    {/* <input type="number" id="collaborators_max" name="collaborators_max" min="1" max="20" value={project.collaborators_max} onChange={(e) => handleInput(e)} required /> */}
+                    <div>
+                        <label>Nombre de collaborateurs max :</label>
+                        <select id="collaborators_max" name="collaborators_max" min="1" max="20" value={updateProject.collaborators_max} onChange={(e) => handleUpdate(e)} required>
+                            {participants}
+                        </select>
+                    </div>
 
-                    <b>{errors.newDescription}</b>
+                    <strong>{errors.newDescription}</strong>
 
                     <Collapse
                         onChange={() => {
@@ -316,15 +369,13 @@ const ShowProject = () => {
                             {
                                 label: "Langages",
                                 children: (
-                                    <Skeleton loading={loading.languages} active>
-                                        <div className="updateLanguagesList">{allLanguagesList}</div>
-                                    </Skeleton>
+                                    <div className="updateLanguagesList">{allLanguagesList}</div>
                                 ),
                             },
                         ]}
                     />
 
-                    <button type="submit" className="btn-green center" />
+                    <button type="submit" className="btn-green center">Valider</button>
                 </form>
             </Modal>
 

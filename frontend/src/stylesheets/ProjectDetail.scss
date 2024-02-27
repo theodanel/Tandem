@@ -151,6 +151,9 @@
         text-decoration: underline;
         margin-right: 1rem;
         font-size: 2rem;
+        &:hover{
+            cursor: pointer;
+        }
     }
 
     @media (min-width: v.$sm-breakpoint) {
@@ -189,8 +192,6 @@
 }
 
 .projectDescription {
-    color: black;
-    text-transform: lowercase;
     margin-bottom: 4rem;
     width: 90%;
 
