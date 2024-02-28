@@ -202,7 +202,7 @@
 
 .projectDescription {
     margin-bottom: 4rem;
-    width: 100%;
+    width: 90%;
 
     @media (min-width: v.$sm-breakpoint) {
         font-size: 2rem;
@@ -279,22 +279,34 @@
 
 }
 
+.btn-orange-position {
+
+    display: flex;
+    align-items: end;
+    justify-content: flex-end;
+    width: 100%;
+    
+}
+
 #languages {
     display: flex;
     width: 100%;
     flex-wrap: wrap;
 
 
-    img {
-        @media (min-width: v.$sm-breakpoint) {
-            height: 5rem;
-            width: 15rem;
-        }
+    @media (min-width: v.$xl-breakpoint) {
+        justify-content: flex-start;
+        align-items: start;
+    }
 
-        @media (min-width: v.$lg-breakpoint) {
-            height: 5rem;
-            width: 3vw;
-        }
+
+    img {
+
+        height: 8rem;
+        width: 100%;
+     
+
+        
     }
 }
 
@@ -342,9 +354,34 @@
 
 
 #Steps {
+
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    
+    @media (min-width: v.$xl-breakpoint) {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+    }
+
+    @media (min-width: v.$sm-breakpoint) {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+    }
+
     @media (min-width: v.$lg-breakpoint) {
         display: flex;
         width: 90%;
+        flex-direction: row;
+    }
+
+    @media (min-width: v.$md-breakpoint) {
+        display: flex;
+        width: 100%;
         flex-direction: row;
     }
 }
@@ -440,6 +477,8 @@
     @media (min-width: v.$lg-breakpoint) {
         width: 95%;
     }
+
+    
 
 
 
