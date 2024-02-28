@@ -2,7 +2,6 @@
 
 .user-green{
     background-color: v.$color-gpastel;
-    border: solid 2px v.$color-gpastel;
     color: white;
     .img{
         background-color: white;
@@ -17,11 +16,10 @@
 }
 
 .user-white{
-    background-color: white;
-    border: solid 2px v.$color-green;
-    color: v.$color-green-dark;
+    background-color: v.$color-grey;
+    
     .img{
-        background-color: v.$color-green;
+        background-color: white;
         border: solid 3px v.$color-green;
         box-shadow: 0px 4px v.$color-green-dark  
     }
@@ -38,7 +36,6 @@
     align-items: center;
     padding: 0.5rem 2rem;
     gap: 1rem ;
-    width: fit-content;
     font-size: 1.7rem;
     font-weight: bold;
     text-align: center;
