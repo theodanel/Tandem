@@ -6,28 +6,32 @@
     width: 100%;
     flex-direction: column;
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 100%;
         margin-top: 5rem;
     }
 
+    h3, h1{
+        width: 100%;
+        margin-bottom: 1rem;
+        border-bottom: solid 2px v.$color-green-dark;
+    }
+    
 }
 
 .imagePosition {
-    width: 100%;
+    height: 40rem;
     display: flex;
     justify-content: center;
-
+ 
     @media (min-width: v.$sm-breakpoint) {
         width: 100%;
-        height: 50vh;
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 50%;
         display: flex;
         justify-content: center;
-        height: 50vh;
     }
 }
 
@@ -43,41 +47,63 @@
         display: flex;
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 50%;
     }
 
 }
 
 .projectDetailPosition {
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         display: flex;
     }
 }
 
-.titleDecoration {
+.userActions{
+    margin: 2rem auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
     width: 100%;
-    margin-bottom: 1rem;
-
-    hr {
-        background-color: #77DD79;
-        height: 0.3rem;
-        width: 100%;
+    .joinProject{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
     }
-
+    .actions{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
 }
 
 .imageSize {
+    object-fit: cover;
     width: 100%;
-    height: 100%;
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 90%;
-        height: 70vh;
 
     }
 
 }
+
+.updateModal {
+    input {
+        margin-bottom: 3rem;
+    }
+}
+
+.updateLanguagesList {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.7rem 1rem;
+}
+
 
 .projectTitle {
     color: black;
@@ -94,17 +120,13 @@
         width: 100%;
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         display: flex;
         flex-direction: row;
 
     }
 }
 
-#projectTitle {
-    width: 90%;
-
-}
 
 .titleDecoration {
     width: 100%;
@@ -119,7 +141,7 @@
         width: 90%;
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 70%;
 
 
@@ -127,31 +149,36 @@
 }
 
 .creator {
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     text-align: end;
+    align-items: center;
 
 
     h4 {
         text-decoration: underline;
         margin-right: 1rem;
         font-size: 2rem;
+        &:hover{
+            cursor: pointer;
+        }
     }
 
     @media (min-width: v.$sm-breakpoint) {
-
+        width: 90%;
 
         h4 {
             font-size: 2rem;
         }
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 40%;
         flex-wrap: wrap;
         display: flex;
         justify-content: flex-end;
+        flex-direction: column;
 
 
         @media (min-width: v.$sm-breakpoint) {
@@ -174,13 +201,12 @@
 }
 
 .projectDescription {
-    color: black;
-    text-transform: lowercase;
     margin-bottom: 4rem;
-    width: 90%;
+    width: 100%;
 
     @media (min-width: v.$sm-breakpoint) {
         font-size: 2rem;
+        width: 90%;
     }
 }
 
@@ -198,7 +224,7 @@
         margin-right: 10vw;
     }
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         height: 5vh;
         align-items: flex-end;
         justify-content: end;
@@ -228,7 +254,7 @@
           
         }
 
-        @media (min-width: v.$xl-breakpoint) {
+        @media (min-width: v.$lg-breakpoint) {
             width: 20%;
             height: 6rem;
             background-color: #F47143;
@@ -265,7 +291,7 @@
             width: 15rem;
         }
 
-        @media (min-width: v.$xl-breakpoint) {
+        @media (min-width: v.$lg-breakpoint) {
             height: 5rem;
             width: 3vw;
         }
@@ -287,16 +313,22 @@
 }
 
 .languagesList {
+    margin: auto;
     display: flex;
     width: 90%;
     flex-direction: column;
 
 
-    h3 {
-        @media (min-width: v.$sm-breakpoint) {
+    @media (min-width: v.$sm-breakpoint) {
+       
+        h3 {
             font-size: 2.5rem;
         }
     }
+    @media (min-width: v.$lg-breakpoint) {
+        width: 95%;
+    }
+
 }
 
 .startProject {
@@ -305,132 +337,81 @@
     justify-content: center;
     margin-bottom: 4rem;
 
-    button {
-        width: 60%;
-        background-color: #77DD79;
-        color: white;
-        font-weight: bold;
-        height: 4rem;
-        border-radius: 10px;
-        border: none;
-        box-shadow: 0 5px #c7c7c7;
-        cursor: pointer;
 
-        @media (min-width: v.$sm-breakpoint) {
-            width: 100%;
-        }
-
-    }
-
-    button:hover {
-        background-color: #53a554
-    }
-
-    button:active {
-        background-color: #2a642b;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
-    }
 }
 
 
 #Steps {
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         display: flex;
         width: 90%;
         flex-direction: row;
     }
 }
 
-.projectSteps {
-    width: 90%;
+.inactive{
+    translate: 0 2px;
+    box-shadow: none;
+    opacity: 0.5;
+    color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    &:hover{
+        box-shadow: none;
+        cursor: not-allowed;
+    }
+}
+
+.active{
+    translate: 0 2px;
+    box-shadow: none;
+    pointer-events: none;
+    &:hover{
+        box-shadow: none;
+        cursor: auto;
+    }
+}
+
+.statusInfo{
     display: flex;
-    margin-bottom: 4rem;
+    align-items: center;
+    gap: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    div{
+        height: fit-content;
+        display: flex;
+        color: white;
+        border-radius: 100%;
+        padding: 0.7rem;
+    }
+    &.green{
+        color: v.$color-green-dark;
+        div{
+            background-color: v.$color-green-dark;
+        }
+    }
+    &.orange{
+        color: v.$primary-color;
+        div{
+            background-color: v.$primary-color;
+        }
+    }
+}
+
+
+.projectSteps {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    height: 20rem;
+ .ant-steps-item-container{
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+ }
 
-    @media (min-width: v.$sm-breakpoint) {
-
-        height: 25rem;
-    }
-
-    
-    @media (min-width: v.$sm-breakpoint) {
-
-        height: 20rem;
-    }
-
-
-
-    button {
-        width: 100%;
-        background-color: #77DD79;
-        color: white;
-        font-weight: bold;
-        height: 3.5rem;
-        border-radius: 10px;
-        border: none;
-        box-shadow: 0 3px #c7c7c7;
-        cursor: pointer;
-
-    }
-
-
-    button:active {
-        box-shadow: 0 3px #666;
-        transform: translateY(2px);
-    }
-
-    .stepOne {
-        background-color: #77dd79a9;
-        width: 50vw;
-
-        @media (min-width: v.$sm-breakpoint) {
-            width: 80vw;
-            height: 4vh;
-        }
-
-        @media (min-width: v.$xl-breakpoint) {
-            width: 12vw;
-            height: 6vh;
-        }
-    }
-
-    .stepTwo {
-        background-color: #77DD79;
-        width: 50vw;
-
-        @media (min-width: v.$sm-breakpoint) {
-            width: 80vw;
-            height: 4vh;
-        }
-
-        @media (min-width: v.$xl-breakpoint) {
-            width: 12vw;
-            height: 6vh;
-        }
-    }
-
-    .stepThree {
-        background-color: #f47243b4;
-        width: 50vw;
-
-        @media (min-width: v.$sm-breakpoint) {
-            width: 80vw;
-            height: 4vh;
-        }
-
-        @media (min-width: v.$xl-breakpoint) {
-            width: 12vw;
-            height: 6vh;
-        }
-    }
+  
 }
 
-.stepsIcons{
-    color: blue;
-}
 
 .ModalText {
     color: black;
@@ -446,28 +427,17 @@
 
 
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         margin-top: 5rem;
     }
 
-    hr {
-        background-color: #77DD79;
-        height: 0.3rem;
-        width: 100%;
-
-        @media (min-width: v.$sm-breakpoint) {
-            height: 0.5rem;
-        }
-
-        
-    }
 }
 
 #collaborators {
     width: 90%;
 
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         width: 95%;
     }
 
@@ -478,7 +448,7 @@
             font-size: 2.5rem;
         }
 
-        @media (min-width: v.$xl-breakpoint) {
+        @media (min-width: v.$lg-breakpoint) {
             font-size: 2.5rem;
         }
     }
@@ -504,7 +474,7 @@
         }
 
 
-        @media (min-width: v.$xl-breakpoint) {
+        @media (min-width: v.$lg-breakpoint) {
           justify-content: flex-start;
           
 
@@ -549,7 +519,7 @@
     }
 
 
-    @media (min-width: v.$xl-breakpoint) {
+    @media (min-width: v.$lg-breakpoint) {
         height: 15vh;
         width: 10%;
         border-radius: 40px;
@@ -558,20 +528,34 @@
 
 }
 
+
 .addComment {
-    width: 100%;
+    width: fit-content;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
     margin-bottom: 3rem;
     margin-top: 1rem;
-}
-
-.commentButton {
-    width: 20%;
-    background-color: #77DD79;
-    color: white;
-    font-weight: bold;
-    height: 3.5rem;
-    border-radius: 10px;
-    border: none;
+    margin: 1rem auto 3rem auto;
+    padding: 1rem;
+    border-radius: 2rem;
+    background-color: v.$color-grey;
+    &:has(textarea:focus){
+        outline: solid 2px v.$color-green;
+    }
+    textarea{  
+        background-color: v.$color-grey;
+        resize: none;
+        max-width: 70vw;
+        min-width: 70vw;
+        border: none;
+        &:focus{
+            outline: none
+        }
+    }
+    button{
+        height: fit-content;
+        padding: 1rem ;
+    }
 }

@@ -208,9 +208,9 @@ class ProjectController extends Controller
         $project = Project::findOrFail($id);
         if ($request->user()->tokenCan($project->user_id)) {
             $validator = Validator::make($request->all(), [
-                'newTitle' => "max:50|min:3|unique:projects,title," . $project->id,
-                'newDescription' => "max:1000|min:3",
-                'newCollaborators' => "numeric|max:10|min:".$project->collaborators
+                'title' => "max:50|min:3|unique:projects,title," . $project->id,
+                'description' => "max:1000|min:3",
+                'collaborators_max' => "numeric|max:10|min:".$project->collaborators
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -218,10 +218,14 @@ class ProjectController extends Controller
                     "message" => "Erreur dans le formulaire."
                 ]);
             } else {
-                $project->title = $request->input("newTitle");
-                $project->description = $request->input("newDescription");
-                $project->collaborators_max = $request->input("newCollaborators");
+                $project->title = $request->input("title");
+                $project->description = $request->input("description");
+                $project->collaborators_max = $request->input("collaborators_max");
+                $project->languages()->sync( $request->input("languages"));
+
                 $project->save();
+
+                $project->languagesList = $project->languages()->get();
 
                 return response()->json([
                     'status' => 200,
@@ -236,6 +240,7 @@ class ProjectController extends Controller
             ]);
         }
     }
+    
 
     /**
      * Ajoute un collaborateur au projet

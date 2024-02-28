@@ -233,7 +233,7 @@ const CreateProject = () => {
                 {user ?
                     <button type='submit' className='btn-green-big'> Créer le projet</button>
                 :
-                    <button className='btn-orange-big' onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
+                    <button className='btn-orange-big-forbidden' onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
                 }
                 <Modal title="Connexion requise" open={isModal2Open} width="fit-content" onCancel={()=>handleCancel2()} footer={null} centered>
                     <p>Pour créer un projet, veuillez vous connecter</p>
