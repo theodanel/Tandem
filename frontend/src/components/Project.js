@@ -110,9 +110,10 @@ const Project = ({user, id }) => {
   // Ajoute/Enlève un like/favori si l'utilisateur est connecté, sinon ouvre une modale
   const handleAction = async(action) => {
     if(user){
-      const res = await axios.put(`/api/project/${id}/${action}`, 
+      await axios.put(`/api/project/${id}/${action}`, 
       { "Content-Type": "application/json", Authorization: `Bearer ${token}` });
-      setProject(res.data.project);
+      getProject();
+
     } else {
       setIsModalOpen(true);
     }

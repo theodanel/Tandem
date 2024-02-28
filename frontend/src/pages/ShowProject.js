@@ -161,7 +161,7 @@ const ShowProject = () => {
         if (res.data.status === 200) {
      
             handleModals("update", false)
-            getProject({});
+            getProject();
             setErrors([]);
             message.success("Le projet a été mis à jour !")
         } else {
@@ -178,7 +178,7 @@ const ShowProject = () => {
      * Change le statut du projet
      */
     const changeStatus = async (statusType) => {
-        const res = await axios.put(`api/project/${id}/step`, { status: statusType }, { headers: { "Authorization": `Bearer ${token}` } })
+        await axios.put(`api/project/${id}/step`, { status: statusType }, { headers: { "Authorization": `Bearer ${token}` } })
         setStatus(project.status);
         getProject();
         message.success("Le projet a été mis à jour !")
@@ -390,11 +390,11 @@ const ShowProject = () => {
       // if (user?.likes.find(like => like.project_id === id)){
       if (project.likes?.find(like => like.user_id === loggedUser?.id)){
         return (
-            <button type='button' className='btn-red-white likes full' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} />Unliker le projet</button>
+            <button type='button' className='btn-red-white likes full' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} />{project.popularity}</button>
         )
       } else {
         return (
-            <button type='button' className='btn-red likes' onClick={()=>handleAction("like")}><FaRegHeart className='action-icon' size={25} />Liker le projet</button>
+            <button type='button' className='btn-red likes' onClick={()=>handleAction("like")}><FaRegHeart className='action-icon' size={25} />{project.popularity}</button>
         )
       }
   }

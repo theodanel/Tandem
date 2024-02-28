@@ -303,16 +303,8 @@ class ProjectController extends Controller
         $user = User::find($user_id);
         $user->favorites()->toggle($project);
 
-        // retourne les informations du projet
-        $creator = $project->creator()->first();
-        $languages = $project->languages()->get();
-        $project->creator = $creator;
-        $project->languages = $languages;
-        $project->favorites = $project->favorites()->get(array('user_id'));
-        $project->likes = $project->likes()->get(array('user_id'));
         return response()->json([
             'status' => 200,
-            'project' => $project
         ]);
     }
 
@@ -332,16 +324,8 @@ class ProjectController extends Controller
         }
         $project->save();
 
-        // retourne les informations du projet
-        $creator = $project->creator()->first();
-        $languages = $project->languages()->get();
-        $project->creator = $creator;
-        $project->languages = $languages;
-        $project->favorites = $project->favorites()->get(array('user_id'));
-        $project->likes = $project->likes()->get(array('user_id'));
         return response()->json([
             'status' => 200,
-            'project' => $project
         ]);
 
     }
