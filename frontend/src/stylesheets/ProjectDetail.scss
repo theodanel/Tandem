@@ -540,12 +540,12 @@
     margin: 1rem auto 3rem auto;
     padding: 1rem;
     border-radius: 2rem;
-    background-color: #F0F0F0;
+    background-color: v.$color-grey;
     &:has(textarea:focus){
         outline: solid 2px v.$color-green;
     }
     textarea{  
-        background-color: #F0F0F0;
+        background-color: v.$color-grey;
         resize: none;
         max-width: 70vw;
         min-width: 70vw;

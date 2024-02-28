@@ -340,8 +340,8 @@ const ShowProject = () => {
         } else{
             return(
                 <div className='statusInfo green'>
-                    <LuNut size={40} className='stepsIcons'/>
-                    <p name='created'>Le projet n'a pas encore démarré</p>
+                    <div><LuNut size={40} className='stepsIcons'/></div>
+                    <p name='created'>Le projet n'a pas encore démarré !</p>
                 </div>
             )
         }
