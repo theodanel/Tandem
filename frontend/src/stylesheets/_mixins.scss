@@ -1,0 +1,25 @@
+@mixin button( $text-color, $background-color, $hover-color, $shadow-color, $radius, $padding) {
+    color: $text-color;
+    background-color: $background-color;
+    padding: $padding/2 $padding ;
+    text-decoration: none;
+    border-radius: $radius;
+    border: none;
+    box-shadow: 0 3px $shadow-color;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    transition: all 100ms;
+    
+    &:hover{
+        cursor: pointer;
+        background-color: $hover-color;
+        box-shadow: 0 3px $background-color;
+    }
+    &:active{
+        translate: 0 3px;
+        background-color: $shadow-color;
+        box-shadow: none;
+    }
+}

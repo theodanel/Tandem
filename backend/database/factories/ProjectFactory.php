@@ -23,16 +23,20 @@ class ProjectFactory extends Factory
         if ($collaborators === $collaborators_max){
             $isOpen = false;
         }
+        $statuses1 = ['created', 'ongoing'];
+        $rand_status1 = array_rand($statuses1);
+        $statuses2 = ['ongoing', 'completed'];
+        $rand_status2 = array_rand($statuses2);
         if ($isOpen){
-            $status = random_int(1,2);
+            $status = $statuses1[$rand_status1];
         } else {
-            $status = random_int(2,3);
+            $status = $statuses2[$rand_status2];
         }
         return [
             'title' => fake()->sentence(),
             'description' => fake()->text(),
             'user_id' => fake()->numberBetween(1,10),
-            'image' => fake()->imageUrl(),
+            'image' => "https://picsum.photos/id/".random_int(9,600)."/800/450",
             'collaborators' => $collaborators,
             'collaborators_max' => $collaborators_max,
             'open' => $isOpen,

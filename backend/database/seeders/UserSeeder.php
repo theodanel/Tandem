@@ -15,9 +15,7 @@ class UserSeeder extends Seeder
     {
         // création de 10 utilisateurs aléatoires
         User::factory(10)->create()->each(function ($user){
-            $user->language()->attach(random_int(1,3));
-            $user->language()->attach(random_int(4,6));
-            $user->language()->attach(random_int(7,9));
+            $user->languages()->attach([random_int(1,3),random_int(4,6),random_int(7,9)]);
         });
 
         User::factory()->create([
@@ -27,9 +25,40 @@ class UserSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'name' => "Bib's",
-            'email' => 'bibs@bibs.fr',
-            'password' => 'bibs',
+            'name' => "Julie",
+        ]);
+        User::factory()->create([
+            'name' => "Cyril",
+        ]);
+        User::factory()->create([
+            'name' => "Aurélie",
+        ]);
+        User::factory()->create([
+            'name' => "Angèle",
+        ]);
+        User::factory()->create([
+            'name' => "Axel",
+        ]);
+        User::factory()->create([
+            'name' => "Gurkan",
+        ]);
+        User::factory()->create([
+            'name' => "Aurélien",
+        ]);
+        User::factory()->create([
+            'name' => "Nassim",
+        ]);
+        User::factory()->create([
+            'name' => "Rémi",
+        ]);
+        User::factory()->create([
+            'name' => "Florent",
+        ]);
+        User::factory()->create([
+            'name' => "Mehdi",
+        ]);
+        User::factory()->create([
+            'name' => "Nesrine",
         ]);
 
 

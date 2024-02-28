@@ -16,57 +16,186 @@ class LanguageSeeder extends Seeder
         $languages = [
                 [
                     'HTML',
-                    'front',
                     'html5'
                 ],
                 [
                     'CSS',
-                    'front',
                     'css3'
                 ],
                 [
                     'JavaScript',
-                    'front',
                     'javascript'
                 ],
                 [
                     'PHP',
-                    'back',
                     'php'
                 ],
                 [
                     'SASS',
-                    'front',
                     'sass'
                 ],
                 [
-                    'Laravel',
-                    'back',
-                    'laravel'
-                ],
-                [
                     'NodeJS',
-                    'back',
                     'nodejs'
                 ],
+
                 [
-                    'React',
-                    'front',
-                    'react'
+                    'Python',
+                    'python',
                 ],
                 [
-                    'MySQL',
-                    'back',
-                    'mysql'
+                    'Perl',
+                    'perl'
                 ],
+                [
+                    "C",
+                    "c"
+                ],
+                [
+                    "C++",
+                    "cplusplus"
+                ],
+                [
+                    "C#",
+                    "csharp"
+                ],
+                [
+                    ".Net",
+                    "dot-net"
+                ],
+                [
+                    "Java",
+                    "java"
+                ],
+                [
+                    "Ruby",
+                    "ruby"
+                ],
+                [
+                    "R",
+                    "r"
+                ],
+                [
+                    "GO",
+                    "go"
+                ],
+                [
+                    "Swift",
+                    "swift"
+                ],
+                [
+                    "Rust",
+                    "rust"
+                ],
+                [
+                    "TypeScript",
+                    "typescript"
+                ],
+                [
+                    "Kotlin",
+                    "kotlin"
+                ],
+
+
+                [
+                    "Tailwind",
+                    "tailwindcss"
+                ],
+                [
+                    "Bootstrap",                 
+                    "bootstrap",                 
+                ],
+                [
+                    "React",
+                    "react",
+                ],
+                [
+                    "Laravel",
+                    "laravel",
+                ],
+                [
+                    "Symfony",
+                    "symfony",
+                ],
+                [
+                    "NextJS",
+                    "nextjs",
+                ],
+                [
+                    'Vue',
+                    'vuejs',
+                ],
+                [
+                    "Angular",
+                    "angular",
+                ],
+                [
+                    "NuxtJS",
+                    "nuxtjs",
+                ],
+                [
+                    "NestJS",
+                    "nestjs",
+                ],
+                [
+                    "Spring",
+                    "spring",
+                ],
+                
+                
+                [
+                    "MySQL",
+                    "mysql",
+                ],
+                [
+                    "MongoDB",
+                    "mongodb",
+                ],
+                [
+                    "PostgreSQL",
+                    "postgresql"
+                ],
+                [
+                    "Godot",
+                    "godot",
+                ],
+                [
+                    "Unity",
+                    "unity",
+                ],
+                [
+                    "WordPress",
+                    "wordpress",
+                ],
+                [
+                    "Docker",
+                    "docker",
+                ],
+                [
+                    "Kubernetes",
+                    "kubernetes",
+                ],
+                [
+                    "Android",
+                    "android",
+                ],
+                [
+                    "Apple",
+                    "apple",
+                ],
+                [
+                    "Electron",
+                    "electron",
+                ],
+
             ];
 
         // création de langages :
         foreach($languages as $language){
             Language::create([
                 'name' => $language[0],
-                'category' => $language[1],
-                'logo' => "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/$language[2]/$language[2]-original.svg",
+                // 'category' => $language[1],
+                'logo' => "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/$language[1]/$language[1]-original.svg",
             ]);
         }
     }

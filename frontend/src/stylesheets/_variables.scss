@@ -1,8 +1,27 @@
 //colors
-$color-orange : #f47142;
-$orange-light : #FFA082;
+$primary-color: #F47143;
+$color-orange : #FFA082;
+$orange-light : #FFD7B4;
+$color-green-dark : #2EC458;
 $color-green : #78dd79;
 $color-gpastel : #adddb2;
+
+$color-yellow : #FFC702;
+$color-yellow-light : #ffdb5b;
+$color-red : #FF0000;
+$color-red-dark : #ce0000;
+
+$color-grey :  #F0F0F0;
+
+//text color
+$text-color: white;
+
+// Transition
+$transition-duration: 0.5s;
+$transition-ease: ease-in-out;
+
+// Hover
+$hover-color: #feb38c;
 
 //breakpoints
 $xs-breakpoint: 575px;
@@ -10,3 +29,4 @@ $sm-breakpoint: 767px;
 $md-breakpoint: 991px;
 $lg-breakpoint: 1199px;
 $xl-breakpoint: 1399px;
+

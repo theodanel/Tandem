@@ -16,13 +16,14 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->boolean('open')->nullable();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->default(5);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->integer('collaborators')->nullable();
             $table->integer('collaborators_max')->nullable();
             $table->integer('popularity')->nullable();
             $table->string('image')->nullable();
+            $table->string('status')->nullable();
+            $table->boolean('coeur')->default(false);
 
-            $table->foreignId('status')->constrained(table: 'statuses', column: 'id')->cascadeOnDelete()->nullable();
             $table->timestamps();
         });
     }

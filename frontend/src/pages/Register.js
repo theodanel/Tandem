@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
+
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import axios from '../api/axios';
@@ -8,6 +9,9 @@ import swal from 'sweetalert';
 import { message } from 'antd';
 
 const Register = () => {
+    useEffect(()=> {
+        document.title = `Inscription`;
+    }, []);
     const [newUser, setNewUser] = useState({
         email: "",
         name: "",
@@ -29,7 +33,7 @@ const Register = () => {
         e.preventDefault();
         // await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/register', { newUser });
-        if(res.data.status === "success"){
+        if(res.data.status === 200){
             swal({
                 title: "Bravo !",
                 text: res.data.message,
@@ -37,41 +41,53 @@ const Register = () => {
                 button: "OK"
             })
             dispatch(addUser(res.data));
-            navigate('/');
+            navigate(-1);
         } else {
             message.error(res.data.message);
             setErrors(res.data.errors || []);
         }
     }
 
+    // Pour empecher un message d'erreur car non-envoi du formulaire
+    const handleNavigate = (e) =>{
+        e.preventDefault();
+        navigate('/login');
+    }
+
     return (
-        <Layout>
-            <div>Login</div>
+        <Fragment>
             <form onSubmit={(e)=>handleLogin(e)}>
-                <div>
-                    <label htmlFor='name'>Choisissez un pseudo :</label>
-                    <input type='text' name='name' value={newUser.name} placeholder='Pseudo' onChange={(e)=> handleChange(e)} autoFocus required/>
-                    <b>{errors.name}</b>
+                <h1 className="title">Inscription</h1>
+                <div className='form-group'>
+                    <div className='flex-col'>
+                        <label htmlFor='name'>Choisissez un pseudo :</label>
+                        <input type='text' name='name' value={newUser.name} placeholder='Pseudo' onChange={(e)=> handleChange(e)} autoFocus required/>
+                        <b>{errors.name}</b>
+                    </div>
+                    <div className='flex-col'>
+                        <label htmlFor='email'>Email :</label>
+                        <input type='email' name='email' value={newUser.email} placeholder='tandem@email.fr' onChange={(e)=> handleChange(e)} required/>
+                        <b>{errors.email}</b>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor='email'>Email :</label>
-                    <input type='email' name='email' value={newUser.email} placeholder='Email' onChange={(e)=> handleChange(e)} required/>
-                    <b>{errors.email}</b>
+                <div className='form-group'>
+                    <div className='flex-col'>
+                        <label htmlFor='password'>Mot de passe :</label>
+                        <input type='password' name='password' value={newUser.password} placeholder='Mot de passe' onChange={(e)=> handleChange(e)} required/>
+                        <b>{errors.password}</b>
+                    </div>
+                    <div className='flex-col'>
+                        <label htmlFor='password_confirmation'>Confirmer le mot de passe :</label>
+                        <input type='password' name='password_confirmation' value={newUser.password_confirmation} placeholder='Confirmer le mot de passe' onChange={(e)=> handleChange(e)} required/>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor='password'>Mot de passe :</label>
-                    <input type='password' name='password' value={newUser.password} placeholder='Mot de passe' onChange={(e)=> handleChange(e)} required/>
-                    <b>{errors.password}</b>
+                <button type='submit' className='btn-green-big' aria-label='Valider' title='Valider'>Valider</button>
+                <div className='flex'>
+                    <p>Déjà inscrit ?</p>
+                    <button type='button' aria-label='Se connecter' title='Se connecter' className='btn-green' onClick={(e) => handleNavigate(e)}>Se connecter</button>
                 </div>
-                <div>
-                    <label htmlFor='password_confirmation'>Confirmer le mot de passe :</label>
-                    <input type='password' name='password_confirmation' value={newUser.password_confirmation} placeholder='Confirmer le mot de passe' onChange={(e)=> handleChange(e)} required/>
-                </div>
-                <button type='submit'>Valider</button>
             </form>
-            <p>Déjà inscrit ?</p>
-            <button onClick={() => navigate('/login')}>Se connecter</button>
-        </Layout>
+        </Fragment>
     )
 }
 

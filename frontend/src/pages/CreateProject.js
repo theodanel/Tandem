@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from 'react'
-import { Modal, message } from 'antd';
-import axios from 'axios';
+import React, { Fragment, useEffect, useState } from 'react'
+import { Modal, Tag, message } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import axios from '../api/axios';
 import swal from 'sweetalert';
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout';
 import Language from '../components/Language.js';
 
 import "../stylesheets/Language.scss"
+import { useSelector } from 'react-redux';
 
 const CreateProject = () => {
+    useEffect(()=> {
+        document.title = `Nouveau Projet`;
+    }, []);
+
     const navigate = useNavigate();
+
+    const user = useSelector(state => state.data.user);
+    const token = useSelector(state => state.data.token);
 
     // State du projet qui récupère les données du formulaire
     const [project, setProject] = useState({
@@ -17,8 +26,8 @@ const CreateProject = () => {
         collaborators_max: 0,
         description: '',
         languages: [],
-        user_id: 5,
-        // image: '',
+        user_id: user? user.id : null,
+        image: '',
     });
 
     // Liste de tous les langages dans la BDD, rempli via appel API
@@ -30,27 +39,45 @@ const CreateProject = () => {
     // Tableau des erreurs renvoyées par l'API après validation du formulaire
     const [errors, setErrors] = useState([]);
 
-    // Gestion de la modale Ant Design
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModal = () => {
-      setIsModalOpen(true);
+    // Gestion de la modale langages
+    const [isModal1Open, setIsModal1Open] = useState(false);
+    const showModal1 = () => {
+        setIsModal1Open(true);
     };
-    const handleCancel = () => {
-      setIsModalOpen(false);
+    const handleCancel1 = () => {
+        setIsModal1Open(false);
+    };
+
+    // Gestion de la modale connexion
+    const [isModal2Open, setIsModal2Open] = useState(false);
+    const showModal2 = () => {
+      setIsModal2Open(true);
+    };
+    const handleCancel2 = () => {
+      setIsModal2Open(false);
     };
 
 
     // Appel API pour la liste des langages
     const getLanguages = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/languages").then(res => res.json());
+        const res = await axios.get("/api/languages");
         // Remplissage du tableau langages
-        setLanguages(data.languages);
+        setLanguages(res.data.languages);
         // Remplissage du tableau checked en suivant le nombre de langages
-        setCheckedState(new Array(data.languages.length).fill(false))
+        setCheckedState(new Array(res.data.languages.length).fill(false))
+    }
+
+    const getMessage =() =>{
+        return(
+            !user? 
+            message.warning("Pour créer un projet, veuillez vous connecter")
+        :""
+        )
     }
 
     useEffect(() => {
         getLanguages();
+        getMessage();
     }, []);
 
     // Mise à jour du state project à chaque modification d'un champ du formulaire
@@ -90,6 +117,7 @@ const CreateProject = () => {
                 checked={checkedState[index]}
                 action={() => handleOnChange(language.id)}
                 image={language.logo}
+                type='checkbox'
             />
         );
     });
@@ -102,6 +130,7 @@ const CreateProject = () => {
             checked={checkedState[language.id-1]}
             action={() => handleOnChange(language.id)}
             image={language.logo}
+            type='checkbox'
         />
         )
     })
@@ -111,8 +140,8 @@ const CreateProject = () => {
         e.preventDefault();
 
         // Appel à l'API
-        const res = await axios.post(`http://127.0.0.1:8000/api/project/store`, project, { headers: { "Content-Type": "application/json" } });
-
+        const res = await axios.post(`/api/project/store`, project, { headers: { "Content-Type": "application/json" , "Authorization":`Bearer ${token}`} });
+        
         if (res.data.status === 200) {
             swal({
                 title: "Bravo !",
@@ -126,67 +155,97 @@ const CreateProject = () => {
                 description: '',
                 languages: [],
             })
-            message.success(res.data.message)
             setErrors([]);
             navigate('/', project);
         } else {
             message.error("Champ(s) invalide(s)")
             setErrors(res.data.errors || []);
         }
+  
     };
 
+    let participants = []
+    for(let i=2; i<=10; i++){
+        participants.push(
+            <option key={i} value={i}>{i}</option>
+        )
+    }
+
     return (
-        <Layout>
-            <div>Création de projet</div>
+        <Fragment>
+            <form onSubmit={(e) => saveProject(e)}>
+                <h1 className="title">Création de projet</h1>
+              
+                <div className='form-group'>
+                    <div className='flex-col'>
+                        <label htmlFor='title'>Nom du projet :</label>
+                        <input type='text' id='title' name='title' placeholder='Mon super projet' value={project.title} onChange={(e)=>handleInput(e)} autoFocus required/>
+                        <b>{errors.title}</b>
+                    </div>
 
-            <form onSubmit={(e) => saveProject(e)} >
-                <div>
-                    <label htmlFor='title'>Nom du projet:</label>
-                    <input type='text' id='title' name='title' value={project.title} onChange={handleInput} autoFocus required/>
-                    <b>{errors.title}</b>
+                    <div className='flex' >
+                        <label htmlFor="collaborators_max">Nombre de participants :</label>
+                        <select id="collaborators_max" name="collaborators_max" value={project.collaborators_max} onChange={(e) => handleInput(e)} required >
+                            <option value="">Choisir</option>
+                            {participants}
+                        </select>
+                        {/* <input type="number" id="collaborators_max" name="collaborators_max" min="1" max="20" value={project.collaborators_max} onChange={(e) => handleInput(e)} required /> */}
+                        <b>{errors.collaborators_max}</b>
+                    </div>
                 </div>
 
-                <div>
-                    <label htmlFor="collaborators_max">Nombre de participants (1-20):</label>
-                    <input type="number" id="collaborators_max" name="collaborators_max" min="1" max="20" value={project.collaborators_max} onChange={(e) => handleInput(e)} required />
-                    <b>{errors.collaborators_max}</b>
-                </div>
-
-                <div>
-                    <label htmlFor="description">Description:</label>
-                    <input type="text" id="description" name="description" minLength="10" maxLength="1000" size="10"
-                        value={project.description} onChange={handleInput} required />
+                <div className='flex-col'>
+                    <label htmlFor="description">Description du projet :</label>
+                    <textarea type="text" id="description" name="description" minLength="10" maxLength="1000" placeholder='Une jolie description' size="10"
+                        value={project.description} onChange={(e) => handleInput(e)} required />
                     <b>{errors.description}</b>
                 </div>
 
-                <div>
-                    <label htmlFor="languages">Langages envisagés:</label>
-                    <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend>
-                    <button onClick={()=>showModal()}>Selectionner</button>
-                    <b>{errors.languages}</b>
-                    
-                    <Modal title="Choisir des langages" open={isModalOpen} onCancel={handleCancel} footer={null} centered>
-                        <div className='languagesList'>
-                            {languagesList}
-                        </div>
-                        <button onClick={()=>handleCancel()}>Valider</button>
-                    </Modal>
 
-                    <div className='languagesList-2'>
-                        {selectedLanguages}
+                <div className='form-group'>
+                    <div>
+                        <label htmlFor="image">Image d'illustration :</label>
+                        <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.image} onChange={(e) => handleInput(e)}/>
+
+                    </div>
+                    <div className='flex'>
+                        <label htmlFor="languages">Langages envisagés:</label>
+                        {/* <legend name="languages" id="languages" value={project.languages} onChange={handleInput} required></legend> */}
+                        <button type='button' className='btn-green' name='languages' onClick={()=>showModal1()}>Selectionner</button>
+                        <b>{errors.languages}</b>
+                        
+                        <Modal title="Choisir des langages" open={isModal1Open} width="fit-content" onCancel={()=> handleCancel1()} footer={null} centered>
+                            <div className='languagesList-1'>
+                                {languagesList}
+                            </div>
+                            <button className='btn-green center' onClick={()=>handleCancel1()}>Valider</button>
+                        </Modal>
+
+                      
+
                     </div>
 
+                 
                 </div>
+                <div className='languagesList-2'>
+                    {selectedLanguages}
+                </div>
+                {user ?
+                    <button type='submit' className='btn-green-big'> Créer le projet</button>
+                :
+                    <button className='btn-orange-big-forbidden' onClick={()=>showModal2()}>Créer le projet<br/>(Connexion requise)</button>
+                }
+                <Modal title="Connexion requise" open={isModal2Open} width="fit-content" onCancel={()=>handleCancel2()} footer={null} centered>
+                    <p>Pour créer un projet, veuillez vous connecter</p>
+                    <div className='flex center'>
+                        <button className='btn-green' onClick={()=>navigate('/login')}>Connexion</button>
+                        <button className='btn-green' onClick={()=>navigate('/register')}>Inscription</button>
+                    </div>
+                </Modal>
 
-                {/* <div>
-                <label for="image">Image d'illustration:</label>
-                <input type="file" id="image" name="image" accept="image/png, image/jpeg" value={project.title} onChange={handleInput}/>
-            </div> */}
-
-                <button type='submit'> Créer le projet</button>
             </form>
 
-        </Layout>
+        </Fragment>
     )
 
 }

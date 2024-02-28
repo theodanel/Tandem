@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Layout from '../components/Layout';
 // import useAuthContext from '../context/AuthContext';
 import axios from '../api/axios';
@@ -9,6 +9,9 @@ import { message } from 'antd';
 import swal from 'sweetalert';
 
 const Login = () => {
+    useEffect(()=> {
+        document.title = `Connexion`;
+    }, []);
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [errors, setErrors] = useState([]);
@@ -22,15 +25,16 @@ const Login = () => {
         // login({email, password});
         // await axios.get('/sanctum/csrf-cookie');
         const res = await axios.post('/api/login', { email, password });
-        if(res.data.status === "success"){
-            swal({
-                title: "Bravo !",
-                text: res.data.message,
-                icon: "success",
-                button: "OK"
-            })
+        if(res.data.status === 200){
+            // swal({
+            //     title: "Heureux de vous revoir !",
+            //     text: res.data.message,
+            //     icon: "success",
+            //     button: "OK"
+            // })
+            message.success(`Bienvenue, ${res.data.user.name} !`)
             dispatch(addUser(res.data));
-            navigate('/');
+            navigate(-1);
         } else {
             message.error(res.data.message);
             setErrors(res.data.errors || []);
@@ -40,29 +44,33 @@ const Login = () => {
     // Redirection automatique si utilisateur déjà connecté
     useEffect(() => {
         if (token) {
-          navigate('/')
+          navigate(-1)
         }
       }, [])
 
     return (
-        <Layout>
-            <div>Login</div>
+        <Fragment>
             <form onSubmit={(e)=>handleLogin(e)}>
-                <div>
-                    <label htmlFor='email'>Email :</label>
-                    <input type='email' name='email' value={email} placeholder='Email' onChange={(e)=> setEmail(e.target.value)} autoFocus required />
-                    <b>{errors.email}</b>
+                <h1 className="title">Connexion</h1>
+                <div className='form-group'>
+                    <div className='flex-col'>
+                        <label htmlFor='email'>Email :</label>
+                        <input type='email' name='email' value={email} placeholder='tandem@email.fr' onChange={(e)=> setEmail(e.target.value)} autoFocus required />
+                   
+                    </div>
+                    <div className='flex-col'>
+                        <label htmlFor='password'>Mot de passe :</label>
+                        <input type='password' name='password' value={password} placeholder='Mot de passe' onChange={(e)=> setPassword(e.target.value)} required />
+                      
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor='password'>Mot de passe :</label>
-                    <input type='password' name='password' value={password} placeholder='Mot de passe' onChange={(e)=> setPassword(e.target.value)} required />
-                    <b>{errors.password}</b>
+                <button type='submit' className='btn-green-big' aria-label="Valider" title="Valider">Valider</button>
+                <div className='flex'>
+                    <p>Pas encore de compte ?</p>
+                    <button type='button' className='btn-green' aria-label="S'inscrire" title="S'inscrire" onClick={() => navigate('/register')}>S'inscrire</button>
                 </div>
-                <button type='submit'>Valider</button>
             </form>
-            <p>Pas encore de compte ?</p>
-            <button onClick={() => navigate('/register')}>S'inscrire</button>
-        </Layout>
+        </Fragment>
     )
 }
 

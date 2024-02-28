@@ -104,7 +104,7 @@ return [
     'mac_address' => 'The :attribute field must be a valid MAC address.',
     'max' => [
         'array' => 'The :attribute field must not have more than :max items.',
-        "numeric" => "La valeur de :attribute ne peut être supérieure à :max.",
+        "numeric" => "La valeur de :attribute ne peut être inférieure à :max.",
         "file"    => "Le fichier :attribute ne peut être plus gros que :max kilobytes.",
         "string"  => "Le texte de :attribute ne peut contenir plus de :max caractères.",
     ],
@@ -112,7 +112,7 @@ return [
     'mimetypes' => 'The :attribute field must be a file of type: :values.',
     'min' => [
         'array' => 'The :attribute field must have at least :min items.',
-        "numeric" => "La valeur de :attribute doit être inférieure à :min.",
+        "numeric" => "La valeur de :attribute doit être supérieure ou égale à :min.",
         "file"    => "Le fichier :attribute doit être plus que gros que :min kilobytes.",
         "string"  => "Le texte :attribute doit contenir au moins :min caractères.",
     ],

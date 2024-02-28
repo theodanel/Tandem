@@ -1,0 +1,546 @@
+@use "reset";
+@use "variables" as v;
+
+.projectDetail {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    @media (min-width: v.$lg-breakpoint) {
+        width: 100%;
+        margin-top: 5rem;
+    }
+
+    h3, h1{
+        width: 100%;
+        margin-bottom: 1rem;
+        border-bottom: solid 2px v.$color-green-dark;
+    }
+    
+}
+
+.ant-modal-content{
+    textarea{  
+        resize: none;
+        margin-bottom: 2rem;
+    }
+}
+
+.imagePosition {
+    height: 40rem;
+    display: flex;
+    justify-content: center;
+ 
+    @media (min-width: v.$sm-breakpoint) {
+        width: 100%;
+    }
+
+    @media (min-width: v.$lg-breakpoint) {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.descriptionPosition {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    align-items: center;
+
+    @media (min-width: v.$sm-breakpoint) {
+
+        display: flex;
+    }
+
+    @media (min-width: v.$lg-breakpoint) {
+        width: 50%;
+    }
+
+}
+
+.projectDetailPosition {
+    @media (min-width: v.$lg-breakpoint) {
+        display: flex;
+    }
+}
+
+.userActions{
+    margin: 2rem auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    .joinProject{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    .actions{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+}
+
+.imageSize {
+    object-fit: cover;
+    width: 100%;
+
+    @media (min-width: v.$lg-breakpoint) {
+        width: 90%;
+
+    }
+
+}
+
+.updateModal {
+    input {
+        margin-bottom: 3rem;
+    }
+}
+
+.updateLanguagesList {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.7rem 1rem;
+}
+
+
+.projectTitle {
+    color: black;
+    display: flex;
+    width: 90%;
+    margin-bottom: 3rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: start;
+
+
+    @media (min-width: v.$sm-breakpoint) {
+        margin-top: 3rem;
+        width: 100%;
+    }
+
+    @media (min-width: v.$lg-breakpoint) {
+        display: flex;
+        flex-direction: row;
+
+    }
+}
+
+
+.titleDecoration {
+    width: 100%;
+
+    hr {
+        @media (min-width: v.$sm-breakpoint) {
+            height: 0.5rem;
+        }
+    }
+
+    @media (min-width: v.$sm-breakpoint) {
+        width: 90%;
+    }
+
+    @media (min-width: v.$lg-breakpoint) {
+        width: 70%;
+
+
+    }
+}
+
+.creator {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    text-align: end;
+    align-items: center;
+
+
+    h4 {
+        text-decoration: underline;
+        margin-right: 1rem;
+        font-size: 2rem;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+
+    @media (min-width: v.$sm-breakpoint) {
+        width: 90%;
+
+        h4 {
+            font-size: 2rem;
+        }
+    }
+
+    @media (min-width: v.$lg-breakpoint) {
+        width: 40%;
+        flex-wrap: wrap;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+
+
+        @media (min-width: v.$sm-breakpoint) {
+            h4 {
+                font-size: 2rem;
+            }
+
+            h5 {
+                text-transform: uppercase;
+                font-size: 1.5rem;
+            }
+        }
+
+
+
+    }
+
+
+
+}
+
+.projectDescription {
+    margin-bottom: 4rem;
+    width: 90%;
+
+    @media (min-width: v.$sm-breakpoint) {
+        font-size: 2rem;
+        width: 90%;
+    }
+}
+
+
+#languages {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+
+
+    @media (min-width: v.$xl-breakpoint) {
+        justify-content: flex-start;
+        align-items: start;
+    }
+
+
+    img {
+
+        height: 8rem;
+        width: 100%;
+     
+
+        
+    }
+}
+
+
+.languagesDecoration {
+    background-color: #F47143;
+    color: #F47143;
+    height: 0.4rem;
+    margin-bottom: 3rem;
+
+
+    @media (min-width: v.$sm-breakpoint) {
+        height: 0.5rem;
+    }
+
+}
+
+.languagesList {
+    margin: auto;
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+
+
+    @media (min-width: v.$sm-breakpoint) {
+       
+        h3 {
+            font-size: 2.5rem;
+        }
+    }
+    @media (min-width: v.$lg-breakpoint) {
+        width: 95%;
+    }
+
+}
+
+.startProject {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4rem;
+
+
+}
+
+
+#Steps {
+
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    
+    @media (min-width: v.$xl-breakpoint) {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+    }
+
+    @media (min-width: v.$sm-breakpoint) {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+    }
+
+    @media (min-width: v.$lg-breakpoint) {
+        display: flex;
+        width: 90%;
+        flex-direction: row;
+    }
+
+    @media (min-width: v.$md-breakpoint) {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+    }
+}
+
+.inactive{
+    translate: 0 2px;
+    box-shadow: none;
+    opacity: 0.5;
+    color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    &:hover{
+        box-shadow: none;
+        cursor: not-allowed;
+    }
+}
+
+.active{
+    translate: 0 2px;
+    box-shadow: none;
+    pointer-events: none;
+    &:hover{
+        box-shadow: none;
+        cursor: auto;
+    }
+}
+
+.statusInfo{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    div{
+        height: fit-content;
+        display: flex;
+        color: white;
+        border-radius: 100%;
+        padding: 0.7rem;
+    }
+    &.green{
+        color: v.$color-green-dark;
+        div{
+            background-color: v.$color-green-dark;
+        }
+    }
+    &.orange{
+        color: v.$primary-color;
+        div{
+            background-color: v.$primary-color;
+        }
+    }
+}
+
+
+.projectSteps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ .ant-steps-item-container{
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+ }
+
+  
+}
+
+
+.ModalText {
+    color: black;
+}
+
+.collabList {
+    display: flex;
+    text-align: start;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5rem;
+
+
+
+    @media (min-width: v.$lg-breakpoint) {
+        margin-top: 5rem;
+    }
+
+}
+
+#collaborators {
+    width: 90%;
+
+
+    @media (min-width: v.$lg-breakpoint) {
+        width: 95%;
+    }
+
+    
+
+
+
+    h3 {
+        @media (min-width: v.$sm-breakpoint) {
+            font-size: 2.5rem;
+        }
+
+        @media (min-width: v.$lg-breakpoint) {
+            font-size: 2.5rem;
+        }
+    }
+
+    ul {
+        width: 100%;
+
+
+    }
+
+    li {
+        width: 100%;
+        font-weight: bold;
+        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+
+        div {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+
+        @media (min-width: v.$lg-breakpoint) {
+          justify-content: flex-start;
+          
+
+        }
+    }
+}
+
+.collaboratorsList{
+    display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   gap: 1rem;
+   .user-display{
+    width: 30%;
+        @media (min-width: v.$sm-breakpoint) {
+            width: 20%;
+        }
+        @media (min-width: v.$lg-breakpoint) {
+            width: 10%;
+        }
+   }
+}
+
+.collaboratorCard {
+    width: 30vw;
+    height: 15vh;
+    border-radius: 45px;
+    background-color: #89d491;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    color: white;
+    flex-direction: column;
+
+    h5 {
+        width: 50%;
+        margin-bottom: 1rem;
+    }
+
+    img {
+        height: 6rem;
+    }
+
+
+    @media (min-width: v.$sm-breakpoint) {
+        height: 20%;
+        width: 30%;
+    }
+
+    @media (min-width: v.$md-breakpoint) {
+        height: 20%;
+        width: 30%;
+    }
+
+    @media (min-width: v.$lg-breakpoint) {
+        height: 25%;
+        width: 30%;
+    }
+
+
+    @media (min-width: v.$lg-breakpoint) {
+        height: 15vh;
+        width: 10%;
+        border-radius: 40px;
+        margin-right: 2rem;
+    }
+
+}
+
+
+.addComment {
+    width: fit-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+    margin: 1rem auto 3rem auto;
+    padding: 1rem;
+    border-radius: 2rem;
+    background-color: v.$color-grey;
+    &:has(textarea:focus){
+        outline: solid 2px v.$color-green;
+    }
+    textarea{  
+        background-color: v.$color-grey;
+        resize: none;
+        max-width: 70vw;
+        min-width: 70vw;
+        border: none;
+        &:focus{
+            outline: none
+        }
+    }
+    button{
+        height: fit-content;
+        padding: 1rem ;
+    }
+}

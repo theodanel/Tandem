@@ -1,19 +1,23 @@
 import React from 'react'
 
-const Language = ({name, action, checked, image}) => {
+const Language = ({type = "", name, action = null, checked, image}) => {
 
   return (
-    <div className='language'>
+    <div className={`language ${type}`} onClick={action} title={name}>
+        {type?
         <input
-          type="checkbox"
+          type={type}
           id={name}
           name={name}
           checked={checked}
           onChange={action}/>
-        <div className='img' onClick={action}>
-          <img src={image} htmlFor={name} alt={name}/>
+          :""}
+        <div className='img' >
+          <img src={image} alt={name}/>
         </div>
-      <label htmlFor={name}>{name}</label>
+        {type?
+        <p htmlFor={name}>{name}</p>
+        : ""}
     </div>
   )
 }
