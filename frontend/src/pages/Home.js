@@ -11,6 +11,8 @@ import { Skeleton } from "antd";
 import SearchsBar from "../components/SearchsBar.js";
 import { useSelector } from "react-redux";
 import CountUp from "react-countup";
+import { PiPlantLight, PiTreeLight } from "react-icons/pi";
+import { LuNut } from "react-icons/lu";
 
 
 const Home = () => {
@@ -144,9 +146,10 @@ const Home = () => {
 
             <SearchsBar searchTerm={searchTerm} onChange={updateProjects} />
             <div className="filter-buttons">
-              <button onClick={() => filterProjectsByStatus("created")}>Créés</button>
-              <button onClick={() => filterProjectsByStatus("ongoing")}>En cours</button>
-              <button onClick={() => filterProjectsByStatus("completed")}>Terminés</button>
+              <p>Filtres :</p>
+              <button aria-label="Projets pas encore démarrés" title='Projets pas encore démarrés' className={filter !== "created"? "btn-green nut" : "nut-white"} onClick={() => filterProjectsByStatus("created")}><LuNut  size={40}/></button>
+              <button aria-label='Projets en cours' title='Projets en cours' className={filter !== "ongoing"? "btn-green nut" : "nut-white"} onClick={() => filterProjectsByStatus("ongoing")}><PiPlantLight  size={40}/></button>
+              <button  aria-label='Projets terminés' title='Projets terminés' className={filter !== "completed"? "btn-orange nut" : "tree-white"} onClick={() => filterProjectsByStatus("completed")}><PiTreeLight  size={40}/></button>
             </div>
           </div>
           <div className="hidden-sm">

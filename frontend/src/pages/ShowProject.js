@@ -18,6 +18,7 @@ import "../stylesheets/ProjectDetail.scss"
 
 import { useSelector } from 'react-redux';
 import Comment from '../components/Comment.js';
+import User from '../components/User.js';
 
 const ShowProject = () => {
     const { id } = useParams();
@@ -160,9 +161,9 @@ const ShowProject = () => {
         if (res.data.status === 200) {
 
             handleModals("update", false)
-            getProject({});
+            getProject();
             setErrors([]);
-            message.success("Commentaire ajouté !")
+            message.success("Le projet a été mis à jour !")
         } else {
             setErrors(res.data.errors);
         }
@@ -177,7 +178,7 @@ const ShowProject = () => {
      * Change le statut du projet
      */
     const changeStatus = async (statusType) => {
-        const res = await axios.put(`api/project/${id}/step`, { status: statusType }, { headers: { "Authorization": `Bearer ${token}` } })
+        await axios.put(`api/project/${id}/step`, { status: statusType }, { headers: { "Authorization": `Bearer ${token}` } })
         setStatus(project.status);
         getProject();
         message.success("Le projet a été mis à jour !")
@@ -241,10 +242,13 @@ const ShowProject = () => {
      */
     const collaboratorsList = project.collaboratorsList?.map((collaborator) => {
         return (
-            <div className='collaboratorCard' key={collaborator.id}>
-                <img src={`http://localhost:8000/images/avatars/${collaborator.avatar.url}`} />
-                <h5>{collaborator.name}</h5>
-            </div>
+            <User
+                key={collaborator.id}
+                id={collaborator.id}
+                name={collaborator.name}
+                avatar={collaborator.avatar.url}
+                creator={project.user_id}
+            />
         );
     });
 
@@ -281,39 +285,21 @@ const ShowProject = () => {
                     <button name='ongoing' className='btn-green active'><PiPlantLight size={40} className='stepsIcons' />Projet démarré</button>
                 )
             }
-        } else if (project.status === "ongoing") {
-            return (
-                <button name='ongoing' className='btn-green inactive'><PiPlantLight size={40} className='stepsIcons' />Projet démarré</button>
-            )
-        } else {
-            return (
-                <button name='ongoing' className='btn-green active'><PiPlantLight size={40} className='stepsIcons' />Projet démarré</button>
-            )
         }
     }
 
     const stepThree = () => {
-        if (project.user_id === loggedUser?.id) {
-            if (project.status === "created") {
-                return (
-                    <button className='btn-orange inactive'><PiTreeLight size={40} className='stepsIcons' />Terminer le projet</button>
-                )
-            } else if (project.status === "ongoing") {
-                return (
-                    <button className='btn-orange' onClick={() => handleModals("steps", true)}><PiTreeLight size={40} className='stepsIcons' />Terminer le projet</button>
-                )
-            } else {
-                return (
-                    <button className='btn-orange active'><PiTreeLight size={40} className='stepsIcons' />Projet terminé !</button>
-                )
-            }
-        } else if (project.status !== "completed") {
+        if(project.status === "created"){
             return (
-                <button className='btn-orange inactive'><PiTreeLight size={40} className='stepsIcons' />Projet terminé !</button>
+                <button className='btn-orange inactive'><PiTreeLight size={40} className='stepsIcons'/>Terminer le projet</button>
+            )
+        } else if (project.status === "ongoing") {
+            return (
+                <button className='btn-orange' onClick={() => handleModals("steps", true)}><PiTreeLight size={40} className='stepsIcons'/>Terminer le projet</button>
             )
         } else {
             return (
-                <button onClick={() => handleModals("steps", true)} name='completed' className='btn-orange active'><PiTreeLight size={40} className='stepsIcons' />Projet terminé !</button>
+                <button className='btn-orange active'><PiTreeLight size={40} className='stepsIcons'/>Projet terminé !</button>
             )
         }
     }
@@ -347,13 +333,6 @@ const ShowProject = () => {
         }
     }
 
-
-    const colors = {
-        '0%': '#2EC458',
-        '50%': '#ADDDB2',
-        // '60%': '#FFD7B4',
-        '100%': '#F47143'
-    }
 
     /**
      * Compteur de collaborateurs sur le projet
@@ -405,19 +384,19 @@ const ShowProject = () => {
         }
     }
 
-    // Affichage de l'icone like selon si le projet est liké par l'utilisateur
-    const like = () => {
-        // if (user?.likes.find(like => like.project_id === id)){
-        if (project.likes?.find(like => like.user_id === loggedUser?.id)) {
-            return (
-                <button type='button' className='btn-red-white likes full' onClick={() => handleAction("like")}><FaHeart className='action-icon' size={25} />Unliker le projet</button>
-            )
-        } else {
-            return (
-                <button type='button' className='btn-red likes' onClick={() => handleAction("like")}><FaRegHeart className='action-icon' size={25} />Liker le projet</button>
-            )
-        }
-    }
+  // Affichage de l'icone like selon si le projet est liké par l'utilisateur
+  const like = () => {
+      // if (user?.likes.find(like => like.project_id === id)){
+      if (project.likes?.find(like => like.user_id === loggedUser?.id)){
+        return (
+            <button type='button' className='btn-red-white likes full' onClick={()=>handleAction("like")}><FaHeart className='action-icon' size={25} />{project.popularity}</button>
+        )
+      } else {
+        return (
+            <button type='button' className='btn-red likes' onClick={()=>handleAction("like")}><FaRegHeart className='action-icon' size={25} />{project.popularity}</button>
+        )
+      }
+  }
 
 
     // Ajoute/Enlève un like/favori si l'utilisateur est connecté, sinon ouvre une modale
@@ -438,36 +417,40 @@ const ShowProject = () => {
      * Modale fu formulaire de modifiaction
      */
     const updateModal = () => {
-        return (
-            <Modal className='updateModal' title="Modifier" open={modals.update} onCancel={() => handleModals("update", false)} footer={null} centered >
-                <form onSubmit={(e) => update(e)}>
-                    <div>
+
+        return(
+            <Modal className='updateModal' title="Modifier" open={modals.update} onCancel={()=>handleModals("update", false)} footer={null} centered >
+            <form onSubmit={(e)=>update(e)}>
+                <div className='flex'>
+                    <div className='flex-col'>
+
                         <label htmlFor='title'>Titre :</label>
                         <input type='text' id='title' name='title' value={updateProject.title} onChange={(e) => handleUpdate(e)} />
                         <strong>{errors.title}</strong>
                     </div>
 
-                    <div>
-                        <label htmlFor='description'>Description :</label>
-                        <input type='text' id='description' name='description' value={updateProject.description} onChange={(e) => handleUpdate(e)} />
-                        <strong>{errors.description}</strong>
-                    </div>
-
-                    <div>
+                    <div className='flex-col'>
                         <label>Nombre de collaborateurs max :</label>
                         <select id="collaborators_max" name="collaborators_max" min="1" max="20" value={updateProject?.collaborators_max || ""} onChange={(e) => handleUpdate(e)} required>
                             {participants}
                         </select>
                         <strong>{errors.collaborators_max}</strong>
                     </div>
+                </div>
 
-                    <Collapse onChange={() => { getLanguages(); }} items={[
-                        {
-                            label: "Langages",
-                            children: (
-                                <div className="updateLanguagesList">{allLanguagesList}</div>
-                            )
-                        }]} />
+                <div className='flex-col'>
+                    <label htmlFor='description'>Description :</label>
+                    <textarea type='text' id='description' name='description' value={updateProject.description} onChange={(e) => handleUpdate(e)} ></textarea>
+                    <strong>{errors.description}</strong>
+                </div>
+
+                <Collapse onChange={() => { getLanguages(); }} items={[
+                    {
+                        label: "Langages",
+                        children: (
+                            <div className="updateLanguagesList">{allLanguagesList}</div>
+                        )
+                    }]} />
 
                     <button type="submit" className="btn-green center">Valider</button>
                 </form>
@@ -592,9 +575,9 @@ const ShowProject = () => {
                 <div className='collabList'>
                     <div id='collaborators'>
                         <h3>Collaborateurs ({project.collaborators}/{project.collaborators_max})</h3>
-                        <ul>
-                            <li>{collaboratorsList}</li>
-                        </ul>
+                        <div className='collaboratorsList'>
+                            {collaboratorsList}
+                        </div>
 
                     </div>
                 </div>

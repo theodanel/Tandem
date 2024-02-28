@@ -16,7 +16,7 @@ import Language from "../components/Language";
 import axios from "../api/axios.js";
 
 import "../stylesheets/UserDetail.scss";
-import { removeUser } from "../slices/index.js";
+import { getUser, removeUser } from "../slices/index.js";
 
 const UserPage = () => {
   const navigate = useNavigate();
@@ -238,9 +238,13 @@ const UserPage = () => {
 
   const toggleContacts = async()=>{
     if(loggedUser.id){
-        const resUser = await axios.put(`/api/user/contact/${id}`, { "Content-Type": "application/json", Authorization: `Bearer ${token}` });
-        setUser(resUser.data.user);
-        setRender(!render);
+        await axios.put(`/api/user/contact/${id}`, { "Content-Type": "application/json", Authorization: `Bearer ${token}` });
+        getData()
+        if(user.contacts?.find(contact=>contact.id === loggedUser?.id)){
+            message.success("Contact supprimé")
+        } else {
+            message.success("Contact ajouté")
+        }
     } else {
         handleModals("connexion",true);
     }

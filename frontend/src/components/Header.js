@@ -51,7 +51,7 @@ function Header() {
         </li>
 
         <li className="item slideInDown-4" >
-          <p className="item-p">Recherche</p>
+          <p className="item-p" onClick={()=>navigate('/')}>Recherche</p>
         </li>
         {/* {user ? 
         <li className="item slideInDown-5" >
