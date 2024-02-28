@@ -19,6 +19,13 @@
     
 }
 
+.ant-modal-content{
+    textarea{  
+        resize: none;
+        margin-bottom: 2rem;
+    }
+}
+
 .imagePosition {
     height: 40rem;
     display: flex;
@@ -210,74 +217,7 @@
     }
 }
 
-.updateButton {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
 
-
-    @media (min-width: v.$sm-breakpoint) {
-        height: 5vh;
-        align-items: flex-end;
-        justify-content: end;
-        margin-right: 10vw;
-    }
-
-    @media (min-width: v.$lg-breakpoint) {
-        height: 5vh;
-        align-items: flex-end;
-        justify-content: end;
-        margin-right: 10vw;
-    }
-
-    button {
-        width: 40%;
-        background-color: #F47143;
-        color: white;
-        font-weight: bold;
-        height: 4rem;
-        border-radius: 10px;
-        border: none;
-        box-shadow: 0 5px #c7c7c7;
-        cursor: pointer;
-
-
-
-        @media (min-width: v.$sm-breakpoint) {
-            width: 20%;
-            height: 5rem;
-            background-color: #F47143;
-            border-radius: 10px;
-          
-   
-          
-        }
-
-        @media (min-width: v.$lg-breakpoint) {
-            width: 20%;
-            height: 6rem;
-            background-color: #F47143;
-            border-radius: 15px;
-  
-        
-        }
-
-    }
-
-    button:hover {
-        background-color: #ce5e35
-    }
-
-    button:active {
-        background-color: rgb(163, 76, 45);
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
-    }
-
-
-
-}
 
 #languages {
     display: flex;
@@ -480,6 +420,22 @@
 
         }
     }
+}
+
+.collaboratorsList{
+    display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   gap: 1rem;
+   .user-display{
+    width: 30%;
+        @media (min-width: v.$sm-breakpoint) {
+            width: 20%;
+        }
+        @media (min-width: v.$lg-breakpoint) {
+            width: 10%;
+        }
+   }
 }
 
 .collaboratorCard {

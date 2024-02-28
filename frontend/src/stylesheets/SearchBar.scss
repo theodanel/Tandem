@@ -1,15 +1,64 @@
 @use "variables" as v;
 
+.search{
+    div:first-child{
+        width: 60%;
+    }
+}
+
 .search-bar {
     display: flex;
     justify-content: center;
-
-    input {
+    margin-bottom: 1rem;
+    input[type=text] {
+        width: 100%;
         border: 2px solid v.$color-orange;
         border-radius: 20px;
         height: 2rem;
+        padding: 2rem;
+        font-size: 2rem;
         &::placeholder {
             color: v.$color-orange;
         }
+        &:focus{
+            outline: solid 1px v.$primary-color;
+        }
+    }
+}
+.filter-buttons{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 100ms;
+    .nut-white{
+        translate: 0 2px;
+        color: v.$color-green-dark ;
+        box-shadow: inset 0px 0px 0px 2px v.$color-green-dark;
+        &:active{
+            background-color: v.$color-gpastel;
+        }
+    }
+    .tree-white{
+        translate: 0 2px;
+        color: v.$primary-color ;
+        box-shadow: inset 0px 0px 0px 2px v.$primary-color;
+        &:active{
+            background-color: v.$color-orange;
+        }
+    }
+   
+    button{
+        color: white;
+        border: none;
+        border-radius: 100%;
+        padding: 0.5rem;
+        transition: all 200ms;
+        &:hover{
+        cursor: pointer;
+        }
+     
+    }
+    button:first-child{
+        color: white;
     }
 }
